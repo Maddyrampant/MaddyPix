@@ -101,7 +101,7 @@ open MaddyPix/index.html
 
 ### Option 2: Use GitHub Pages
 
-Visit **[https://Maddyrampant.github.io/MaddyPix](https://Maddyrampant.github.io/MaddyPix)** (once Pages is enabled).
+Visit **[https://maddyrampant.github.io/MaddyPix](https://maddyrampant.github.io/MaddyPix)**
 
 ### Option 3: Host it yourself
 
