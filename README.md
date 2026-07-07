@@ -6,10 +6,7 @@
 </p>
 
 <p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Maddyrampant/MaddyPix/main/.github/banner-dark.svg">
-    <img src="https://raw.githubusercontent.com/Maddyrampant/MaddyPix/main/.github/banner-light.svg" alt="MaddyPix Banner" width="600">
-  </picture>
+  <img src="assets/banner.png" alt="MaddyPix Banner" width="600">
 </p>
 
 <h1 align="center">MaddyPix</h1>
@@ -26,13 +23,9 @@
   <a href="#license">License</a>
 </p>
 
-## 📸 Screenshots
-
-| Editor Tab | Export Tab |
-|------------|------------|
-| <img src="assets/banner.png" width="300" alt="MaddyPix Editor"> | <img src="assets/info.png" width="300" alt="MaddyPix Export"> |
-
----
+<p align="center">
+  <img src="assets/info.png" alt="MaddyPix Interface" width="600">
+</p>
 
 ## ✨ Features
 
