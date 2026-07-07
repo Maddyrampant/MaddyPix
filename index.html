@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,6 +34,9 @@
 
   .light { --bg: #f5f5f8; --bg-2: #ffffff; --bg-3: #eaeaef; --bg-4: #dddde6; --border: #d0d0da; --border-hover: #b0b0c0; --txt: #1a1a24; --txt-2: #5a5a6a; --txt-3: #8a8a9a; --shadow: 0 8px 40px rgba(0,0,0,.1); }
 
+  html[lang="fa"], html[lang="ar"] { --font: 'Inter', 'Vazirmatn', -apple-system, BlinkMacSystemFont, sans-serif; }
+  html[lang="ru"] { --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; }
   body {
@@ -49,7 +52,6 @@
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
-  /* Header */
   .header {
     background: var(--bg-2);
     border-bottom: 1px solid var(--border);
@@ -65,23 +67,26 @@
   .logo-mark { width: 30px; height: 30px; background: linear-gradient(135deg, var(--accent), var(--green)); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 15px; color: #fff; }
   .logo span { background: linear-gradient(135deg, var(--accent), var(--green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-  .header-actions { display: flex; align-items: center; gap: 16px; }
-  .header-stats { display: flex; gap: 20px; font-size: 12px; color: var(--txt-2); }
-  .header-stats strong { color: var(--txt); font-weight: 600; }
+  .header-actions { display: flex; align-items: center; gap: 12px; }
+
+  .lang-select {
+    padding: 4px 8px; background: var(--bg-3); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); color: var(--txt); font-size: 12px; font-family: inherit; outline: none; cursor: pointer;
+  }
+  .lang-select:focus { border-color: var(--accent); }
 
   .icon-btn {
     width: 34px; height: 34px; border-radius: var(--radius-sm);
     border: 1px solid var(--border); background: var(--bg-3);
     color: var(--txt-2); cursor: pointer; display: flex; align-items: center; justify-content: center;
-    font-size: 16px; transition: all .15s;
+    font-size: 16px; transition: all .15s; flex-shrink: 0;
   }
   .icon-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-  /* Layout */
   .app { display: flex; flex: 1; min-height: 0; }
 
   .sidebar {
-    width: 300px; background: var(--bg-2); border-right: 1px solid var(--border);
+    width: 300px; background: var(--bg-2); border-inline-end: 1px solid var(--border);
     display: flex; flex-direction: column; flex-shrink: 0;
   }
   .sidebar-scroll { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
@@ -89,7 +94,6 @@
 
   .main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
 
-  /* Panel */
   .panel { background: var(--bg-3); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; }
   .panel-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: var(--txt-3); margin-bottom: 10px; }
 
@@ -133,7 +137,6 @@
   .btn-danger { background: var(--red); color: #fff; }
   .btn-danger:hover { filter: brightness(1.1); }
 
-  /* Upload */
   .upload-zone {
     border: 2px dashed var(--border); border-radius: var(--radius); padding: 24px 12px;
     text-align: center; cursor: pointer; transition: all .2s; background: var(--bg-3);
@@ -144,14 +147,13 @@
   .upload-zone-hint { font-size: 10px; color: var(--txt-3); margin-top: 4px; }
   .upload-zone input { display: none; }
 
-  /* Preview area */
   .preview-bar {
     display: flex; align-items: center; gap: 12px; padding: 10px 16px;
     border-bottom: 1px solid var(--border); background: var(--bg-2); flex-shrink: 0;
   }
   .view-btn { padding: 4px 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: transparent; color: var(--txt-2); font-size: 11px; font-family: inherit; cursor: pointer; }
   .view-btn.on { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .preview-info { font-size: 11px; color: var(--txt-3); margin-left: auto; }
+  .preview-info { font-size: 11px; color: var(--txt-3); margin-inline-start: auto; }
 
   .preview-body {
     flex: 1; display: flex; align-items: center; justify-content: center;
@@ -162,14 +164,12 @@
   .placeholder { color: var(--txt-3); text-align: center; font-size: 14px; }
   .placeholder strong { display: block; font-size: 18px; color: var(--txt-2); margin-bottom: 4px; }
 
-  /* Comparison slider */
   .cmp-wrap { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; }
   .cmp-img { max-width: 100%; max-height: 100%; object-fit: contain; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); }
   .cmp-clip { position: absolute; top: 0; left: 0; overflow: hidden; height: 100%; width: 50%; display: flex; align-items: center; justify-content: center; }
   .cmp-handle { position: absolute; top: 0; bottom: 0; left: 50%; width: 3px; background: #fff; cursor: ew-resize; z-index: 10; box-shadow: 0 0 12px rgba(0,0,0,.6); }
   .cmp-handle::before { content: '⟷'; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); background: var(--accent); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; box-shadow: 0 2px 12px rgba(0,0,0,.5); }
 
-  /* Batch strip */
   .batch-strip {
     height: 80px; background: var(--bg-2); border-top: 1px solid var(--border);
     display: flex; align-items: center; gap: 8px; padding: 8px 16px; overflow-x: auto; flex-shrink: 0;
@@ -180,10 +180,9 @@
   }
   .batch-thumb.active { border-color: var(--accent); }
   .batch-thumb img { width: 100%; height: 100%; object-fit: cover; }
-  .batch-thumb .del { position: absolute; top: 2px; right: 2px; width: 16px; height: 16px; border-radius: 50%; background: var(--red); color: #fff; border: none; font-size: 9px; cursor: pointer; display: none; align-items: center; justify-content: center; }
+  .batch-thumb .del { position: absolute; top: 2px; inset-inline-end: 2px; width: 16px; height: 16px; border-radius: 50%; background: var(--red); color: #fff; border: none; font-size: 9px; cursor: pointer; display: none; align-items: center; justify-content: center; }
   .batch-thumb:hover .del { display: flex; }
 
-  /* Info bar */
   .info-bar {
     display: flex; gap: 16px; padding: 8px 16px; background: var(--bg-3);
     border-top: 1px solid var(--border); font-size: 11px; color: var(--txt-3); flex-shrink: 0; flex-wrap: wrap;
@@ -194,121 +193,112 @@
   .saving.pos { background: var(--green-bg); color: var(--green); }
   .saving.neg { background: var(--red-bg); color: var(--red); }
 
-  /* Toast */
   .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 22px; font-size: 13px; box-shadow: var(--shadow); opacity: 0; transition: all .35s ease; z-index: 999; pointer-events: none; }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  /* Modal */
   .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 998; display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
   .modal-overlay.show { display: flex; }
-  .modal { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; max-width: 440px; width: 90%; box-shadow: var(--shadow); }
+  .modal { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; max-width: 440px; width: 90%; box-shadow: var(--shadow); max-height: 80vh; overflow-y: auto; }
   .modal h3 { margin-bottom: 12px; }
-  .modal .btn { margin-top: 12px; }
+  .modal .btn { margin-top: 8px; }
   .modal textarea { width: 100%; height: 60px; font-family: monospace; font-size: 12px; padding: 6px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--txt); resize: none; }
   .modal .hist-item { padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 12px; color: var(--txt-2); display: flex; justify-content: space-between; }
   .modal .hist-item:last-child { border-bottom: none; }
 
   .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 12px; }
   .info-grid .lbl { color: var(--txt-3); }
-  .info-grid .val { color: var(--txt); text-align: right; }
+  .info-grid .val { color: var(--txt); text-align: end; }
 
-  /* Responsive */
   @media (max-width: 800px) {
     .sidebar { width: 260px; }
-    .header-stats { display: none; }
   }
   @media (max-width: 600px) {
     .app { flex-direction: column; }
-    .sidebar { width: 100%; max-height: 45vh; border-right: none; border-bottom: 1px solid var(--border); }
+    .sidebar { width: 100%; max-height: 45vh; border-inline-end: none; border-bottom: 1px solid var(--border); }
   }
 </style>
 </head>
 <body>
 
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 
-<!-- Header -->
 <header class="header">
   <div class="logo">
     <div class="logo-mark">M</div>
-    <div>Maddy<span>Pix</span></div>
+    <div data-i18n="brand">Maddy<span>Pix</span></div>
   </div>
   <div class="header-actions">
-    <div class="header-stats" id="headerStats">
-      <span>Format: <strong id="hFormat">—</strong></span>
-      <span>Size: <strong id="hDims">—</strong></span>
-    </div>
+    <select class="lang-select" id="langSelect">
+      <option value="en">English</option>
+      <option value="fa">فارسی</option>
+      <option value="ar">العربية</option>
+      <option value="fr">Français</option>
+      <option value="de">Deutsch</option>
+      <option value="ru">Русский</option>
+    </select>
     <button class="icon-btn" id="themeBtn" title="Toggle theme">🌙</button>
-    <button class="icon-btn" id="infoBtn" title="Image info">ℹ️</button>
+    <button class="icon-btn" id="infoBtn" data-i18n-title="btn.info">ℹ️</button>
   </div>
 </header>
 
 <div class="app">
-  <!-- Sidebar -->
   <aside class="sidebar">
     <div class="sidebar-scroll">
-      <!-- Upload -->
       <div class="upload-zone" id="uploadZone">
         <div class="upload-zone-icon">📁</div>
-        <div class="upload-zone-text">Drop images or click to browse</div>
-        <div class="upload-zone-hint">PNG, JPG, WebP, BMP, GIF — multiple allowed</div>
+        <div class="upload-zone-text" data-i18n="upload.text">Drop images or click to browse</div>
+        <div class="upload-zone-hint" data-i18n="upload.hint">PNG, JPG, WebP, BMP, GIF — multiple allowed</div>
         <input type="file" id="fileInput" accept="image/*" multiple>
       </div>
 
-      <!-- Compression -->
       <div class="panel">
-        <div class="panel-title">Compression</div>
+        <div class="panel-title" data-i18n="panel.compression">Compression</div>
         <div class="ctrl">
-          <div class="ctrl-label"><span>Quality</span><span class="ctrl-val" id="qVal">85%</span></div>
+          <div class="ctrl-label"><span data-i18n="ctrl.quality">Quality</span><span class="ctrl-val" id="qVal">85%</span></div>
           <input type="range" id="qSlider" min="1" max="100" value="85">
         </div>
-        <div class="toggle"><input type="checkbox" id="losslessToggle"><label for="losslessToggle">Lossless mode (PNG/WebP)</label></div>
-        <div class="toggle"><input type="checkbox" id="stripMeta"><label for="stripMeta">Strip metadata (EXIF)</label></div>
+        <label class="toggle"><input type="checkbox" id="losslessToggle"><span data-i18n="ctrl.lossless">Lossless mode (PNG/WebP)</span></label>
+        <label class="toggle"><input type="checkbox" id="stripMeta"><span data-i18n="ctrl.stripMeta">Strip metadata (EXIF)</span></label>
       </div>
 
-      <!-- Resize -->
       <div class="panel">
-        <div class="panel-title">Resize</div>
-        <div class="toggle"><input type="checkbox" id="resizeOn"><label for="resizeOn">Enable resize</label></div>
-        <div class="ctrl"><div class="dim-row"><span>W</span><input type="number" class="inp" id="wInp" placeholder="Auto" min="1" disabled><span>px</span></div></div>
-        <div class="ctrl"><div class="dim-row"><span>H</span><input type="number" class="inp" id="hInp" placeholder="Auto" min="1" disabled><span>px</span></div></div>
+        <div class="panel-title" data-i18n="panel.resize">Resize</div>
+        <label class="toggle"><input type="checkbox" id="resizeOn"><span data-i18n="ctrl.enableResize">Enable resize</span></label>
+        <div class="ctrl"><div class="dim-row"><span data-i18n="ctrl.w">W</span><input type="number" class="inp" id="wInp" placeholder="Auto" min="1" disabled><span>px</span></div></div>
+        <div class="ctrl"><div class="dim-row"><span data-i18n="ctrl.h">H</span><input type="number" class="inp" id="hInp" placeholder="Auto" min="1" disabled><span>px</span></div></div>
         <div style="display:flex;gap:4px;margin-top:6px">
           <button class="lock-btn on" id="lockBtn">🔗</button>
-          <span style="font-size:10px;color:var(--txt-3);align-self:center">Aspect ratio</span>
+          <span style="font-size:10px;color:var(--txt-3);align-self:center" data-i18n="ctrl.aspectRatio">Aspect ratio</span>
         </div>
       </div>
 
-      <!-- Crop -->
       <div class="panel">
-        <div class="panel-title">Crop</div>
-        <div class="toggle"><input type="checkbox" id="cropOn"><label for="cropOn">Enable crop</label></div>
+        <div class="panel-title" data-i18n="panel.crop">Crop</div>
+        <label class="toggle"><input type="checkbox" id="cropOn"><span data-i18n="ctrl.enableCrop">Enable crop</span></label>
         <div class="ctrl" style="display:flex;gap:4px;flex-wrap:wrap" id="cropPresets">
           <button class="btn btn-sm btn-outline" data-ar="1">1:1</button>
           <button class="btn btn-sm btn-outline" data-ar="4/3">4:3</button>
           <button class="btn btn-sm btn-outline" data-ar="16/9">16:9</button>
           <button class="btn btn-sm btn-outline" data-ar="3/2">3:2</button>
           <button class="btn btn-sm btn-outline" data-ar="9/16">9:16</button>
-          <button class="btn btn-sm btn-outline" data-ar="free">Free</button>
+          <button class="btn btn-sm btn-outline" data-ar="free" data-i18n="crop.free">Free</button>
         </div>
       </div>
 
-      <!-- Rotate & Flip -->
       <div class="panel">
-        <div class="panel-title">Rotate / Flip</div>
+        <div class="panel-title" data-i18n="panel.rotate">Rotate / Flip</div>
         <div style="display:flex;gap:4px;flex-wrap:wrap">
           <button class="btn btn-sm btn-outline" data-rot="90">↻ 90°</button>
           <button class="btn btn-sm btn-outline" data-rot="180">↻ 180°</button>
           <button class="btn btn-sm btn-outline" data-rot="270">↻ 270°</button>
           <button class="btn btn-sm btn-outline" data-flip="h">↔ H</button>
           <button class="btn btn-sm btn-outline" data-flip="v">↕ V</button>
-          <button class="btn btn-sm btn-outline" id="resetRotFlip">Reset</button>
+          <button class="btn btn-sm btn-outline" id="resetRotFlip" data-i18n="btn.reset">Reset</button>
         </div>
       </div>
 
-      <!-- Format -->
       <div class="panel">
-        <div class="panel-title">Output Format</div>
+        <div class="panel-title" data-i18n="panel.format">Output Format</div>
         <select id="fmtSelect">
           <option value="image/jpeg">JPEG</option>
           <option value="image/png">PNG</option>
@@ -316,97 +306,97 @@
           <option value="image/bmp">BMP</option>
           <option value="image/gif">GIF</option>
         </select>
-        <div class="toggle" style="margin-top:6px"><input type="checkbox" id="progressiveToggle"><label for="progressiveToggle">Progressive / interlace</label></div>
+        <label class="toggle" style="margin-top:6px"><input type="checkbox" id="progressiveToggle"><span data-i18n="ctrl.progressive">Progressive / interlace</span></label>
       </div>
 
-      <!-- Filters -->
       <div class="panel">
-        <div class="panel-title">Filters</div>
+        <div class="panel-title" data-i18n="panel.filters">Filters</div>
         <select id="filterSel" style="margin-bottom:6px">
-          <option value="none">None</option>
-          <option value="grayscale">Grayscale</option>
-          <option value="sepia">Sepia</option>
-          <option value="invert">Invert</option>
-          <option value="brightness">Brightness</option>
-          <option value="contrast">Contrast</option>
-          <option value="blur">Blur</option>
-          <option value="saturate">Saturate</option>
+          <option value="none" data-i18n="filter.none">None</option>
+          <option value="grayscale" data-i18n="filter.grayscale">Grayscale</option>
+          <option value="sepia" data-i18n="filter.sepia">Sepia</option>
+          <option value="invert" data-i18n="filter.invert">Invert</option>
+          <option value="brightness" data-i18n="filter.brightness">Brightness</option>
+          <option value="contrast" data-i18n="filter.contrast">Contrast</option>
+          <option value="blur" data-i18n="filter.blur">Blur</option>
+          <option value="saturate" data-i18n="filter.saturate">Saturate</option>
         </select>
         <div class="ctrl" id="filterAmtWrap" style="display:none">
-          <div class="ctrl-label"><span>Amount</span><span class="ctrl-val" id="filterAmtVal">100%</span></div>
+          <div class="ctrl-label"><span data-i18n="ctrl.amount">Amount</span><span class="ctrl-val" id="filterAmtVal">100%</span></div>
           <input type="range" id="filterAmt" min="0" max="200" value="100">
         </div>
       </div>
 
-      <!-- Watermark -->
       <div class="panel">
-        <div class="panel-title">Watermark</div>
-        <div class="toggle"><input type="checkbox" id="wmOn"><label for="wmOn">Add watermark text</label></div>
-        <div class="ctrl"><input class="inp" id="wmText" placeholder="Watermark text" value="MaddyPix" disabled></div>
+        <div class="panel-title" data-i18n="panel.watermark">Watermark</div>
+        <label class="toggle"><input type="checkbox" id="wmOn"><span data-i18n="ctrl.addWM">Add watermark text</span></label>
+        <div class="ctrl"><input class="inp" id="wmText" placeholder="MaddyPix" value="MaddyPix" disabled></div>
         <div class="ctrl" style="display:flex;gap:4px">
-          <select id="wmPos" disabled><option value="se">Bottom-Right</option><option value="sw">Bottom-Left</option><option value="ne">Top-Right</option><option value="nw">Top-Left</option><option value="center">Center</option></select>
-          <select id="wmSize" disabled><option value="16">Small</option><option value="24" selected>Medium</option><option value="36">Large</option></select>
+          <select id="wmPos" disabled>
+            <option value="se" data-i18n="wm.br">Bottom-Right</option>
+            <option value="sw" data-i18n="wm.bl">Bottom-Left</option>
+            <option value="ne" data-i18n="wm.tr">Top-Right</option>
+            <option value="nw" data-i18n="wm.tl">Top-Left</option>
+            <option value="center" data-i18n="wm.center">Center</option>
+          </select>
+          <select id="wmSize" disabled>
+            <option value="16" data-i18n="wm.small">Small</option>
+            <option value="24" selected data-i18n="wm.medium">Medium</option>
+            <option value="36" data-i18n="wm.large">Large</option>
+          </select>
         </div>
       </div>
 
-      <!-- Target Size -->
       <div class="panel">
-        <div class="panel-title">Target File Size</div>
-        <div class="toggle"><input type="checkbox" id="targetSizeOn"><label for="targetSizeOn">Auto-adjust to max size</label></div>
+        <div class="panel-title" data-i18n="panel.targetSize">Target File Size</div>
+        <label class="toggle"><input type="checkbox" id="targetSizeOn"><span data-i18n="ctrl.autoAdjust">Auto-adjust to max size</span></label>
         <div class="ctrl"><div class="dim-row"><input type="number" class="inp" id="targetSizeInp" placeholder="500" min="1" disabled><span>KB</span></div></div>
       </div>
     </div>
 
-    <!-- Bottom actions -->
     <div class="sidebar-actions">
-      <button class="btn btn-primary" id="processBtn" disabled>⚡ Process</button>
+      <button class="btn btn-primary" id="processBtn" disabled data-i18n="btn.process">⚡ Process</button>
       <div style="display:flex;gap:6px">
-        <button class="btn btn-green" id="downloadBtn" disabled style="flex:1">💾 Download</button>
-        <button class="btn btn-outline" id="copyBtn" disabled title="Copy to clipboard">📋</button>
-        <button class="btn btn-outline" id="base64Btn" disabled title="Get Base64">🔤</button>
+        <button class="btn btn-green" id="downloadBtn" disabled style="flex:1" data-i18n="btn.download">💾 Download</button>
+        <button class="btn btn-outline" id="copyBtn" disabled data-i18n-title="btn.copy">📋</button>
+        <button class="btn btn-outline" id="base64Btn" disabled data-i18n-title="btn.base64">🔤</button>
       </div>
       <div style="display:flex;gap:6px">
-        <button class="btn btn-outline btn-sm" id="historyBtn" style="flex:1">📜 History</button>
-        <button class="btn btn-outline btn-sm" id="downloadAllBtn" disabled>📦 Download All</button>
+        <button class="btn btn-outline btn-sm" id="historyBtn" style="flex:1" data-i18n="btn.history">📜 History</button>
+        <button class="btn btn-outline btn-sm" id="downloadAllBtn" disabled data-i18n="btn.downloadAll">📦 Download All</button>
       </div>
       <div style="display:flex;gap:4px;font-size:10px;color:var(--txt-3);align-items:center">
-        <span>🔑</span>
-        <span id="shortcutHint">Space: Process | S: Download | R: Reset</span>
+        <span>⌨️</span>
+        <span id="shortcutHint" data-i18n="shortcuts">Space: Process | S: Download | R: Reset</span>
       </div>
     </div>
   </aside>
 
-  <!-- Main -->
   <main class="main">
-
-    <!-- Preview toolbar -->
     <div class="preview-bar">
-      <button class="view-btn on" data-view="split">Split</button>
-      <button class="view-btn" data-view="slider">Slider</button>
-      <button class="view-btn" data-view="single">Single</button>
-      <span class="preview-info" id="viewInfo">No image loaded</span>
+      <button class="view-btn on" data-view="split" data-i18n="view.split">Split</button>
+      <button class="view-btn" data-view="slider" data-i18n="view.slider">Slider</button>
+      <button class="view-btn" data-view="single" data-i18n="view.single">Single</button>
+      <span class="preview-info" id="viewInfo" data-i18n="view.noImage">No image loaded</span>
     </div>
 
-    <!-- Preview body -->
     <div class="preview-body" id="previewBody">
       <div class="placeholder" id="placeholder">
-        <strong>Drop an image to begin</strong>
-        <span>Compress • Resize • Convert • Filter</span>
+        <strong data-i18n="placeholder.title">Drop an image to begin</strong>
+        <span data-i18n="placeholder.sub">Compress · Resize · Convert · Filter</span>
       </div>
-      <!-- Split view (default) -->
       <div id="splitView" style="display:none;width:100%;height:100%;">
         <div style="display:flex;width:100%;height:100%;">
-          <div style="flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;border-right:1px solid var(--border);position:relative">
-            <div style="position:absolute;top:8px;left:8px;font-size:10px;background:var(--red-bg);color:var(--red);padding:2px 8px;border-radius:4px;z-index:5">Original</div>
+          <div style="flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;border-inline-end:1px solid var(--border);position:relative">
+            <div style="position:absolute;top:8px;inset-inline-start:8px;font-size:10px;background:var(--red-bg);color:var(--red);padding:2px 8px;border-radius:4px;z-index:5" data-i18n="badge.original">Original</div>
             <img id="origImg" style="max-width:100%;max-height:100%;object-fit:contain">
           </div>
           <div style="flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative">
-            <div style="position:absolute;top:8px;left:8px;font-size:10px;background:var(--green-bg);color:var(--green);padding:2px 8px;border-radius:4px;z-index:5">Processed</div>
+            <div style="position:absolute;top:8px;inset-inline-start:8px;font-size:10px;background:var(--green-bg);color:var(--green);padding:2px 8px;border-radius:4px;z-index:5" data-i18n="badge.processed">Processed</div>
             <img id="procImg" style="max-width:100%;max-height:100%;object-fit:contain">
           </div>
         </div>
       </div>
-      <!-- Slider view -->
       <div id="sliderView" style="display:none;width:100%;height:100%;">
         <div class="cmp-wrap" id="cmpWrap">
           <img class="cmp-img" id="cmpOrig" style="z-index:1">
@@ -416,75 +406,653 @@
           <div class="cmp-handle" id="cmpHandle"></div>
         </div>
       </div>
-      <!-- Single view -->
       <div id="singleView" style="display:none;width:100%;height:100%;align-items:center;justify-content:center;overflow:hidden;">
         <img id="singleImg" style="max-width:100%;max-height:100%;object-fit:contain;cursor:grab">
       </div>
     </div>
 
-    <!-- Batch strip -->
     <div class="batch-strip" id="batchStrip" style="display:none"></div>
 
-    <!-- Info bar -->
     <div class="info-bar" id="infoBar">
-      <span>File: <strong id="fName">—</strong></span>
+      <span data-i18n="info.file">File:</span> <strong id="fName">—</strong>
       <div class="divider"></div>
-      <span>Original: <strong id="origSize">—</strong></span>
+      <span data-i18n="info.original">Original:</span> <strong id="origSize">—</strong>
       <div class="divider"></div>
-      <span>Output: <strong id="outSize">—</strong></span>
+      <span data-i18n="info.output">Output:</span> <strong id="outSize">—</strong>
       <div class="divider"></div>
-      <span>Saved: <strong><span class="saving" id="savingBadge">—</span></strong></span>
+      <span data-i18n="info.saved">Saved:</span> <strong><span class="saving" id="savingBadge">—</span></strong>
       <div class="divider"></div>
-      <span>Dimensions: <strong id="dimsDisplay">—</strong></span>
+      <span data-i18n="info.dims">Dimensions:</span> <strong id="dimsDisplay">—</strong>
     </div>
   </main>
 </div>
 
-<!-- Image Info Modal -->
 <div class="modal-overlay" id="imgInfoModal">
   <div class="modal">
-    <h3>📷 Image Info</h3>
+    <h3 data-i18n="modal.infoTitle">📷 Image Info</h3>
     <div class="info-grid" id="imgInfoGrid">
-      <span class="lbl">Name</span><span class="val" id="iiName">—</span>
-      <span class="lbl">Format</span><span class="val" id="iiFormat">—</span>
-      <span class="lbl">Dimensions</span><span class="val" id="iiDims">—</span>
-      <span class="lbl">File Size</span><span class="val" id="iiSize">—</span>
-      <span class="lbl">Output Size</span><span class="val" id="iiOutSize">—</span>
-      <span class="lbl">Compression</span><span class="val" id="iiComp">—</span>
-      <span class="lbl">Color Space</span><span class="val" id="iiColor">sRGB</span>
+      <span class="lbl" data-i18n="infoGrid.name">Name</span><span class="val" id="iiName">—</span>
+      <span class="lbl" data-i18n="infoGrid.format">Format</span><span class="val" id="iiFormat">—</span>
+      <span class="lbl" data-i18n="infoGrid.dims">Dimensions</span><span class="val" id="iiDims">—</span>
+      <span class="lbl" data-i18n="infoGrid.fileSize">File Size</span><span class="val" id="iiSize">—</span>
+      <span class="lbl" data-i18n="infoGrid.outSize">Output Size</span><span class="val" id="iiOutSize">—</span>
+      <span class="lbl" data-i18n="infoGrid.compression">Compression</span><span class="val" id="iiComp">—</span>
+      <span class="lbl" data-i18n="infoGrid.colorSpace">Color Space</span><span class="val" id="iiColor">sRGB</span>
     </div>
-    <button class="btn btn-outline" onclick="closeModal('imgInfoModal')">Close</button>
+    <button class="btn btn-outline" onclick="closeModal('imgInfoModal')" data-i18n="btn.close">Close</button>
   </div>
 </div>
 
-<!-- History Modal -->
 <div class="modal-overlay" id="histModal">
   <div class="modal">
-    <h3>📜 Processing History</h3>
-    <div id="histList" style="max-height:260px;overflow-y:auto"><p style="color:var(--txt-3)">No history yet</p></div>
-    <button class="btn btn-danger btn-sm" id="clearHistBtn">Clear History</button>
-    <button class="btn btn-outline btn-sm" onclick="closeModal('histModal')">Close</button>
+    <h3 data-i18n="modal.histTitle">📜 Processing History</h3>
+    <div id="histList" style="max-height:260px;overflow-y:auto"><p style="color:var(--txt-3)" data-i18n="modal.noHist">No history yet</p></div>
+    <button class="btn btn-danger btn-sm" id="clearHistBtn" data-i18n="btn.clearHist">Clear History</button>
+    <button class="btn btn-outline btn-sm" onclick="closeModal('histModal')" data-i18n="btn.close">Close</button>
   </div>
 </div>
 
-<!-- Base64 Modal -->
 <div class="modal-overlay" id="b64Modal">
   <div class="modal">
-    <h3>🔤 Base64 Data URL</h3>
+    <h3 data-i18n="modal.b64Title">🔤 Base64 Data URL</h3>
     <textarea id="b64Output" readonly></textarea>
-    <button class="btn btn-outline btn-sm" onclick="copyBase64()">📋 Copy</button>
-    <button class="btn btn-outline btn-sm" onclick="closeModal('b64Modal')">Close</button>
+    <button class="btn btn-outline btn-sm" onclick="copyBase64()" data-i18n="btn.copyB64">📋 Copy</button>
+    <button class="btn btn-outline btn-sm" onclick="closeModal('b64Modal')" data-i18n="btn.close">Close</button>
   </div>
 </div>
 
 <script>
+// ===== i18n =====
+const LOCALE = {
+  en: {
+    brand: 'Maddy<span>Pix</span>',
+    'btn.info': 'Image info',
+    'upload.text': 'Drop images or click to browse',
+    'upload.hint': 'PNG, JPG, WebP, BMP, GIF — multiple allowed',
+    'panel.compression': 'Compression',
+    'ctrl.quality': 'Quality',
+    'ctrl.lossless': 'Lossless mode (PNG/WebP)',
+    'ctrl.stripMeta': 'Strip metadata (EXIF)',
+    'panel.resize': 'Resize',
+    'ctrl.enableResize': 'Enable resize',
+    'ctrl.w': 'W',
+    'ctrl.h': 'H',
+    'ctrl.aspectRatio': 'Aspect ratio',
+    'panel.crop': 'Crop',
+    'ctrl.enableCrop': 'Enable crop',
+    'crop.free': 'Free',
+    'panel.rotate': 'Rotate / Flip',
+    'btn.reset': 'Reset',
+    'panel.format': 'Output Format',
+    'ctrl.progressive': 'Progressive / interlace',
+    'panel.filters': 'Filters',
+    'filter.none': 'None',
+    'filter.grayscale': 'Grayscale',
+    'filter.sepia': 'Sepia',
+    'filter.invert': 'Invert',
+    'filter.brightness': 'Brightness',
+    'filter.contrast': 'Contrast',
+    'filter.blur': 'Blur',
+    'filter.saturate': 'Saturate',
+    'ctrl.amount': 'Amount',
+    'panel.watermark': 'Watermark',
+    'ctrl.addWM': 'Add watermark text',
+    'wm.br': 'Bottom-Right',
+    'wm.bl': 'Bottom-Left',
+    'wm.tr': 'Top-Right',
+    'wm.tl': 'Top-Left',
+    'wm.center': 'Center',
+    'wm.small': 'Small',
+    'wm.medium': 'Medium',
+    'wm.large': 'Large',
+    'panel.targetSize': 'Target File Size',
+    'ctrl.autoAdjust': 'Auto-adjust to max size',
+    'btn.process': '⚡ Process',
+    'btn.download': '💾 Download',
+    'btn.copy': 'Copy to clipboard',
+    'btn.base64': 'Get Base64',
+    'btn.history': '📜 History',
+    'btn.downloadAll': '📦 Download All',
+    'shortcuts': 'Space: Process | S: Download | R: Reset | L: Language',
+    'view.split': 'Split',
+    'view.slider': 'Slider',
+    'view.single': 'Single',
+    'view.noImage': 'No image loaded',
+    'placeholder.title': 'Drop an image to begin',
+    'placeholder.sub': 'Compress · Resize · Convert · Filter',
+    'badge.original': 'Original',
+    'badge.processed': 'Processed',
+    'info.file': 'File:',
+    'info.original': 'Original:',
+    'info.output': 'Output:',
+    'info.saved': 'Saved:',
+    'info.dims': 'Dimensions:',
+    'modal.infoTitle': '📷 Image Info',
+    'infoGrid.name': 'Name',
+    'infoGrid.format': 'Format',
+    'infoGrid.dims': 'Dimensions',
+    'infoGrid.fileSize': 'File Size',
+    'infoGrid.outSize': 'Output Size',
+    'infoGrid.compression': 'Compression',
+    'infoGrid.colorSpace': 'Color Space',
+    'modal.histTitle': '📜 Processing History',
+    'modal.noHist': 'No history yet',
+    'btn.clearHist': 'Clear History',
+    'btn.close': 'Close',
+    'modal.b64Title': '🔤 Base64 Data URL',
+    'btn.copyB64': '📋 Copy',
+    'toast.noImage': 'No image loaded',
+    'toast.downloaded': 'Downloaded ✅',
+    'toast.copied': 'Copied to clipboard ✅',
+    'toast.copiedB64': 'Base64 copied ✅',
+    'toast.historyCleared': 'History cleared',
+    'toast.error': 'Error: ',
+    'toast.batchStarted': 'Batch download started 📦',
+    'toast.copyNotSupported': 'Copy not supported',
+    'btnProcessing': '⏳ Processing...',
+  },
+  fa: {
+    brand: 'Maddy<span>Pix</span>',
+    'btn.info': 'اطلاعات تصویر',
+    'upload.text': 'تصاویر را بکشید یا کلیک کنید',
+    'upload.hint': 'PNG, JPG, WebP, BMP, GIF — چند تایی مجاز',
+    'panel.compression': 'فشرده‌سازی',
+    'ctrl.quality': 'کیفیت',
+    'ctrl.lossless': 'حالت بدون افت (PNG/WebP)',
+    'ctrl.stripMeta': 'حذف metadata (EXIF)',
+    'panel.resize': 'تغییر ابعاد',
+    'ctrl.enableResize': 'فعال کردن تغییر ابعاد',
+    'ctrl.w': 'ع',
+    'ctrl.h': 'ا',
+    'ctrl.aspectRatio': 'نسبت ابعاد',
+    'panel.crop': 'برش',
+    'ctrl.enableCrop': 'فعال کردن برش',
+    'crop.free': 'آزاد',
+    'panel.rotate': 'چرخش / قرینه',
+    'btn.reset': 'بازنشانی',
+    'panel.format': 'فرمت خروجی',
+    'ctrl.progressive': 'پیش‌رونده / درهم',
+    'panel.filters': 'فیلترها',
+    'filter.none': 'بدون فیلتر',
+    'filter.grayscale': 'تک‌رنگ',
+    'filter.sepia': 'سپیا',
+    'filter.invert': 'معکوس',
+    'filter.brightness': 'روشنایی',
+    'filter.contrast': 'کنتراست',
+    'filter.blur': 'محو',
+    'filter.saturate': 'اشباع',
+    'ctrl.amount': 'میزان',
+    'panel.watermark': 'واترمارک',
+    'ctrl.addWM': 'افزودن متن واترمارک',
+    'wm.br': 'پایین-راست',
+    'wm.bl': 'پایین-چپ',
+    'wm.tr': 'بالا-راست',
+    'wm.tl': 'بالا-چپ',
+    'wm.center': 'مرکز',
+    'wm.small': 'کوچک',
+    'wm.medium': 'متوسط',
+    'wm.large': 'بزرگ',
+    'panel.targetSize': 'حجم هدف',
+    'ctrl.autoAdjust': 'تنظیم خودکار به حجم حداکثر',
+    'btn.process': '⚡ پردازش',
+    'btn.download': '💾 دانلود',
+    'btn.copy': 'کپی به کلیپ‌بورد',
+    'btn.base64': 'دریافت Base64',
+    'btn.history': '📜 تاریخچه',
+    'btn.downloadAll': '📦 دانلود همه',
+    'shortcuts': 'Space: پردازش | S: دانلود | R: بازنشانی | L: زبان',
+    'view.split': 'کنارهم',
+    'view.slider': 'لغزنده',
+    'view.single': 'تکی',
+    'view.noImage': 'تصویری بارگذاری نشده',
+    'placeholder.title': 'یک تصویر رها کنید',
+    'placeholder.sub': 'فشرده‌سازی · تغییر اندازه · تبدیل · فیلتر',
+    'badge.original': 'اصلی',
+    'badge.processed': 'پردازش‌شده',
+    'info.file': 'فایل:',
+    'info.original': 'اصلی:',
+    'info.output': 'خروجی:',
+    'info.saved': 'صرفه‌جویی:',
+    'info.dims': 'ابعاد:',
+    'modal.infoTitle': '📷 اطلاعات تصویر',
+    'infoGrid.name': 'نام',
+    'infoGrid.format': 'فرمت',
+    'infoGrid.dims': 'ابعاد',
+    'infoGrid.fileSize': 'حجم فایل',
+    'infoGrid.outSize': 'حجم خروجی',
+    'infoGrid.compression': 'فشرده‌سازی',
+    'infoGrid.colorSpace': 'فضای رنگی',
+    'modal.histTitle': '📜 تاریخچه پردازش',
+    'modal.noHist': 'تاریخچه‌ای وجود ندارد',
+    'btn.clearHist': 'پاک کردن تاریخچه',
+    'btn.close': 'بستن',
+    'modal.b64Title': '🔤 داده Base64',
+    'btn.copyB64': '📋 کپی',
+    'toast.noImage': 'تصویری بارگذاری نشده',
+    'toast.downloaded': 'دانلود شد ✅',
+    'toast.copied': 'در کلیپ‌بورد کپی شد ✅',
+    'toast.copiedB64': 'Base64 کپی شد ✅',
+    'toast.historyCleared': 'تاریخچه پاک شد',
+    'toast.error': 'خطا: ',
+    'toast.batchStarted': 'دانلود گروهی شروع شد 📦',
+    'toast.copyNotSupported': 'کپی پشتیبانی نمی‌شود',
+    'btnProcessing': '⏳ در حال پردازش...',
+  },
+  ar: {
+    brand: 'Maddy<span>Pix</span>',
+    'btn.info': 'معلومات الصورة',
+    'upload.text': 'أسقط الصور أو انقر للتصفح',
+    'upload.hint': 'PNG, JPG, WebP, BMP, GIF — متعددة مسموح بها',
+    'panel.compression': 'الضغط',
+    'ctrl.quality': 'الجودة',
+    'ctrl.lossless': 'وضع بدون فقدان (PNG/WebP)',
+    'ctrl.stripMeta': 'إزالة البيانات الوصفية (EXIF)',
+    'panel.resize': 'تغيير الحجم',
+    'ctrl.enableResize': 'تفعيل تغيير الحجم',
+    'ctrl.w': 'ع',
+    'ctrl.h': 'ا',
+    'ctrl.aspectRatio': 'نسبة الأبعاد',
+    'panel.crop': 'قص',
+    'ctrl.enableCrop': 'تفعيل القص',
+    'crop.free': 'حر',
+    'panel.rotate': 'تدوير / قلب',
+    'btn.reset': 'إعادة تعيين',
+    'panel.format': 'تنسيق الإخراج',
+    'ctrl.progressive': 'تدريجي / تشابك',
+    'panel.filters': 'المرشحات',
+    'filter.none': 'بدون',
+    'filter.grayscale': 'تدرج رمادي',
+    'filter.sepia': 'سيبيا',
+    'filter.invert': 'عكس',
+    'filter.brightness': 'سطوع',
+    'filter.contrast': 'تباين',
+    'filter.blur': 'ضبابية',
+    'filter.saturate': 'تشبع',
+    'ctrl.amount': 'المقدار',
+    'panel.watermark': 'علامة مائية',
+    'ctrl.addWM': 'إضافة نص علامة مائية',
+    'wm.br': 'أسفل-يمين',
+    'wm.bl': 'أسفل-يسار',
+    'wm.tr': 'أعلى-يمين',
+    'wm.tl': 'أعلى-يسار',
+    'wm.center': 'وسط',
+    'wm.small': 'صغير',
+    'wm.medium': 'متوسط',
+    'wm.large': 'كبير',
+    'panel.targetSize': 'حجم الملف المستهدف',
+    'ctrl.autoAdjust': 'ضبط تلقائي للحجم الأقصى',
+    'btn.process': '⚡ معالجة',
+    'btn.download': '💾 تحميل',
+    'btn.copy': 'نسخ إلى الحافظة',
+    'btn.base64': 'الحصول على Base64',
+    'btn.history': '📜 السجل',
+    'btn.downloadAll': '📦 تحميل الكل',
+    'shortcuts': 'Space: معالجة | S: تحميل | R: إعادة تعيين | L: لغة',
+    'view.split': 'مقسم',
+    'view.slider': 'منزلق',
+    'view.single': 'مفرد',
+    'view.noImage': 'لم يتم تحميل صورة',
+    'placeholder.title': 'أسقط صورة للبدء',
+    'placeholder.sub': 'ضغط · تغيير حجم · تحويل · مرشح',
+    'badge.original': 'أصلي',
+    'badge.processed': 'تمت المعالجة',
+    'info.file': 'الملف:',
+    'info.original': 'الأصلي:',
+    'info.output': 'الإخراج:',
+    'info.saved': 'المحفوظ:',
+    'info.dims': 'الأبعاد:',
+    'modal.infoTitle': '📷 معلومات الصورة',
+    'infoGrid.name': 'الاسم',
+    'infoGrid.format': 'التنسيق',
+    'infoGrid.dims': 'الأبعاد',
+    'infoGrid.fileSize': 'حجم الملف',
+    'infoGrid.outSize': 'حجم الإخراج',
+    'infoGrid.compression': 'الضغط',
+    'infoGrid.colorSpace': 'الفضاء اللوني',
+    'modal.histTitle': '📜 سجل المعالجة',
+    'modal.noHist': 'لا يوجد سجل بعد',
+    'btn.clearHist': 'مسح السجل',
+    'btn.close': 'إغلاق',
+    'modal.b64Title': '🔤 بيانات Base64',
+    'btn.copyB64': '📋 نسخ',
+    'toast.noImage': 'لم يتم تحميل صورة',
+    'toast.downloaded': 'تم التحميل ✅',
+    'toast.copied': 'تم النسخ إلى الحافظة ✅',
+    'toast.copiedB64': 'تم نسخ Base64 ✅',
+    'toast.historyCleared': 'تم مسح السجل',
+    'toast.error': 'خطأ: ',
+    'toast.batchStarted': 'بدأ التحميل الجماعي 📦',
+    'toast.copyNotSupported': 'النسخ غير مدعوم',
+    'btnProcessing': '⏳ جاري المعالجة...',
+  },
+  fr: {
+    brand: 'Maddy<span>Pix</span>',
+    'btn.info': 'Infos image',
+    'upload.text': 'Déposez des images ou cliquez pour parcourir',
+    'upload.hint': 'PNG, JPG, WebP, BMP, GIF — plusieurs autorisés',
+    'panel.compression': 'Compression',
+    'ctrl.quality': 'Qualité',
+    'ctrl.lossless': 'Mode sans perte (PNG/WebP)',
+    'ctrl.stripMeta': 'Supprimer les métadonnées (EXIF)',
+    'panel.resize': 'Redimensionner',
+    'ctrl.enableResize': 'Activer le redimensionnement',
+    'ctrl.w': 'L',
+    'ctrl.h': 'H',
+    'ctrl.aspectRatio': 'Rapport d\'aspect',
+    'panel.crop': 'Recadrer',
+    'ctrl.enableCrop': 'Activer le recadrage',
+    'crop.free': 'Libre',
+    'panel.rotate': 'Rotation / Retourner',
+    'btn.reset': 'Réinitialiser',
+    'panel.format': 'Format de sortie',
+    'ctrl.progressive': 'Progressif / entrelacé',
+    'panel.filters': 'Filtres',
+    'filter.none': 'Aucun',
+    'filter.grayscale': 'Niveaux de gris',
+    'filter.sepia': 'Sépia',
+    'filter.invert': 'Inverser',
+    'filter.brightness': 'Luminosité',
+    'filter.contrast': 'Contraste',
+    'filter.blur': 'Flou',
+    'filter.saturate': 'Saturation',
+    'ctrl.amount': 'Intensité',
+    'panel.watermark': 'Filigrane',
+    'ctrl.addWM': 'Ajouter un texte en filigrane',
+    'wm.br': 'Bas-Droite',
+    'wm.bl': 'Bas-Gauche',
+    'wm.tr': 'Haut-Droite',
+    'wm.tl': 'Haut-Gauche',
+    'wm.center': 'Centre',
+    'wm.small': 'Petit',
+    'wm.medium': 'Moyen',
+    'wm.large': 'Grand',
+    'panel.targetSize': 'Taille cible',
+    'ctrl.autoAdjust': 'Ajustement automatique à la taille max',
+    'btn.process': '⚡ Traiter',
+    'btn.download': '💾 Télécharger',
+    'btn.copy': 'Copier dans le presse-papier',
+    'btn.base64': 'Obtenir Base64',
+    'btn.history': '📜 Historique',
+    'btn.downloadAll': '📦 Tout télécharger',
+    'shortcuts': 'Space: Traiter | S: Télécharger | R: Réinitialiser | L: Langue',
+    'view.split': 'Côte à côte',
+    'view.slider': 'Curseur',
+    'view.single': 'Simple',
+    'view.noImage': 'Aucune image chargée',
+    'placeholder.title': 'Déposez une image pour commencer',
+    'placeholder.sub': 'Compresser · Redimensionner · Convertir · Filtrer',
+    'badge.original': 'Originale',
+    'badge.processed': 'Traitée',
+    'info.file': 'Fichier :',
+    'info.original': 'Originale :',
+    'info.output': 'Sortie :',
+    'info.saved': 'Gain :',
+    'info.dims': 'Dimensions :',
+    'modal.infoTitle': '📷 Informations image',
+    'infoGrid.name': 'Nom',
+    'infoGrid.format': 'Format',
+    'infoGrid.dims': 'Dimensions',
+    'infoGrid.fileSize': 'Taille',
+    'infoGrid.outSize': 'Taille sortie',
+    'infoGrid.compression': 'Compression',
+    'infoGrid.colorSpace': 'Espace colorimétrique',
+    'modal.histTitle': '📜 Historique de traitement',
+    'modal.noHist': 'Aucun historique',
+    'btn.clearHist': 'Effacer l\'historique',
+    'btn.close': 'Fermer',
+    'modal.b64Title': '🔤 URL Base64',
+    'btn.copyB64': '📋 Copier',
+    'toast.noImage': 'Aucune image chargée',
+    'toast.downloaded': 'Téléchargé ✅',
+    'toast.copied': 'Copié dans le presse-papier ✅',
+    'toast.copiedB64': 'Base64 copié ✅',
+    'toast.historyCleared': 'Historique effacé',
+    'toast.error': 'Erreur : ',
+    'toast.batchStarted': 'Téléchargement groupé démarré 📦',
+    'toast.copyNotSupported': 'Copie non prise en charge',
+    'btnProcessing': '⏳ Traitement en cours...',
+  },
+  de: {
+    brand: 'Maddy<span>Pix</span>',
+    'btn.info': 'Bildinfo',
+    'upload.text': 'Bilder ablegen oder klicken zum Durchsuchen',
+    'upload.hint': 'PNG, JPG, WebP, BMP, GIF — mehrere möglich',
+    'panel.compression': 'Komprimierung',
+    'ctrl.quality': 'Qualität',
+    'ctrl.lossless': 'Verlustfreier Modus (PNG/WebP)',
+    'ctrl.stripMeta': 'Metadaten entfernen (EXIF)',
+    'panel.resize': 'Größe ändern',
+    'ctrl.enableResize': 'Größenänderung aktivieren',
+    'ctrl.w': 'B',
+    'ctrl.h': 'H',
+    'ctrl.aspectRatio': 'Seitenverhältnis',
+    'panel.crop': 'Zuschneiden',
+    'ctrl.enableCrop': 'Zuschneiden aktivieren',
+    'crop.free': 'Frei',
+    'panel.rotate': 'Drehen / Spiegeln',
+    'btn.reset': 'Zurücksetzen',
+    'panel.format': 'Ausgabeformat',
+    'ctrl.progressive': 'Progressiv / Interlaced',
+    'panel.filters': 'Filter',
+    'filter.none': 'Keine',
+    'filter.grayscale': 'Graustufen',
+    'filter.sepia': 'Sepia',
+    'filter.invert': 'Invertieren',
+    'filter.brightness': 'Helligkeit',
+    'filter.contrast': 'Kontrast',
+    'filter.blur': 'Weichzeichner',
+    'filter.saturate': 'Sättigung',
+    'ctrl.amount': 'Stärke',
+    'panel.watermark': 'Wasserzeichen',
+    'ctrl.addWM': 'Wasserzeichentext hinzufügen',
+    'wm.br': 'Unten-Rechts',
+    'wm.bl': 'Unten-Links',
+    'wm.tr': 'Oben-Rechts',
+    'wm.tl': 'Oben-Links',
+    'wm.center': 'Mitte',
+    'wm.small': 'Klein',
+    'wm.medium': 'Mittel',
+    'wm.large': 'Groß',
+    'panel.targetSize': 'Zielgröße',
+    'ctrl.autoAdjust': 'Automatisch an Maximalgröße anpassen',
+    'btn.process': '⚡ Verarbeiten',
+    'btn.download': '💾 Herunterladen',
+    'btn.copy': 'In Zwischenablage kopieren',
+    'btn.base64': 'Base64 abrufen',
+    'btn.history': '📜 Verlauf',
+    'btn.downloadAll': '📦 Alle herunterladen',
+    'shortcuts': 'Space: Verarbeiten | S: Download | R: Zurücksetzen | L: Sprache',
+    'view.split': 'Geteilt',
+    'view.slider': 'Schieber',
+    'view.single': 'Einzeln',
+    'view.noImage': 'Kein Bild geladen',
+    'placeholder.title': 'Bild ablegen um zu beginnen',
+    'placeholder.sub': 'Komprimieren · Größe ändern · Konvertieren · Filtern',
+    'badge.original': 'Original',
+    'badge.processed': 'Verarbeitet',
+    'info.file': 'Datei:',
+    'info.original': 'Original:',
+    'info.output': 'Ausgabe:',
+    'info.saved': 'Ersparnis:',
+    'info.dims': 'Maße:',
+    'modal.infoTitle': '📷 Bildinformationen',
+    'infoGrid.name': 'Name',
+    'infoGrid.format': 'Format',
+    'infoGrid.dims': 'Abmessungen',
+    'infoGrid.fileSize': 'Dateigröße',
+    'infoGrid.outSize': 'Ausgabegröße',
+    'infoGrid.compression': 'Komprimierung',
+    'infoGrid.colorSpace': 'Farbraum',
+    'modal.histTitle': '📜 Verarbeitungsverlauf',
+    'modal.noHist': 'Noch kein Verlauf',
+    'btn.clearHist': 'Verlauf löschen',
+    'btn.close': 'Schließen',
+    'modal.b64Title': '🔤 Base64-Daten-URL',
+    'btn.copyB64': '📋 Kopieren',
+    'toast.noImage': 'Kein Bild geladen',
+    'toast.downloaded': 'Heruntergeladen ✅',
+    'toast.copied': 'In Zwischenablage kopiert ✅',
+    'toast.copiedB64': 'Base64 kopiert ✅',
+    'toast.historyCleared': 'Verlauf gelöscht',
+    'toast.error': 'Fehler: ',
+    'toast.batchStarted': 'Batch-Download gestartet 📦',
+    'toast.copyNotSupported': 'Kopieren nicht unterstützt',
+    'btnProcessing': '⏳ Verarbeitung läuft...',
+  },
+  ru: {
+    brand: 'Maddy<span>Pix</span>',
+    'btn.info': 'Информация об изображении',
+    'upload.text': 'Перетащите изображения или нажмите для выбора',
+    'upload.hint': 'PNG, JPG, WebP, BMP, GIF — несколько файлов',
+    'panel.compression': 'Сжатие',
+    'ctrl.quality': 'Качество',
+    'ctrl.lossless': 'Режим без потерь (PNG/WebP)',
+    'ctrl.stripMeta': 'Удалить метаданные (EXIF)',
+    'panel.resize': 'Изменить размер',
+    'ctrl.enableResize': 'Включить изменение размера',
+    'ctrl.w': 'Ш',
+    'ctrl.h': 'В',
+    'ctrl.aspectRatio': 'Соотношение сторон',
+    'panel.crop': 'Кадрировать',
+    'ctrl.enableCrop': 'Включить кадрирование',
+    'crop.free': 'Свободно',
+    'panel.rotate': 'Поворот / Отражение',
+    'btn.reset': 'Сброс',
+    'panel.format': 'Формат вывода',
+    'ctrl.progressive': 'Прогрессивный / чересстрочный',
+    'panel.filters': 'Фильтры',
+    'filter.none': 'Нет',
+    'filter.grayscale': 'Оттенки серого',
+    'filter.sepia': 'Сепия',
+    'filter.invert': 'Инверсия',
+    'filter.brightness': 'Яркость',
+    'filter.contrast': 'Контраст',
+    'filter.blur': 'Размытие',
+    'filter.saturate': 'Насыщенность',
+    'ctrl.amount': 'Степень',
+    'panel.watermark': 'Водяной знак',
+    'ctrl.addWM': 'Добавить текст водяного знака',
+    'wm.br': 'Снизу-справа',
+    'wm.bl': 'Снизу-слева',
+    'wm.tr': 'Сверху-справа',
+    'wm.tl': 'Сверху-слева',
+    'wm.center': 'Центр',
+    'wm.small': 'Маленький',
+    'wm.medium': 'Средний',
+    'wm.large': 'Большой',
+    'panel.targetSize': 'Целевой размер файла',
+    'ctrl.autoAdjust': 'Автоподстройка под макс. размер',
+    'btn.process': '⚡ Обработать',
+    'btn.download': '💾 Скачать',
+    'btn.copy': 'Копировать в буфер',
+    'btn.base64': 'Получить Base64',
+    'btn.history': '📜 История',
+    'btn.downloadAll': '📦 Скачать всё',
+    'shortcuts': 'Space: Обработка | S: Скачать | R: Сброс | L: Язык',
+    'view.split': 'Рядом',
+    'view.slider': 'Слайдер',
+    'view.single': 'Одно',
+    'view.noImage': 'Изображение не загружено',
+    'placeholder.title': 'Перетащите изображение для начала',
+    'placeholder.sub': 'Сжатие · Изменение размера · Конвертация · Фильтры',
+    'badge.original': 'Оригинал',
+    'badge.processed': 'Обработано',
+    'info.file': 'Файл:',
+    'info.original': 'Оригинал:',
+    'info.output': 'Вывод:',
+    'info.saved': 'Сэкономлено:',
+    'info.dims': 'Размеры:',
+    'modal.infoTitle': '📷 Информация об изображении',
+    'infoGrid.name': 'Имя',
+    'infoGrid.format': 'Формат',
+    'infoGrid.dims': 'Размеры',
+    'infoGrid.fileSize': 'Размер файла',
+    'infoGrid.outSize': 'Размер вывода',
+    'infoGrid.compression': 'Сжатие',
+    'infoGrid.colorSpace': 'Цветовое пространство',
+    'modal.histTitle': '📜 История обработки',
+    'modal.noHist': 'Истории пока нет',
+    'btn.clearHist': 'Очистить историю',
+    'btn.close': 'Закрыть',
+    'modal.b64Title': '🔤 Base64 Data URL',
+    'btn.copyB64': '📋 Копировать',
+    'toast.noImage': 'Изображение не загружено',
+    'toast.downloaded': 'Скачано ✅',
+    'toast.copied': 'Скопировано в буфер ✅',
+    'toast.copiedB64': 'Base64 скопирован ✅',
+    'toast.historyCleared': 'История очищена',
+    'toast.error': 'Ошибка: ',
+    'toast.batchStarted': 'Пакетная загрузка начата 📦',
+    'toast.copyNotSupported': 'Копирование не поддерживается',
+    'btnProcessing': '⏳ Обработка...',
+  }
+};
+
+const RTL_LANGS = ['fa', 'ar'];
+let currentLang = 'en';
+
+function t(key) {
+  const k = LOCALE[currentLang];
+  return k && k[key] !== undefined ? k[key] : (LOCALE.en[key] || key);
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  const isRTL = RTL_LANGS.includes(lang);
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    el.innerHTML = t(key);
+  });
+  document.querySelectorAll('[data-i18n-title]').forEach(el => {
+    const key = el.dataset.i18nTitle;
+    el.title = t(key);
+  });
+
+  // Re-translate format select options (not i18n-annotated)
+  document.querySelectorAll('#filterSel option').forEach(opt => {
+    const key = 'filter.' + opt.value;
+    if (LOCALE.en[key]) opt.textContent = t(key);
+  });
+  document.querySelectorAll('#wmPos option').forEach(opt => {
+    const key = 'wm.' + opt.value;
+    if (LOCALE.en[key]) opt.textContent = t(key);
+  });
+  document.querySelectorAll('#wmSize option').forEach(opt => {
+    const key = 'wm.' + ({'16':'small','24':'medium','36':'large'})[opt.value];
+    if (LOCALE.en[key]) opt.textContent = t(key);
+  });
+
+  // Update processing button text if needed
+  if (processBtn.textContent.includes('⚡') || processBtn.textContent.includes('⏳')) {
+    // Will be re-set by UI actions
+  }
+
+  // Re-translate viewInfo if it's a no-image state
+  const a = getActive();
+  if (!a) {
+    $('viewInfo').textContent = t('view.noImage');
+  }
+
+  // Re-build shortcut hint
+  $('shortcutHint').textContent = t('shortcuts');
+
+  localStorage.setItem('maddypix_lang', lang);
+}
+
+// ===== i18n init =====
+const langSelect = $('langSelect');
+langSelect.addEventListener('change', () => setLang(langSelect.value));
+
 // ===== State =====
 const state = {
-  images: [],           // { file, img, dataUrl, rot, flipH, flipV, origW, origH }
+  images: [],
   activeIdx: 0,
   processedBlob: null,
   processedURL: null,
-  viewMode: 'split',   // split | slider | single
+  viewMode: 'split',
   filterRotation: 0,
   filterFlipH: false,
   filterFlipV: false,
@@ -493,7 +1061,6 @@ const state = {
   history: [],
 };
 
-// ===== DOM =====
 const $ = id => document.getElementById(id);
 const fileInput = $('fileInput'), uploadZone = $('uploadZone');
 const qSlider = $('qSlider'), qVal = $('qVal');
@@ -513,40 +1080,45 @@ const cmpOrig = $('cmpOrig'), cmpProc = $('cmpProc'), cmpClip = $('cmpClip'), cm
 const singleImg = $('singleImg');
 const batchStrip = $('batchStrip');
 const fName = $('fName'), origSize = $('origSize'), outSize = $('outSize'), savingBadge = $('savingBadge'), dimsDisplay = $('dimsDisplay');
-const hFormat = $('hFormat'), hDims = $('hDims');
 const toast = $('toast');
 const themeBtn = $('themeBtn'), infoBtn = $('infoBtn');
 
-// ===== Utilities =====
 let tTimeout;
-function toastMsg(m) { toast.textContent = m; toast.classList.add('show'); clearTimeout(tTimeout); tTimeout=setTimeout(()=>toast.classList.remove('show'),2500); }
+function toastMsg(m) {
+  // If m is a translation key, translate it
+  const txt = LOCALE[currentLang] && LOCALE[currentLang][m] ? t(m) : m;
+  toast.textContent = txt;
+  toast.classList.add('show');
+  clearTimeout(tTimeout);
+  tTimeout = setTimeout(() => toast.classList.remove('show'), 2500);
+}
 
-function fmtSize(b) { if(!b||b===0) return '0 B'; const k=1024, s=['B','KB','MB']; const i=Math.floor(Math.log(b)/Math.log(k)); return parseFloat((b/Math.pow(k,i)).toFixed(1))+' '+s[i]; }
+function fmtSize(b) { if (!b || b === 0) return '0 B'; const k = 1024, s = ['B', 'KB', 'MB']; const i = Math.floor(Math.log(b) / Math.log(k)); return parseFloat((b / Math.pow(k, i)).toFixed(1)) + ' ' + s[i]; }
 
-function loadImg(src) { return new Promise((res,rej)=>{ const i=new Image(); i.onload=()=>res(i); i.onerror=rej; i.src=src; }); }
+function loadImg(src) { return new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; }); }
 
 function getActive() { return state.images[state.activeIdx] || null; }
 
 // ===== Theme =====
-themeBtn.addEventListener('click', ()=>{
+themeBtn.addEventListener('click', () => {
   state.theme = state.theme === 'dark' ? 'light' : 'dark';
   document.documentElement.classList.toggle('light');
   themeBtn.textContent = state.theme === 'dark' ? '🌙' : '☀️';
 });
 
 // ===== Upload =====
-uploadZone.addEventListener('click', ()=>fileInput.click());
-uploadZone.addEventListener('dragover', e=>{ e.preventDefault(); uploadZone.classList.add('dragover'); });
-uploadZone.addEventListener('dragleave', ()=>{ uploadZone.classList.remove('dragover'); });
-uploadZone.addEventListener('drop', e=>{ e.preventDefault(); uploadZone.classList.remove('dragover'); if(e.dataTransfer.files.length) handleFiles(e.dataTransfer.files); });
-fileInput.addEventListener('change', ()=>{ if(fileInput.files.length) handleFiles(fileInput.files); });
+uploadZone.addEventListener('click', () => fileInput.click());
+uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+uploadZone.addEventListener('dragleave', () => { uploadZone.classList.remove('dragover'); });
+uploadZone.addEventListener('drop', e => { e.preventDefault(); uploadZone.classList.remove('dragover'); if (e.dataTransfer.files.length) handleFiles(e.dataTransfer.files); });
+fileInput.addEventListener('change', () => { if (fileInput.files.length) handleFiles(fileInput.files); });
 
 async function handleFiles(files) {
   for (const file of files) {
     if (!file.type.startsWith('image/')) continue;
-    const dataUrl = await new Promise(r => { const fr = new FileReader(); fr.onload = ()=>r(fr.result); fr.readAsDataURL(file); });
+    const dataUrl = await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(file); });
     const img = await loadImg(dataUrl);
-    state.images.push({ file, img, dataUrl, rot:0, flipH:false, flipV:false, origW: img.width, origH: img.height });
+    state.images.push({ file, img, dataUrl, rot: 0, flipH: false, flipV: false, origW: img.width, origH: img.height });
   }
   if (state.images.length) {
     state.activeIdx = 0;
@@ -566,9 +1138,9 @@ function renderBatchStrip() {
     div.appendChild(el);
     const del = document.createElement('button');
     del.className = 'del'; del.textContent = '✕';
-    del.addEventListener('click', e=>{ e.stopPropagation(); removeImage(i); });
+    del.addEventListener('click', e => { e.stopPropagation(); removeImage(i); });
     div.appendChild(del);
-    div.addEventListener('click', ()=>{ state.activeIdx = i; renderBatchStrip(); loadActiveImage(); });
+    div.addEventListener('click', () => { state.activeIdx = i; renderBatchStrip(); loadActiveImage(); });
     batchStrip.appendChild(div);
   });
   downloadAllBtn.disabled = state.images.length < 2;
@@ -577,8 +1149,7 @@ function renderBatchStrip() {
 function removeImage(idx) {
   state.images.splice(idx, 1);
   if (state.activeIdx >= state.images.length) state.activeIdx = state.images.length - 1;
-  if (state.images.length) { renderBatchStrip(); loadActiveImage(); }
-  else { state.activeIdx = 0; resetUI(); }
+  if (state.images.length) { renderBatchStrip(); loadActiveImage(); } else { state.activeIdx = 0; resetUI(); }
 }
 
 function resetUI() {
@@ -586,8 +1157,8 @@ function resetUI() {
   batchStrip.style.display = 'none';
   processBtn.disabled = true; downloadBtn.disabled = true; copyBtn.disabled = true; base64Btn.disabled = true; downloadAllBtn.disabled = true;
   fName.textContent = '—'; origSize.textContent = '—'; outSize.textContent = '—'; dimsDisplay.textContent = '—';
-  hFormat.textContent = '—'; hDims.textContent = '—'; savingBadge.textContent = '—'; savingBadge.className = 'saving';
-  $('viewInfo').textContent = 'No image loaded';
+  savingBadge.textContent = '—'; savingBadge.className = 'saving';
+  $('viewInfo').textContent = t('view.noImage');
   state.processedBlob = null; state.filterRotation = 0; state.filterFlipH = false; state.filterFlipV = false;
 }
 
@@ -607,8 +1178,6 @@ function loadActiveImage() {
 
   fName.textContent = a.file.name;
   origSize.textContent = fmtSize(a.file.size);
-  hFormat.textContent = a.file.type.split('/')[1].toUpperCase();
-  hDims.textContent = `${a.origW} × ${a.origH}`;
   dimsDisplay.textContent = `${a.origW} × ${a.origH}`;
   $('viewInfo').textContent = `${a.file.name} — ${fmtSize(a.file.size)}`;
 
@@ -620,16 +1189,16 @@ function loadActiveImage() {
 
 // ===== View modes =====
 document.querySelectorAll('.view-btn').forEach(btn => {
-  btn.addEventListener('click', ()=>{
+  btn.addEventListener('click', () => {
     document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('on'));
     btn.classList.add('on');
     state.viewMode = btn.dataset.view;
     const a = getActive();
-    if (a) { placeholder.style.display = 'none';
+    if (a) {
+      placeholder.style.display = 'none';
       splitView.style.display = state.viewMode === 'split' ? 'flex' : 'none';
       sliderView.style.display = state.viewMode === 'slider' ? 'block' : 'none';
       singleView.style.display = state.viewMode === 'single' ? 'flex' : 'none';
-      if (state.processedURL) updateComparisonSlider();
     }
   });
 });
@@ -646,8 +1215,6 @@ document.addEventListener('mousemove', (e) => {
   cmpHandle.style.left = x + '%';
 });
 document.addEventListener('mouseup', () => { dragging = false; });
-
-// Touch support
 cmpHandle.addEventListener('touchstart', (e) => { e.preventDefault(); dragging = true; });
 document.addEventListener('touchmove', (e) => {
   if (!dragging) return;
@@ -661,64 +1228,60 @@ document.addEventListener('touchmove', (e) => {
 document.addEventListener('touchend', () => { dragging = false; });
 
 function updateComparisonSlider() {
-  if (state.processedURL) {
-    cmpProc.src = state.processedURL;
-    // keep orig as is
-  }
+  if (state.processedURL) cmpProc.src = state.processedURL;
 }
 
 // ===== Crop presets =====
 document.querySelectorAll('#cropPresets .btn').forEach(btn => {
-  btn.addEventListener('click', ()=>{
+  btn.addEventListener('click', () => {
     document.querySelectorAll('#cropPresets .btn').forEach(b => b.classList.remove('on'));
     btn.classList.add('on');
-    const ar = btn.dataset.ar;
-    state.cropAR = ar === 'free' ? null : ar;
+    state.cropAR = btn.dataset.ar === 'free' ? null : btn.dataset.ar;
     if (getActive()) processImage();
   });
 });
 
 // ===== Rotate / Flip =====
 document.querySelectorAll('[data-rot]').forEach(btn => {
-  btn.addEventListener('click', ()=>{
+  btn.addEventListener('click', () => {
     const a = getActive(); if (!a) return;
     a.rot = (a.rot + parseInt(btn.dataset.rot)) % 360;
     processImage();
   });
 });
 document.querySelectorAll('[data-flip]').forEach(btn => {
-  btn.addEventListener('click', ()=>{
+  btn.addEventListener('click', () => {
     const a = getActive(); if (!a) return;
     if (btn.dataset.flip === 'h') a.flipH = !a.flipH;
     else a.flipV = !a.flipV;
     processImage();
   });
 });
-$('resetRotFlip').addEventListener('click', ()=>{
+$('resetRotFlip').addEventListener('click', () => {
   const a = getActive(); if (!a) return;
   a.rot = 0; a.flipH = false; a.flipV = false;
   processImage();
 });
 
 // ===== Controls =====
-qSlider.addEventListener('input', ()=>{ qVal.textContent = qSlider.value+'%'; if(getActive()) debounceProcess(); });
-losslessToggle.addEventListener('change', ()=>{ if(getActive()) debounceProcess(); });
-stripMeta.addEventListener('change', ()=>{ if(getActive()) debounceProcess(); });
-resizeOn.addEventListener('change', ()=>{ wInp.disabled = !resizeOn.checked; hInp.disabled = !resizeOn.checked; if(getActive()) debounceProcess(); });
-wInp.addEventListener('input', ()=>{ if(lockBtn.classList.contains('on') && resizeOn.checked && wInp.value && hInp.value) hInp.value = Math.round(parseInt(wInp.value) / getAspectRatio()); if(getActive()) debounceProcess(); });
-hInp.addEventListener('input', ()=>{ if(lockBtn.classList.contains('on') && resizeOn.checked && hInp.value && wInp.value) wInp.value = Math.round(parseInt(hInp.value) * getAspectRatio()); if(getActive()) debounceProcess(); });
-lockBtn.addEventListener('click', ()=>lockBtn.classList.toggle('on'));
-fmtSelect.addEventListener('change', ()=>{ if(getActive()) debounceProcess(); });
-progressiveToggle.addEventListener('change', ()=>{ if(getActive()) debounceProcess(); });
-filterSel.addEventListener('change', ()=>{ filterAmtWrap.style.display = ['brightness','contrast','blur','saturate'].includes(filterSel.value) ? 'block' : 'none'; if(getActive()) debounceProcess(); });
-filterAmt.addEventListener('input', ()=>{ filterAmtVal.textContent = filterAmt.value+'%'; if(getActive()) debounceProcess(); });
-cropOn.addEventListener('change', ()=>{ if(getActive()) debounceProcess(); });
-wmOn.addEventListener('change', ()=>{ wmText.disabled = !wmOn.checked; wmPos.disabled = !wmOn.checked; wmSize.disabled = !wmOn.checked; if(getActive()) debounceProcess(); });
-wmText.addEventListener('input', ()=>{ if(getActive()) debounceProcess(); });
-wmPos.addEventListener('change', ()=>{ if(getActive()) debounceProcess(); });
-wmSize.addEventListener('change', ()=>{ if(getActive()) debounceProcess(); });
-targetSizeOn.addEventListener('change', ()=>{ targetSizeInp.disabled = !targetSizeOn.checked; if(getActive()) debounceProcess(); });
-targetSizeInp.addEventListener('input', ()=>{ if(getActive()) debounceProcess(); });
+qSlider.addEventListener('input', () => { qVal.textContent = qSlider.value + '%'; if (getActive()) debounceProcess(); });
+losslessToggle.addEventListener('change', () => { if (getActive()) debounceProcess(); });
+stripMeta.addEventListener('change', () => { if (getActive()) debounceProcess(); });
+resizeOn.addEventListener('change', () => { wInp.disabled = !resizeOn.checked; hInp.disabled = !resizeOn.checked; if (getActive()) debounceProcess(); });
+wInp.addEventListener('input', () => { if (lockBtn.classList.contains('on') && resizeOn.checked && wInp.value && hInp.value) hInp.value = Math.round(parseInt(wInp.value) / getAspectRatio()); if (getActive()) debounceProcess(); });
+hInp.addEventListener('input', () => { if (lockBtn.classList.contains('on') && resizeOn.checked && hInp.value && wInp.value) wInp.value = Math.round(parseInt(hInp.value) * getAspectRatio()); if (getActive()) debounceProcess(); });
+lockBtn.addEventListener('click', () => lockBtn.classList.toggle('on'));
+fmtSelect.addEventListener('change', () => { if (getActive()) debounceProcess(); });
+progressiveToggle.addEventListener('change', () => { if (getActive()) debounceProcess(); });
+filterSel.addEventListener('change', () => { filterAmtWrap.style.display = ['brightness', 'contrast', 'blur', 'saturate'].includes(filterSel.value) ? 'block' : 'none'; if (getActive()) debounceProcess(); });
+filterAmt.addEventListener('input', () => { filterAmtVal.textContent = filterAmt.value + '%'; if (getActive() && filterSel.value !== 'none') debounceProcess(); });
+cropOn.addEventListener('change', () => { if (getActive()) debounceProcess(); });
+wmOn.addEventListener('change', () => { wmText.disabled = !wmOn.checked; wmPos.disabled = !wmOn.checked; wmSize.disabled = !wmOn.checked; if (getActive()) debounceProcess(); });
+wmText.addEventListener('input', () => { if (getActive()) debounceProcess(); });
+wmPos.addEventListener('change', () => { if (getActive()) debounceProcess(); });
+wmSize.addEventListener('change', () => { if (getActive()) debounceProcess(); });
+targetSizeOn.addEventListener('change', () => { targetSizeInp.disabled = !targetSizeOn.checked; if (getActive()) debounceProcess(); });
+targetSizeInp.addEventListener('input', () => { if (getActive()) debounceProcess(); });
 
 function getAspectRatio() { const a = getActive(); return a ? a.origW / a.origH : 1; }
 
@@ -728,7 +1291,7 @@ function debounceProcess() { clearTimeout(pTimeout); pTimeout = setTimeout(proce
 
 async function processImage() {
   const a = getActive(); if (!a) return;
-  processBtn.textContent = '⏳ Processing...';
+  processBtn.textContent = t('btnProcessing');
 
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
@@ -737,13 +1300,9 @@ async function processImage() {
   const filter = filterSel.value;
   const fAmt = parseInt(filterAmt.value) / 100;
 
-  // Source dimensions
   let sw = a.origW, sh = a.origH;
-
-  // Rotate flips W/H
   const needsSwap = a.rot % 180 !== 0;
 
-  // Resize
   let rw = sw, rh = sh;
   if (resizeOn.checked) {
     rw = parseInt(wInp.value) || sw;
@@ -752,7 +1311,6 @@ async function processImage() {
     if (rw && !rh) rh = Math.round(rw / getAspectRatio());
   }
 
-  // Crop
   let cropX = 0, cropY = 0, cropW = rw, cropH = rh;
   if (cropOn.checked && state.cropAR) {
     const ar = eval(state.cropAR);
@@ -760,51 +1318,41 @@ async function processImage() {
     else { cropH = Math.round(rw / ar); cropY = Math.round((rh - cropH) / 2); }
   }
 
-  // Canvas size: if rotated 90/270, swap
   const cw = needsSwap ? cropH : cropW;
   const ch = needsSwap ? cropW : cropH;
   canvas.width = cw;
   canvas.height = ch;
 
   ctx.save();
-  ctx.translate(cw/2, ch/2);
-
-  // Rotation
+  ctx.translate(cw / 2, ch / 2);
   ctx.rotate(a.rot * Math.PI / 180);
-
-  // Flip
   let sx = a.flipH ? -1 : 1, sy = a.flipV ? -1 : 1;
   ctx.scale(sx, sy);
-
-  // Draw with crop
-  ctx.drawImage(a.img, cropX, cropY, cropW, cropH, -cropW/2, -cropH/2, cropW, cropH);
+  ctx.drawImage(a.img, cropX, cropY, cropW, cropH, -cropW / 2, -cropH / 2, cropW, cropH);
   ctx.restore();
 
-  // Pixel filters
-  if (['grayscale','sepia','invert'].includes(filter)) {
+  if (['grayscale', 'sepia', 'invert'].includes(filter)) {
     const id = ctx.getImageData(0, 0, cw, ch);
     const d = id.data;
     for (let i = 0; i < d.length; i += 4) {
-      const r = d[i], g = d[i+1], b = d[i+2];
-      if (filter === 'grayscale') { const gr = 0.299*r + 0.587*g + 0.114*b; d[i]=d[i+1]=d[i+2]=gr; }
-      else if (filter === 'sepia') { d[i]=Math.min(255,r*.393+g*.769+b*.189); d[i+1]=Math.min(255,r*.349+g*.686+b*.168); d[i+2]=Math.min(255,r*.272+g*.534+b*.131); }
-      else if (filter === 'invert') { d[i]=255-r; d[i+1]=255-g; d[i+2]=255-b; }
+      const r = d[i], g = d[i + 1], b = d[i + 2];
+      if (filter === 'grayscale') { const gr = 0.299 * r + 0.587 * g + 0.114 * b; d[i] = d[i + 1] = d[i + 2] = gr; }
+      else if (filter === 'sepia') { d[i] = Math.min(255, r * .393 + g * .769 + b * .189); d[i + 1] = Math.min(255, r * .349 + g * .686 + b * .168); d[i + 2] = Math.min(255, r * .272 + g * .534 + b * .131); }
+      else if (filter === 'invert') { d[i] = 255 - r; d[i + 1] = 255 - g; d[i + 2] = 255 - b; }
     }
     ctx.putImageData(id, 0, 0);
   }
 
-  // CSS filters
-  if (['brightness','contrast','blur','saturate'].includes(filter)) {
-    const fmap = { brightness: `brightness(${fAmt})`, contrast: `contrast(${fAmt})`, blur: `blur(${fAmt*4}px)`, saturate: `saturate(${fAmt})` };
+  if (['brightness', 'contrast', 'blur', 'saturate'].includes(filter)) {
+    const fmap = { brightness: `brightness(${fAmt})`, contrast: `contrast(${fAmt})`, blur: `blur(${fAmt * 4}px)`, saturate: `saturate(${fAmt})` };
     ctx.filter = fmap[filter];
     ctx.clearRect(0, 0, cw, ch);
-    ctx.save(); ctx.translate(cw/2, ch/2); ctx.rotate(a.rot*Math.PI/180); ctx.scale(sx, sy);
-    ctx.drawImage(a.img, cropX, cropY, cropW, cropH, -cropW/2, -cropH/2, cropW, cropH);
+    ctx.save(); ctx.translate(cw / 2, ch / 2); ctx.rotate(a.rot * Math.PI / 180); ctx.scale(sx, sy);
+    ctx.drawImage(a.img, cropX, cropY, cropW, cropH, -cropW / 2, -cropH / 2, cropW, cropH);
     ctx.restore();
     ctx.filter = 'none';
   }
 
-  // Watermark
   if (wmOn.checked && wmText.value.trim()) {
     const fontSize = parseInt(wmSize.value);
     ctx.font = `bold ${fontSize}px Inter, sans-serif`;
@@ -820,32 +1368,30 @@ async function processImage() {
     else if (pos === 'sw') { wx = pad; wy = ch - pad; }
     else if (pos === 'ne') { wx = cw - tw - pad; wy = fontSize + pad; }
     else if (pos === 'nw') { wx = pad; wy = fontSize + pad; }
-    else { wx = (cw - tw)/2; wy = ch/2 + fontSize/3; }
+    else { wx = (cw - tw) / 2; wy = ch / 2 + fontSize / 3; }
     ctx.strokeText(txt, wx, wy);
     ctx.fillText(txt, wx, wy);
   }
 
-  // Output
   let mimeType = format;
   let oq = losslessToggle.checked ? 1 : quality;
   if (mimeType === 'image/png' && !losslessToggle.checked) oq = 0.92;
   if (mimeType === 'image/bmp' || mimeType === 'image/gif') oq = 1;
 
-  // Target size: iteratively adjust quality
   if (targetSizeOn.checked) {
     const targetBytes = parseInt(targetSizeInp.value) * 1024;
     if (targetBytes > 0) {
       let lo = 1, hi = 100, best = null, bestBlob = null;
       for (let iter = 0; iter < 12; iter++) {
         const mid = Math.round((lo + hi) / 2);
-        const blob = await new Promise(r => canvas.toBlob(r, mimeType, mid/100));
+        const blob = await new Promise(r => canvas.toBlob(r, mimeType, mid / 100));
         if (blob.size <= targetBytes) { best = mid; bestBlob = blob; lo = mid + 1; }
         else { hi = mid - 1; }
       }
       if (bestBlob) {
         state.processedBlob = bestBlob;
         updateProcessed(bestBlob);
-        processBtn.textContent = '⚡ Process';
+        processBtn.textContent = t('btn.process');
         return;
       }
     }
@@ -856,9 +1402,9 @@ async function processImage() {
     state.processedBlob = blob;
     updateProcessed(blob);
   } catch (err) {
-    toastMsg('Error: ' + err.message);
+    toastMsg(t('toast.error') + err.message);
   }
-  processBtn.textContent = '⚡ Process';
+  processBtn.textContent = t('btn.process');
 }
 
 async function updateProcessed(blob) {
@@ -869,11 +1415,8 @@ async function updateProcessed(blob) {
   procImg.src = state.processedURL;
   cmpProc.src = state.processedURL;
   singleImg.src = state.processedURL;
-
-  // Update comparison slider
   updateComparisonSlider();
 
-  // Info
   outSize.textContent = fmtSize(blob.size);
   const saving = getActive().file.size - blob.size;
   const pct = Math.abs((saving / getActive().file.size) * 100).toFixed(1);
@@ -881,14 +1424,12 @@ async function updateProcessed(blob) {
   else { savingBadge.textContent = `+${pct}%`; savingBadge.className = 'saving neg'; }
 
   dimsDisplay.textContent = `${img.width} × ${img.height}`;
-  hDims.textContent = `${img.width} × ${img.height}`;
 
   downloadBtn.disabled = false;
   copyBtn.disabled = false;
   base64Btn.disabled = false;
 
-  // History
-  const entry = {
+  state.history.push({
     name: getActive().file.name,
     origSize: getActive().file.size,
     outSize: blob.size,
@@ -897,12 +1438,11 @@ async function updateProcessed(blob) {
     dims: `${img.width}×${img.height}`,
     format: fmtSelect.value.split('/')[1],
     time: new Date().toLocaleTimeString(),
-  };
-  state.history.push(entry);
+  });
 }
 
 // ===== Download =====
-downloadBtn.addEventListener('click', ()=>{
+downloadBtn.addEventListener('click', () => {
   if (!state.processedBlob) return;
   const a = getActive(); if (!a) return;
   const ext = fmtSelect.value.split('/')[1];
@@ -911,37 +1451,31 @@ downloadBtn.addEventListener('click', ()=>{
   link.href = URL.createObjectURL(state.processedBlob);
   link.download = `${base}_optimized.${ext}`;
   document.body.appendChild(link); link.click(); document.body.removeChild(link);
-  toastMsg('Downloaded ✅');
+  toastMsg('toast.downloaded');
 });
 
-// ===== Copy to clipboard =====
-copyBtn.addEventListener('click', async ()=>{
+// ===== Copy =====
+copyBtn.addEventListener('click', async () => {
   if (!state.processedBlob) return;
   try {
-    await navigator.clipboard.write([
-      new ClipboardItem({ [state.processedBlob.type]: state.processedBlob })
-    ]);
-    toastMsg('Copied to clipboard ✅');
-  } catch { toastMsg('Copy not supported'); }
+    await navigator.clipboard.write([new ClipboardItem({ [state.processedBlob.type]: state.processedBlob })]);
+    toastMsg('toast.copied');
+  } catch { toastMsg('toast.copyNotSupported'); }
 });
 
 // ===== Base64 =====
-base64Btn.addEventListener('click', async ()=>{
+base64Btn.addEventListener('click', async () => {
   if (!state.processedBlob) return;
   const reader = new FileReader();
   reader.onload = () => { $('b64Output').value = reader.result; openModal('b64Modal'); };
   reader.readAsDataURL(state.processedBlob);
 });
 
-function copyBase64() {
-  $('b64Output').select(); navigator.clipboard.writeText($('b64Output').value);
-  toastMsg('Base64 copied ✅');
-}
+function copyBase64() { $('b64Output').select(); navigator.clipboard.writeText($('b64Output').value); toastMsg('toast.copiedB64'); }
 
-// ===== Download All (ZIP) =====
-downloadAllBtn.addEventListener('click', async ()=>{
+// ===== Download All =====
+downloadAllBtn.addEventListener('click', async () => {
   if (state.images.length < 2) return;
-  // Use JSZip via CDN
   if (!window.JSZip) {
     const s = document.createElement('script');
     s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
@@ -949,55 +1483,53 @@ downloadAllBtn.addEventListener('click', async ()=>{
   }
   const zip = new JSZip();
   for (const [i, imgData] of state.images.entries()) {
-    // We need to process each and add to zip
-    // For simplicity, save original for now; full batch processing would be complex
-    zip.file(`image_${i+1}.${imgData.file.name.split('.').pop()}`, imgData.file);
+    zip.file(`image_${i + 1}.${imgData.file.name.split('.').pop()}`, imgData.file);
   }
   const blob = await zip.generateAsync({ type: 'blob' });
   const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
   link.download = 'MaddyPix_batch.zip';
   document.body.appendChild(link); link.click(); document.body.removeChild(link);
-  toastMsg('Batch download started 📦');
+  toastMsg('toast.batchStarted');
 });
 
 // ===== History =====
-historyBtn.addEventListener('click', ()=>{
+historyBtn.addEventListener('click', () => {
   const list = $('histList');
-  if (!state.history.length) { list.innerHTML = '<p style="color:var(--txt-3)">No history yet</p>'; }
+  if (!state.history.length) { list.innerHTML = `<p style="color:var(--txt-3)">${t('modal.noHist')}</p>`; }
   else {
     list.innerHTML = state.history.map((h, i) =>
-      `<div class="hist-item"><span>#${i+1} ${h.name}</span><span>${h.origSize} → ${h.outSize} <span style="color:${h.saved>=0?'var(--green)':'var(--red)'}">${h.saved>=0?'-':'+'}${h.pct}%</span> • ${h.time}</span></div>`
+      `<div class="hist-item"><span>#${i + 1} ${h.name}</span><span>${h.origSize} → ${h.outSize} <span style="color:${h.saved >= 0 ? 'var(--green)' : 'var(--red)'}">${h.saved >= 0 ? '-' : '+'}${h.pct}%</span> • ${h.time}</span></div>`
     ).join('');
   }
   openModal('histModal');
 });
-$('clearHistBtn').addEventListener('click', ()=>{ state.history = []; $('histList').innerHTML = '<p style="color:var(--txt-3)">No history yet</p>'; toastMsg('History cleared'); });
+$('clearHistBtn').addEventListener('click', () => { state.history = []; $('histList').innerHTML = `<p style="color:var(--txt-3)">${t('modal.noHist')}</p>`; toastMsg('toast.historyCleared'); });
 
-// ===== Image Info =====
-infoBtn.addEventListener('click', ()=>{
+// ===== Info =====
+infoBtn.addEventListener('click', () => {
   const a = getActive();
-  if (!a) return toastMsg('No image loaded');
+  if (!a) return toastMsg('toast.noImage');
   $('iiName').textContent = a.file.name;
   $('iiFormat').textContent = a.file.type;
   $('iiDims').textContent = `${a.origW} × ${a.origH}`;
   $('iiSize').textContent = fmtSize(a.file.size);
   $('iiOutSize').textContent = state.processedBlob ? fmtSize(state.processedBlob.size) : '—';
   const s = a.file.size - (state.processedBlob ? state.processedBlob.size : 0);
-  $('iiComp').textContent = state.processedBlob ? (s >= 0 ? `-${Math.abs((s/a.file.size)*100).toFixed(1)}%` : `+${Math.abs((s/a.file.size)*100).toFixed(1)}%`) : '—';
+  $('iiComp').textContent = state.processedBlob ? (s >= 0 ? `-${Math.abs((s / a.file.size) * 100).toFixed(1)}%` : `+${Math.abs((s / a.file.size) * 100).toFixed(1)}%`) : '—';
   openModal('imgInfoModal');
 });
 
 // ===== Modal =====
 function openModal(id) { document.getElementById(id).classList.add('show'); }
 function closeModal(id) { document.getElementById(id).classList.remove('show'); }
-document.querySelectorAll('.modal-overlay').forEach(el => { el.addEventListener('click', e=>{ if(e.target===el) el.classList.remove('show'); }); });
+document.querySelectorAll('.modal-overlay').forEach(el => { el.addEventListener('click', e => { if (e.target === el) el.classList.remove('show'); }); });
 
 // ===== Process button =====
 processBtn.addEventListener('click', processImage);
 
-// ===== Keyboard Shortcuts =====
-document.addEventListener('keydown', (e)=>{
+// ===== Keyboard =====
+document.addEventListener('keydown', (e) => {
   if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA') return;
   if (e.code === 'Space') { e.preventDefault(); processBtn.click(); }
   if (e.code === 'KeyS' && !e.ctrlKey && !e.metaKey) { e.preventDefault(); downloadBtn.click(); }
@@ -1005,11 +1537,21 @@ document.addEventListener('keydown', (e)=>{
   if (e.code === 'KeyH' && !e.ctrlKey && !e.metaKey) { e.preventDefault(); historyBtn.click(); }
   if (e.code === 'KeyI' && !e.ctrlKey && !e.metaKey) { e.preventDefault(); infoBtn.click(); }
   if (e.code === 'KeyT' && !e.ctrlKey && !e.metaKey) { e.preventDefault(); themeBtn.click(); }
+  if (e.code === 'KeyL' && !e.ctrlKey && !e.metaKey) {
+    e.preventDefault();
+    const langs = ['en', 'fa', 'ar', 'fr', 'de', 'ru'];
+    const idx = (langs.indexOf(currentLang) + 1) % langs.length;
+    langSelect.value = langs[idx];
+    setLang(langs[idx]);
+  }
 });
 
 // ===== Init =====
+const savedLang = localStorage.getItem('maddypix_lang') || 'en';
+langSelect.value = savedLang;
+setLang(savedLang);
 resetUI();
-console.log('MaddyPix loaded — 20+ features');
+console.log('MaddyPix loaded — 6 languages');
 </script>
 </body>
 </html>

@@ -20,6 +20,7 @@
   <a href="#getting-started">Getting Started</a> •
   <a href="#usage">Usage</a> •
   <a href="#keyboard-shortcuts">Shortcuts</a> •
+  <a href="#languages">Languages</a> •
   <a href="#tech-stack">Tech Stack</a> •
   <a href="#license">License</a>
 </p>
@@ -134,6 +135,24 @@ Drop `index.html` on any static file server (NGINX, Netlify, Vercel, S3, etc.) a
 | <kbd>H</kbd> | Open processing history |
 | <kbd>I</kbd> | Show image info panel |
 | <kbd>T</kbd> | Toggle dark/light theme |
+| <kbd>L</kbd> | Cycle through languages |
+
+---
+
+## 🌐 Languages
+
+MaddyPix ships with full UI translations in **6 languages**, auto-detected RTL/LTR direction, and a persistent language preference.
+
+| Language | Code | Direction | Flag |
+|----------|------|-----------|------|
+| English | `en` | LTR | 🇬🇧 |
+| Persian (Farsi) | `fa` | **RTL** | 🇮🇷 |
+| Arabic | `ar` | **RTL** | 🇸🇦 |
+| French | `fr` | LTR | 🇫🇷 |
+| German | `de` | LTR | 🇩🇪 |
+| Russian | `ru` | LTR | 🇷🇺 |
+
+Switch anytime from the header dropdown. Your choice is saved to `localStorage`.
 
 ---
 
