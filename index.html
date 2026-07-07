@@ -462,7 +462,58 @@
 </div>
 
 <script>
-// ===== i18n =====
+const $ = id => document.getElementById(id);
+const RTL_LANGS = ['fa', 'ar'];
+let currentLang = 'en';
+
+function t(key) {
+  const k = LOCALE[currentLang];
+  return k && k[key] !== undefined ? k[key] : (LOCALE.en[key] || key);
+}
+
+function translatePage() {
+  const isRTL = RTL_LANGS.includes(currentLang);
+  document.documentElement.lang = currentLang;
+  document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    const html = t(key);
+    if (el.innerHTML !== html) el.innerHTML = html;
+  });
+  document.querySelectorAll('[data-i18n-title]').forEach(el => {
+    const title = t(el.dataset.i18nTitle);
+    if (el.title !== title) el.title = title;
+  });
+
+  document.querySelectorAll('#filterSel option').forEach(opt => {
+    const key = 'filter.' + opt.value;
+    if (LOCALE.en[key]) opt.textContent = t(key);
+  });
+  document.querySelectorAll('#wmPos option').forEach(opt => {
+    const key = 'wm.' + opt.value;
+    if (LOCALE.en[key]) opt.textContent = t(key);
+  });
+  const sizeMap = {'16':'small','24':'medium','36':'large'};
+  document.querySelectorAll('#wmSize option').forEach(opt => {
+    const key = 'wm.' + sizeMap[opt.value];
+    if (LOCALE.en[key]) opt.textContent = t(key);
+  });
+
+  const vi = $('viewInfo');
+  if (vi && (!getActive || !getActive())) vi.textContent = t('view.noImage');
+  const sh = $('shortcutHint');
+  if (sh) sh.textContent = t('shortcuts');
+}
+
+function setLang(lang, force) {
+  if (!force && lang === currentLang) return;
+  currentLang = lang;
+  translatePage();
+  localStorage.setItem('maddypix_lang', lang);
+}
+
+// ===== i18n data =====
 const LOCALE = {
   en: {
     brand: 'Maddy<span>Pix</span>',
@@ -988,60 +1039,6 @@ const LOCALE = {
   }
 };
 
-const RTL_LANGS = ['fa', 'ar'];
-let currentLang = 'en';
-
-function t(key) {
-  const k = LOCALE[currentLang];
-  return k && k[key] !== undefined ? k[key] : (LOCALE.en[key] || key);
-}
-
-function setLang(lang) {
-  currentLang = lang;
-  const isRTL = RTL_LANGS.includes(lang);
-  document.documentElement.lang = lang;
-  document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
-
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.dataset.i18n;
-    el.innerHTML = t(key);
-  });
-  document.querySelectorAll('[data-i18n-title]').forEach(el => {
-    const key = el.dataset.i18nTitle;
-    el.title = t(key);
-  });
-
-  // Re-translate format select options (not i18n-annotated)
-  document.querySelectorAll('#filterSel option').forEach(opt => {
-    const key = 'filter.' + opt.value;
-    if (LOCALE.en[key]) opt.textContent = t(key);
-  });
-  document.querySelectorAll('#wmPos option').forEach(opt => {
-    const key = 'wm.' + opt.value;
-    if (LOCALE.en[key]) opt.textContent = t(key);
-  });
-  document.querySelectorAll('#wmSize option').forEach(opt => {
-    const key = 'wm.' + ({'16':'small','24':'medium','36':'large'})[opt.value];
-    if (LOCALE.en[key]) opt.textContent = t(key);
-  });
-
-  // Update processing button text if needed
-  if (processBtn.textContent.includes('⚡') || processBtn.textContent.includes('⏳')) {
-    // Will be re-set by UI actions
-  }
-
-  // Re-translate viewInfo if it's a no-image state
-  const a = getActive();
-  if (!a) {
-    $('viewInfo').textContent = t('view.noImage');
-  }
-
-  // Re-build shortcut hint
-  $('shortcutHint').textContent = t('shortcuts');
-
-  localStorage.setItem('maddypix_lang', lang);
-}
-
 // ===== i18n init =====
 const langSelect = $('langSelect');
 langSelect.addEventListener('change', () => setLang(langSelect.value));
@@ -1061,7 +1058,6 @@ const state = {
   history: [],
 };
 
-const $ = id => document.getElementById(id);
 const fileInput = $('fileInput'), uploadZone = $('uploadZone');
 const qSlider = $('qSlider'), qVal = $('qVal');
 const losslessToggle = $('losslessToggle'), stripMeta = $('stripMeta');
@@ -1549,7 +1545,7 @@ document.addEventListener('keydown', (e) => {
 // ===== Init =====
 const savedLang = localStorage.getItem('maddypix_lang') || 'en';
 langSelect.value = savedLang;
-setLang(savedLang);
+setLang(savedLang, true);
 resetUI();
 console.log('MaddyPix loaded — 6 languages');
 </script>
