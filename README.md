@@ -14,6 +14,7 @@
 
 <h1 align="center">MaddyPix</h1>
 <p align="center"><strong>Compress · Resize · Convert · Filter — All in Your Browser. 100% Private. Zero Uploads.</strong></p>
+<p align="center">Two-tab layout • 6 languages • 20+ features • Dark/Light theme</p>
 
 <p align="center">
   <a href="#features">Features</a> •
@@ -25,11 +26,17 @@
   <a href="#license">License</a>
 </p>
 
+## 📸 Screenshots
+
+| Editor Tab | Export Tab |
+|------------|------------|
+| <img src="assets/banner.png" width="300" alt="MaddyPix Editor"> | <img src="assets/info.png" width="300" alt="MaddyPix Export"> |
+
 ---
 
 ## ✨ Features
 
-MaddyPix is a feature-rich, client-side image optimization tool built entirely with vanilla JavaScript. Every operation runs **locally in your browser** — no files are ever uploaded to a server.
+MaddyPix is a feature-rich, client-side image optimization tool built entirely with vanilla JavaScript. Every operation runs **locally in your browser** — no files are ever uploaded to a server. The UI is organized into two clean tabs (**Edit** and **Export**) to keep everything tidy and accessible.
 
 ### Core
 | # | Feature | Description |

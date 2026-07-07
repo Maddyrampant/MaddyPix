@@ -4,218 +4,125 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MaddyPix — Image Optimizer</title>
-<meta name="description" content="MaddyPix — Compress, resize, convert, and enhance your images in seconds. 100% free, no uploads, runs in your browser.">
+<meta name="description" content="MaddyPix — Compress, resize, convert, and enhance your images. 100% free, no uploads, runs in your browser, 6 languages.">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-
-  :root {
-    --bg: #0a0a0f;
-    --bg-2: #12121c;
-    --bg-3: #1a1a28;
-    --bg-4: #22223a;
-    --border: #28283e;
-    --border-hover: #3a3a5a;
-    --txt: #eeeef2;
-    --txt-2: #9898b0;
-    --txt-3: #68688a;
-    --accent: #7c5cfc;
-    --accent-hover: #9378ff;
-    --accent-bg: rgba(124,92,252,.12);
-    --green: #00d68f;
-    --green-bg: rgba(0,214,143,.12);
-    --red: #ff6b6b;
-    --red-bg: rgba(255,107,107,.12);
-    --orange: #ffa726;
-    --radius: 10px;
-    --radius-sm: 6px;
-    --shadow: 0 8px 40px rgba(0,0,0,.5);
-    --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  }
-
-  .light { --bg: #f5f5f8; --bg-2: #ffffff; --bg-3: #eaeaef; --bg-4: #dddde6; --border: #d0d0da; --border-hover: #b0b0c0; --txt: #1a1a24; --txt-2: #5a5a6a; --txt-3: #8a8a9a; --shadow: 0 8px 40px rgba(0,0,0,.1); }
-
-  html[lang="fa"], html[lang="ar"] { --font: 'Inter', 'Vazirmatn', -apple-system, BlinkMacSystemFont, sans-serif; }
-  html[lang="ru"] { --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { height: 100%; }
-  body {
-    font-family: var(--font);
-    background: var(--bg);
-    color: var(--txt);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-
-  ::-webkit-scrollbar { width: 5px; height: 5px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-
-  .header {
-    background: var(--bg-2);
-    border-bottom: 1px solid var(--border);
-    padding: 0 24px;
-    height: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-shrink: 0;
-  }
-
-  .logo { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 800; }
-  .logo-mark { width: 30px; height: 30px; background: linear-gradient(135deg, var(--accent), var(--green)); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 15px; color: #fff; }
-  .logo span { background: linear-gradient(135deg, var(--accent), var(--green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
-  .header-actions { display: flex; align-items: center; gap: 12px; }
-
-  .lang-select {
-    padding: 4px 8px; background: var(--bg-3); border: 1px solid var(--border);
-    border-radius: var(--radius-sm); color: var(--txt); font-size: 12px; font-family: inherit; outline: none; cursor: pointer;
-  }
-  .lang-select:focus { border-color: var(--accent); }
-
-  .icon-btn {
-    width: 34px; height: 34px; border-radius: var(--radius-sm);
-    border: 1px solid var(--border); background: var(--bg-3);
-    color: var(--txt-2); cursor: pointer; display: flex; align-items: center; justify-content: center;
-    font-size: 16px; transition: all .15s; flex-shrink: 0;
-  }
-  .icon-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-  .app { display: flex; flex: 1; min-height: 0; }
-
-  .sidebar {
-    width: 300px; background: var(--bg-2); border-inline-end: 1px solid var(--border);
-    display: flex; flex-direction: column; flex-shrink: 0;
-  }
-  .sidebar-scroll { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
-  .sidebar-actions { padding: 12px 16px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; }
-
-  .main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
-
-  .panel { background: var(--bg-3); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; }
-  .panel-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: var(--txt-3); margin-bottom: 10px; }
-
-  .ctrl { margin-bottom: 10px; }
-  .ctrl:last-child { margin-bottom: 0; }
-  .ctrl-label { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 500; color: var(--txt-2); margin-bottom: 4px; }
-  .ctrl-val { color: var(--txt); font-weight: 600; }
-
-  input[type=range] { width: 100%; height: 4px; -webkit-appearance: none; appearance: none; background: var(--border); border-radius: 2px; outline: none; }
-  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); cursor: pointer; border: 2px solid var(--bg-3); box-shadow: 0 2px 8px rgba(124,92,231,.35); }
-  input[type=range]::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: var(--accent); cursor: pointer; border: 2px solid var(--bg-3); }
-
-  select, .inp {
-    width: 100%; padding: 6px 10px; background: var(--bg); border: 1px solid var(--border);
-    border-radius: var(--radius-sm); color: var(--txt); font-size: 12px; font-family: inherit; outline: none;
-  }
-  select:focus, .inp:focus { border-color: var(--accent); }
-
-  .dim-row { display: flex; gap: 6px; align-items: center; }
-  .dim-row .inp { width: 0; flex: 1; }
-  .dim-row span { color: var(--txt-2); font-size: 12px; }
-  .lock-btn { background: none; border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--txt-2); padding: 4px 8px; cursor: pointer; font-size: 13px; }
-  .lock-btn.on { background: var(--accent); border-color: var(--accent); color: #fff; }
-
-  .toggle { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; cursor: pointer; font-size: 12px; color: var(--txt-2); }
-  .toggle input { width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; }
-
-  .btn {
-    padding: 8px 16px; border: none; border-radius: var(--radius-sm); font-family: inherit;
-    font-size: 13px; font-weight: 600; cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: 6px; justify-content: center;
-  }
-  .btn-primary { background: var(--accent); color: #fff; }
-  .btn-primary:hover { background: var(--accent-hover); }
-  .btn-primary:disabled { opacity: .4; cursor: not-allowed; }
-  .btn-green { background: var(--green); color: #000; }
-  .btn-green:hover { filter: brightness(1.1); }
-  .btn-green:disabled { opacity: .4; cursor: not-allowed; }
-  .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--txt-2); }
-  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
-  .btn-sm { padding: 4px 10px; font-size: 11px; }
-  .btn-danger { background: var(--red); color: #fff; }
-  .btn-danger:hover { filter: brightness(1.1); }
-
-  .upload-zone {
-    border: 2px dashed var(--border); border-radius: var(--radius); padding: 24px 12px;
-    text-align: center; cursor: pointer; transition: all .2s; background: var(--bg-3);
-  }
-  .upload-zone:hover, .upload-zone.dragover { border-color: var(--accent); background: var(--accent-bg); }
-  .upload-zone-icon { font-size: 32px; margin-bottom: 8px; opacity: .5; }
-  .upload-zone-text { font-size: 13px; color: var(--txt-2); }
-  .upload-zone-hint { font-size: 10px; color: var(--txt-3); margin-top: 4px; }
-  .upload-zone input { display: none; }
-
-  .preview-bar {
-    display: flex; align-items: center; gap: 12px; padding: 10px 16px;
-    border-bottom: 1px solid var(--border); background: var(--bg-2); flex-shrink: 0;
-  }
-  .view-btn { padding: 4px 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: transparent; color: var(--txt-2); font-size: 11px; font-family: inherit; cursor: pointer; }
-  .view-btn.on { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .preview-info { font-size: 11px; color: var(--txt-3); margin-inline-start: auto; }
-
-  .preview-body {
-    flex: 1; display: flex; align-items: center; justify-content: center;
-    background: repeating-conic-gradient(var(--bg) 0% 25%, transparent 0% 50%) 0 0 / 16px 16px;
-    overflow: hidden; position: relative; min-height: 0;
-  }
-  .preview-body img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 3px; user-select: none; }
-  .placeholder { color: var(--txt-3); text-align: center; font-size: 14px; }
-  .placeholder strong { display: block; font-size: 18px; color: var(--txt-2); margin-bottom: 4px; }
-
-  .cmp-wrap { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-  .cmp-img { max-width: 100%; max-height: 100%; object-fit: contain; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); }
-  .cmp-clip { position: absolute; top: 0; left: 0; overflow: hidden; height: 100%; width: 50%; display: flex; align-items: center; justify-content: center; }
-  .cmp-handle { position: absolute; top: 0; bottom: 0; left: 50%; width: 3px; background: #fff; cursor: ew-resize; z-index: 10; box-shadow: 0 0 12px rgba(0,0,0,.6); }
-  .cmp-handle::before { content: '⟷'; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); background: var(--accent); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; box-shadow: 0 2px 12px rgba(0,0,0,.5); }
-
-  .batch-strip {
-    height: 80px; background: var(--bg-2); border-top: 1px solid var(--border);
-    display: flex; align-items: center; gap: 8px; padding: 8px 16px; overflow-x: auto; flex-shrink: 0;
-  }
-  .batch-thumb {
-    width: 62px; height: 62px; border-radius: var(--radius-sm); overflow: hidden;
-    border: 2px solid var(--border); cursor: pointer; flex-shrink: 0; position: relative;
-  }
-  .batch-thumb.active { border-color: var(--accent); }
-  .batch-thumb img { width: 100%; height: 100%; object-fit: cover; }
-  .batch-thumb .del { position: absolute; top: 2px; inset-inline-end: 2px; width: 16px; height: 16px; border-radius: 50%; background: var(--red); color: #fff; border: none; font-size: 9px; cursor: pointer; display: none; align-items: center; justify-content: center; }
-  .batch-thumb:hover .del { display: flex; }
-
-  .info-bar {
-    display: flex; gap: 16px; padding: 8px 16px; background: var(--bg-3);
-    border-top: 1px solid var(--border); font-size: 11px; color: var(--txt-3); flex-shrink: 0; flex-wrap: wrap;
-  }
-  .info-bar strong { color: var(--txt); font-weight: 600; }
-  .info-bar .divider { width: 1px; height: 16px; background: var(--border); }
-  .saving { padding: 1px 8px; border-radius: 10px; font-weight: 700; font-size: 11px; }
-  .saving.pos { background: var(--green-bg); color: var(--green); }
-  .saving.neg { background: var(--red-bg); color: var(--red); }
-
-  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 22px; font-size: 13px; box-shadow: var(--shadow); opacity: 0; transition: all .35s ease; z-index: 999; pointer-events: none; }
-  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 998; display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
-  .modal-overlay.show { display: flex; }
-  .modal { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; max-width: 440px; width: 90%; box-shadow: var(--shadow); max-height: 80vh; overflow-y: auto; }
-  .modal h3 { margin-bottom: 12px; }
-  .modal .btn { margin-top: 8px; }
-  .modal textarea { width: 100%; height: 60px; font-family: monospace; font-size: 12px; padding: 6px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--txt); resize: none; }
-  .modal .hist-item { padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 12px; color: var(--txt-2); display: flex; justify-content: space-between; }
-  .modal .hist-item:last-child { border-bottom: none; }
-
-  .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 12px; }
-  .info-grid .lbl { color: var(--txt-3); }
-  .info-grid .val { color: var(--txt); text-align: end; }
-
-  @media (max-width: 800px) {
-    .sidebar { width: 260px; }
-  }
-  @media (max-width: 600px) {
-    .app { flex-direction: column; }
-    .sidebar { width: 100%; max-height: 45vh; border-inline-end: none; border-bottom: 1px solid var(--border); }
-  }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+:root {
+  --bg:#0a0a0f; --bg2:#12121c; --bg3:#1a1a28; --bg4:#22223a;
+  --border:#28283e; --bhover:#3a3a5a;
+  --txt:#eeeef2; --txt2:#9898b0; --txt3:#68688a;
+  --accent:#7c5cfc; --accH:#9378ff; --accBg:rgba(124,92,252,.12);
+  --green:#00d68f; --greenBg:rgba(0,214,143,.12);
+  --red:#ff6b6b; --redBg:rgba(255,107,107,.12);
+  --radius:10px; --rsm:6px;
+  --shadow:0 8px 40px rgba(0,0,0,.5);
+  --font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+}
+.light{--bg:#f5f5f8;--bg2:#fff;--bg3:#eaeaef;--bg4:#dddde6;--border:#d0d0da;--bhover:#b0b0c0;--txt:#1a1a24;--txt2:#5a5a6a;--txt3:#8a8a9a;--shadow:0 8px 40px rgba(0,0,0,.1);}
+html[lang=fa],html[lang=ar]{--font:'Inter','Vazirmatn',-apple-system,BlinkMacSystemFont,sans-serif}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--txt);display:flex;flex-direction:column;overflow:hidden}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.header{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 16px;height:52px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:12px}
+.logo{display:flex;align-items:center;gap:8px;font-size:18px;font-weight:800;flex-shrink:0}
+.logo-mark{width:28px;height:28px;background:linear-gradient(135deg,var(--accent),var(--green));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;flex-shrink:0}
+.logo span{background:linear-gradient(135deg,var(--accent),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.header-actions{display:flex;align-items:center;gap:8px}
+.lang-select{padding:3px 6px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--rsm);color:var(--txt);font-size:11px;font-family:inherit;outline:none;cursor:pointer}
+.icon-btn{width:30px;height:30px;border-radius:var(--rsm);border:1px solid var(--border);background:var(--bg3);color:var(--txt2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .15s;flex-shrink:0}
+.icon-btn:hover{border-color:var(--accent);color:var(--accent)}
+.app{display:flex;flex:1;min-height:0}
+.sidebar{width:300px;background:var(--bg2);border-inline-end:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0}
+.tab-bar{display:flex;border-bottom:1px solid var(--border);flex-shrink:0}
+.tab-btn{flex:1;padding:10px;border:none;background:transparent;color:var(--txt3);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;border-bottom:2px solid transparent}
+.tab-btn:hover{color:var(--txt2)}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);background:var(--accBg)}
+.tab-content{flex:1;overflow-y:auto;padding:12px;display:none;flex-direction:column;gap:10px}
+.tab-content.active{display:flex}
+.panel{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:10px}
+.panel-title{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--txt3);margin-bottom:8px}
+.ctrl{margin-bottom:8px}
+.ctrl:last-child{margin-bottom:0}
+.ctrl-label{display:flex;justify-content:space-between;font-size:11px;font-weight:500;color:var(--txt2);margin-bottom:3px}
+.ctrl-val{color:var(--txt);font-weight:600}
+input[type=range]{width:100%;height:4px;-webkit-appearance:none;appearance:none;background:var(--border);border-radius:2px;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:var(--accent);cursor:pointer;border:2px solid var(--bg3);box-shadow:0 2px 8px rgba(124,92,231,.35)}
+select,.inp{width:100%;padding:5px 8px;background:var(--bg);border:1px solid var(--border);border-radius:var(--rsm);color:var(--txt);font-size:11px;font-family:inherit;outline:none}
+select:focus,.inp:focus{border-color:var(--accent)}
+.dim-row{display:flex;gap:4px;align-items:center}
+.dim-row .inp{width:0;flex:1}
+.dim-row span{color:var(--txt2);font-size:11px}
+.lock-btn{background:none;border:1px solid var(--border);border-radius:var(--rsm);color:var(--txt2);padding:3px 6px;cursor:pointer;font-size:12px;line-height:1}
+.lock-btn.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.toggle{display:flex;align-items:center;gap:6px;margin-bottom:4px;cursor:pointer;font-size:11px;color:var(--txt2)}
+.toggle input{width:14px;height:14px;accent-color:var(--accent);cursor:pointer;margin:0}
+.btn{padding:7px 14px;border:none;border-radius:var(--rsm);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:5px;justify-content:center}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accH)}
+.btn-primary:disabled,.btn-green:disabled{opacity:.4;cursor:not-allowed}
+.btn-green{background:var(--green);color:#000}
+.btn-green:hover{filter:brightness(1.1)}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--txt2)}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+.btn-sm{padding:3px 8px;font-size:10px}
+.btn-danger{background:var(--red);color:#fff}
+.btn-danger:hover{filter:brightness(1.1)}
+.upload-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:20px 12px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg3)}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--accent);background:var(--accBg)}
+.upload-zone-icon{font-size:28px;margin-bottom:6px;opacity:.5}
+.upload-zone-text{font-size:12px;color:var(--txt2)}
+.upload-zone-hint{font-size:9px;color:var(--txt3);margin-top:3px}
+.upload-zone input{display:none}
+.main{flex:1;display:flex;flex-direction:column;min-width:0}
+.preview-bar{display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid var(--border);background:var(--bg2);flex-shrink:0}
+.view-btn{padding:3px 8px;border:1px solid var(--border);border-radius:var(--rsm);background:transparent;color:var(--txt2);font-size:10px;font-family:inherit;cursor:pointer}
+.view-btn.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.preview-info{font-size:10px;color:var(--txt3);margin-inline-start:auto}
+.preview-body{flex:1;display:flex;align-items:center;justify-content:center;background:repeating-conic-gradient(var(--bg) 0% 25%,transparent 0% 50%) 0 0/14px 14px;overflow:hidden;position:relative;min-height:0}
+.preview-body img{max-width:100%;max-height:100%;object-fit:contain;border-radius:3px;user-select:none}
+.placeholder{color:var(--txt3);text-align:center;font-size:12px}
+.placeholder strong{display:block;font-size:16px;color:var(--txt2);margin-bottom:3px}
+.cmp-wrap{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.cmp-img{max-width:100%;max-height:100%;object-fit:contain;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+.cmp-clip{position:absolute;top:0;left:0;overflow:hidden;height:100%;width:50%;display:flex;align-items:center;justify-content:center}
+.cmp-handle{position:absolute;top:0;bottom:0;left:50%;width:3px;background:#fff;cursor:ew-resize;z-index:10;box-shadow:0 0 12px rgba(0,0,0,.6)}
+.cmp-handle::before{content:'⟷';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--accent);color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;box-shadow:0 2px 12px rgba(0,0,0,.5)}
+.batch-strip{height:70px;background:var(--bg2);border-top:1px solid var(--border);display:flex;align-items:center;gap:6px;padding:6px 12px;overflow-x:auto;flex-shrink:0}
+.batch-thumb{width:56px;height:56px;border-radius:var(--rsm);overflow:hidden;border:2px solid var(--border);cursor:pointer;flex-shrink:0;position:relative}
+.batch-thumb.active{border-color:var(--accent)}
+.batch-thumb img{width:100%;height:100%;object-fit:cover}
+.batch-thumb .del{position:absolute;top:1px;inset-inline-end:1px;width:14px;height:14px;border-radius:50%;background:var(--red);color:#fff;border:none;font-size:7px;cursor:pointer;display:none;align-items:center;justify-content:center}
+.batch-thumb:hover .del{display:flex}
+.info-bar{display:flex;gap:12px;padding:6px 12px;background:var(--bg3);border-top:1px solid var(--border);font-size:10px;color:var(--txt3);flex-shrink:0;flex-wrap:wrap}
+.info-bar strong{color:var(--txt);font-weight:600}
+.info-bar .divider{width:1px;height:14px;background:var(--border)}
+.saving{padding:1px 6px;border-radius:8px;font-weight:700;font-size:10px}
+.saving.pos{background:var(--greenBg);color:var(--green)}
+.saving.neg{background:var(--redBg);color:var(--red)}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:8px 18px;font-size:12px;box-shadow:var(--shadow);opacity:0;transition:all .35s ease;z-index:999;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:998;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-overlay.show{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px;max-width:420px;width:90%;box-shadow:var(--shadow);max-height:75vh;overflow-y:auto}
+.modal h3{font-size:14px;margin-bottom:10px}
+.modal .btn{margin-top:6px}
+.modal textarea{width:100%;height:54px;font-family:monospace;font-size:11px;padding:5px;background:var(--bg);border:1px solid var(--border);border-radius:var(--rsm);color:var(--txt);resize:none}
+.modal .hist-item{padding:5px 0;border-bottom:1px solid var(--border);font-size:11px;color:var(--txt2);display:flex;justify-content:space-between}
+.modal .hist-item:last-child{border-bottom:none}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:11px}
+.info-grid .lbl{color:var(--txt3)}
+.info-grid .val{color:var(--txt);text-align:end}
+.footer-actions{padding:8px 12px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:6px}
+.shortcut-hint{font-size:9px;color:var(--txt3);text-align:center}
+.sidebar-tabs{display:flex;gap:4px;padding:8px 12px;border-bottom:1px solid var(--border);flex-shrink:0}
+.stab{padding:5px 12px;border-radius:var(--rsm);border:none;background:var(--bg3);color:var(--txt3);font-family:inherit;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;flex:1}
+.stab:hover{color:var(--txt2)}
+.stab.active{background:var(--accent);color:#fff}
+@media(max-width:700px){.sidebar{width:240px}}
+@media(max-width:550px){.app{flex-direction:column}.sidebar{width:100%;max-height:40vh;border-inline-end:none;border-bottom:1px solid var(--border)}}
 </style>
 </head>
 <body>
@@ -229,12 +136,8 @@
   </div>
   <div class="header-actions">
     <select class="lang-select" id="langSelect">
-      <option value="en">English</option>
-      <option value="fa">فارسی</option>
-      <option value="ar">العربية</option>
-      <option value="fr">Français</option>
-      <option value="de">Deutsch</option>
-      <option value="ru">Русский</option>
+      <option value="en">EN</option><option value="fa">FA</option><option value="ar">AR</option>
+      <option value="fr">FR</option><option value="de">DE</option><option value="ru">RU</option>
     </select>
     <button class="icon-btn" id="themeBtn" title="Toggle theme">🌙</button>
     <button class="icon-btn" id="infoBtn" data-i18n-title="btn.info">ℹ️</button>
@@ -242,40 +145,47 @@
 </header>
 
 <div class="app">
-  <aside class="sidebar">
-    <div class="sidebar-scroll">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-tabs">
+      <button class="stab active" data-stab="edit" data-i18n="stab.edit">Edit</button>
+      <button class="stab" data-stab="export" data-i18n="stab.export">Export</button>
+    </div>
+
+    <!-- EDIT TAB -->
+    <div class="tab-content active" id="tabEdit">
       <div class="upload-zone" id="uploadZone">
         <div class="upload-zone-icon">📁</div>
-        <div class="upload-zone-text" data-i18n="upload.text">Drop images or click to browse</div>
-        <div class="upload-zone-hint" data-i18n="upload.hint">PNG, JPG, WebP, BMP, GIF — multiple allowed</div>
+        <div class="upload-zone-text" data-i18n="upload.text">Drop images or click</div>
+        <div class="upload-zone-hint" data-i18n="upload.hint">PNG, JPG, WebP, BMP, GIF</div>
         <input type="file" id="fileInput" accept="image/*" multiple>
       </div>
-
       <div class="panel">
         <div class="panel-title" data-i18n="panel.compression">Compression</div>
         <div class="ctrl">
           <div class="ctrl-label"><span data-i18n="ctrl.quality">Quality</span><span class="ctrl-val" id="qVal">85%</span></div>
           <input type="range" id="qSlider" min="1" max="100" value="85">
         </div>
-        <label class="toggle"><input type="checkbox" id="losslessToggle"><span data-i18n="ctrl.lossless">Lossless mode (PNG/WebP)</span></label>
-        <label class="toggle"><input type="checkbox" id="stripMeta"><span data-i18n="ctrl.stripMeta">Strip metadata (EXIF)</span></label>
+        <label class="toggle"><input type="checkbox" id="losslessToggle"><span data-i18n="ctrl.lossless">Lossless</span></label>
+        <label class="toggle"><input type="checkbox" id="stripMeta"><span data-i18n="ctrl.stripMeta">Strip metadata</span></label>
       </div>
-
       <div class="panel">
         <div class="panel-title" data-i18n="panel.resize">Resize</div>
-        <label class="toggle"><input type="checkbox" id="resizeOn"><span data-i18n="ctrl.enableResize">Enable resize</span></label>
-        <div class="ctrl"><div class="dim-row"><span data-i18n="ctrl.w">W</span><input type="number" class="inp" id="wInp" placeholder="Auto" min="1" disabled><span>px</span></div></div>
-        <div class="ctrl"><div class="dim-row"><span data-i18n="ctrl.h">H</span><input type="number" class="inp" id="hInp" placeholder="Auto" min="1" disabled><span>px</span></div></div>
-        <div style="display:flex;gap:4px;margin-top:6px">
+        <label class="toggle"><input type="checkbox" id="resizeOn"><span data-i18n="ctrl.enableResize">Enable</span></label>
+        <div class="ctrl">
+          <div class="dim-row"><span data-i18n="ctrl.w">W</span><input type="number" class="inp" id="wInp" min="1" disabled><span>px</span></div>
+        </div>
+        <div class="ctrl">
+          <div class="dim-row"><span data-i18n="ctrl.h">H</span><input type="number" class="inp" id="hInp" min="1" disabled><span>px</span></div>
+        </div>
+        <div style="display:flex;gap:4px;margin-top:4px;align-items:center">
           <button class="lock-btn on" id="lockBtn">🔗</button>
-          <span style="font-size:10px;color:var(--txt-3);align-self:center" data-i18n="ctrl.aspectRatio">Aspect ratio</span>
+          <span style="font-size:9px;color:var(--txt3)" data-i18n="ctrl.aspectRatio">Lock ratio</span>
         </div>
       </div>
-
       <div class="panel">
         <div class="panel-title" data-i18n="panel.crop">Crop</div>
-        <label class="toggle"><input type="checkbox" id="cropOn"><span data-i18n="ctrl.enableCrop">Enable crop</span></label>
-        <div class="ctrl" style="display:flex;gap:4px;flex-wrap:wrap" id="cropPresets">
+        <label class="toggle"><input type="checkbox" id="cropOn"><span data-i18n="ctrl.enableCrop">Enable</span></label>
+        <div style="display:flex;gap:3px;flex-wrap:wrap" id="cropPresets">
           <button class="btn btn-sm btn-outline" data-ar="1">1:1</button>
           <button class="btn btn-sm btn-outline" data-ar="4/3">4:3</button>
           <button class="btn btn-sm btn-outline" data-ar="16/9">16:9</button>
@@ -284,10 +194,9 @@
           <button class="btn btn-sm btn-outline" data-ar="free" data-i18n="crop.free">Free</button>
         </div>
       </div>
-
       <div class="panel">
         <div class="panel-title" data-i18n="panel.rotate">Rotate / Flip</div>
-        <div style="display:flex;gap:4px;flex-wrap:wrap">
+        <div style="display:flex;gap:3px;flex-wrap:wrap">
           <button class="btn btn-sm btn-outline" data-rot="90">↻ 90°</button>
           <button class="btn btn-sm btn-outline" data-rot="180">↻ 180°</button>
           <button class="btn btn-sm btn-outline" data-rot="270">↻ 270°</button>
@@ -296,22 +205,9 @@
           <button class="btn btn-sm btn-outline" id="resetRotFlip" data-i18n="btn.reset">Reset</button>
         </div>
       </div>
-
-      <div class="panel">
-        <div class="panel-title" data-i18n="panel.format">Output Format</div>
-        <select id="fmtSelect">
-          <option value="image/jpeg">JPEG</option>
-          <option value="image/png">PNG</option>
-          <option value="image/webp" selected>WebP</option>
-          <option value="image/bmp">BMP</option>
-          <option value="image/gif">GIF</option>
-        </select>
-        <label class="toggle" style="margin-top:6px"><input type="checkbox" id="progressiveToggle"><span data-i18n="ctrl.progressive">Progressive / interlace</span></label>
-      </div>
-
       <div class="panel">
         <div class="panel-title" data-i18n="panel.filters">Filters</div>
-        <select id="filterSel" style="margin-bottom:6px">
+        <select id="filterSel" style="margin-bottom:4px">
           <option value="none" data-i18n="filter.none">None</option>
           <option value="grayscale" data-i18n="filter.grayscale">Grayscale</option>
           <option value="sepia" data-i18n="filter.sepia">Sepia</option>
@@ -326,48 +222,56 @@
           <input type="range" id="filterAmt" min="0" max="200" value="100">
         </div>
       </div>
-
       <div class="panel">
         <div class="panel-title" data-i18n="panel.watermark">Watermark</div>
-        <label class="toggle"><input type="checkbox" id="wmOn"><span data-i18n="ctrl.addWM">Add watermark text</span></label>
+        <label class="toggle"><input type="checkbox" id="wmOn"><span data-i18n="ctrl.addWM">Add text</span></label>
         <div class="ctrl"><input class="inp" id="wmText" placeholder="MaddyPix" value="MaddyPix" disabled></div>
-        <div class="ctrl" style="display:flex;gap:4px">
+        <div style="display:flex;gap:4px">
           <select id="wmPos" disabled>
-            <option value="se" data-i18n="wm.br">Bottom-Right</option>
-            <option value="sw" data-i18n="wm.bl">Bottom-Left</option>
-            <option value="ne" data-i18n="wm.tr">Top-Right</option>
-            <option value="nw" data-i18n="wm.tl">Top-Left</option>
+            <option value="se" data-i18n="wm.br">BR</option><option value="sw" data-i18n="wm.bl">BL</option>
+            <option value="ne" data-i18n="wm.tr">TR</option><option value="nw" data-i18n="wm.tl">TL</option>
             <option value="center" data-i18n="wm.center">Center</option>
           </select>
           <select id="wmSize" disabled>
-            <option value="16" data-i18n="wm.small">Small</option>
-            <option value="24" selected data-i18n="wm.medium">Medium</option>
-            <option value="36" data-i18n="wm.large">Large</option>
+            <option value="16" data-i18n="wm.small">S</option><option value="24" selected data-i18n="wm.medium">M</option>
+            <option value="36" data-i18n="wm.large">L</option>
           </select>
         </div>
       </div>
-
-      <div class="panel">
-        <div class="panel-title" data-i18n="panel.targetSize">Target File Size</div>
-        <label class="toggle"><input type="checkbox" id="targetSizeOn"><span data-i18n="ctrl.autoAdjust">Auto-adjust to max size</span></label>
-        <div class="ctrl"><div class="dim-row"><input type="number" class="inp" id="targetSizeInp" placeholder="500" min="1" disabled><span>KB</span></div></div>
-      </div>
     </div>
 
-    <div class="sidebar-actions">
-      <button class="btn btn-primary" id="processBtn" disabled data-i18n="btn.process">⚡ Process</button>
-      <div style="display:flex;gap:6px">
-        <button class="btn btn-green" id="downloadBtn" disabled style="flex:1" data-i18n="btn.download">💾 Download</button>
-        <button class="btn btn-outline" id="copyBtn" disabled data-i18n-title="btn.copy">📋</button>
-        <button class="btn btn-outline" id="base64Btn" disabled data-i18n-title="btn.base64">🔤</button>
+    <!-- EXPORT TAB -->
+    <div class="tab-content" id="tabExport">
+      <div class="panel">
+        <div class="panel-title" data-i18n="panel.format">Output Format</div>
+        <div class="ctrl">
+          <select id="fmtSelect">
+            <option value="image/jpeg">JPEG</option>
+            <option value="image/png">PNG</option>
+            <option value="image/webp" selected>WebP</option>
+            <option value="image/bmp">BMP</option>
+            <option value="image/gif">GIF</option>
+          </select>
+        </div>
+        <label class="toggle"><input type="checkbox" id="progressiveToggle"><span data-i18n="ctrl.progressive">Progressive</span></label>
       </div>
-      <div style="display:flex;gap:6px">
-        <button class="btn btn-outline btn-sm" id="historyBtn" style="flex:1" data-i18n="btn.history">📜 History</button>
-        <button class="btn btn-outline btn-sm" id="downloadAllBtn" disabled data-i18n="btn.downloadAll">📦 Download All</button>
+      <div class="panel">
+        <div class="panel-title" data-i18n="panel.targetSize">Target File Size</div>
+        <label class="toggle"><input type="checkbox" id="targetSizeOn"><span data-i18n="ctrl.autoAdjust">Auto-fit to max</span></label>
+        <div class="ctrl"><div class="dim-row"><input type="number" class="inp" id="targetSizeInp" placeholder="500" min="1" disabled><span>KB</span></div></div>
       </div>
-      <div style="display:flex;gap:4px;font-size:10px;color:var(--txt-3);align-items:center">
-        <span>⌨️</span>
-        <span id="shortcutHint" data-i18n="shortcuts">Space: Process | S: Download | R: Reset</span>
+      <div class="panel">
+        <div class="panel-title" data-i18n="panel.output">Output</div>
+        <button class="btn btn-primary" id="processBtn" disabled style="width:100%" data-i18n="btn.process">⚡ Process</button>
+        <div style="display:flex;gap:4px;margin-top:6px">
+          <button class="btn btn-green" id="downloadBtn" disabled style="flex:1" data-i18n="btn.download">💾 Download</button>
+          <button class="btn btn-outline" id="copyBtn" disabled data-i18n-title="btn.copy">📋</button>
+          <button class="btn btn-outline" id="base64Btn" disabled data-i18n-title="btn.base64">🔤</button>
+        </div>
+        <div style="display:flex;gap:4px;margin-top:4px">
+          <button class="btn btn-outline btn-sm" id="historyBtn" style="flex:1" data-i18n="btn.history">📜 History</button>
+          <button class="btn btn-outline btn-sm" id="downloadAllBtn" disabled data-i18n="btn.downloadAll">📦 Batch ZIP</button>
+        </div>
       </div>
     </div>
   </aside>
@@ -377,52 +281,52 @@
       <button class="view-btn on" data-view="split" data-i18n="view.split">Split</button>
       <button class="view-btn" data-view="slider" data-i18n="view.slider">Slider</button>
       <button class="view-btn" data-view="single" data-i18n="view.single">Single</button>
-      <span class="preview-info" id="viewInfo" data-i18n="view.noImage">No image loaded</span>
+      <span class="preview-info" id="viewInfo" data-i18n="view.noImage">No image</span>
     </div>
 
     <div class="preview-body" id="previewBody">
       <div class="placeholder" id="placeholder">
-        <strong data-i18n="placeholder.title">Drop an image to begin</strong>
+        <strong data-i18n="placeholder.title">Drop image to begin</strong>
         <span data-i18n="placeholder.sub">Compress · Resize · Convert · Filter</span>
       </div>
-      <div id="splitView" style="display:none;width:100%;height:100%;">
-        <div style="display:flex;width:100%;height:100%;">
+      <div id="splitView" style="display:none;width:100%;height:100%">
+        <div style="display:flex;width:100%;height:100%">
           <div style="flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;border-inline-end:1px solid var(--border);position:relative">
-            <div style="position:absolute;top:8px;inset-inline-start:8px;font-size:10px;background:var(--red-bg);color:var(--red);padding:2px 8px;border-radius:4px;z-index:5" data-i18n="badge.original">Original</div>
+            <div style="position:absolute;top:6px;inset-inline-start:6px;font-size:9px;background:var(--redBg);color:var(--red);padding:1px 6px;border-radius:3px;z-index:5" data-i18n="badge.original">Original</div>
             <img id="origImg" style="max-width:100%;max-height:100%;object-fit:contain">
           </div>
           <div style="flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative">
-            <div style="position:absolute;top:8px;inset-inline-start:8px;font-size:10px;background:var(--green-bg);color:var(--green);padding:2px 8px;border-radius:4px;z-index:5" data-i18n="badge.processed">Processed</div>
+            <div style="position:absolute;top:6px;inset-inline-start:6px;font-size:9px;background:var(--greenBg);color:var(--green);padding:1px 6px;border-radius:3px;z-index:5" data-i18n="badge.processed">Processed</div>
             <img id="procImg" style="max-width:100%;max-height:100%;object-fit:contain">
           </div>
         </div>
       </div>
-      <div id="sliderView" style="display:none;width:100%;height:100%;">
+      <div id="sliderView" style="display:none;width:100%;height:100%">
         <div class="cmp-wrap" id="cmpWrap">
           <img class="cmp-img" id="cmpOrig" style="z-index:1">
           <div class="cmp-clip" id="cmpClip" style="z-index:2">
-            <img class="cmp-img" id="cmpProc" style="position:relative;top:auto;left:auto;transform:none;min-width:100%;min-height:100%;">
+            <img class="cmp-img" id="cmpProc" style="position:relative;top:auto;left:auto;transform:none;min-width:100%;min-height:100%">
           </div>
           <div class="cmp-handle" id="cmpHandle"></div>
         </div>
       </div>
-      <div id="singleView" style="display:none;width:100%;height:100%;align-items:center;justify-content:center;overflow:hidden;">
+      <div id="singleView" style="display:none;width:100%;height:100%;align-items:center;justify-content:center;overflow:hidden">
         <img id="singleImg" style="max-width:100%;max-height:100%;object-fit:contain;cursor:grab">
       </div>
     </div>
 
     <div class="batch-strip" id="batchStrip" style="display:none"></div>
 
-    <div class="info-bar" id="infoBar">
+    <div class="info-bar">
       <span data-i18n="info.file">File:</span> <strong id="fName">—</strong>
       <div class="divider"></div>
-      <span data-i18n="info.original">Original:</span> <strong id="origSize">—</strong>
+      <span data-i18n="info.original">Orig:</span> <strong id="origSize">—</strong>
       <div class="divider"></div>
-      <span data-i18n="info.output">Output:</span> <strong id="outSize">—</strong>
+      <span data-i18n="info.output">Out:</span> <strong id="outSize">—</strong>
       <div class="divider"></div>
       <span data-i18n="info.saved">Saved:</span> <strong><span class="saving" id="savingBadge">—</span></strong>
       <div class="divider"></div>
-      <span data-i18n="info.dims">Dimensions:</span> <strong id="dimsDisplay">—</strong>
+      <span data-i18n="info.dims">Dims:</span> <strong id="dimsDisplay">—</strong>
     </div>
   </main>
 </div>
@@ -430,7 +334,7 @@
 <div class="modal-overlay" id="imgInfoModal">
   <div class="modal">
     <h3 data-i18n="modal.infoTitle">📷 Image Info</h3>
-    <div class="info-grid" id="imgInfoGrid">
+    <div class="info-grid">
       <span class="lbl" data-i18n="infoGrid.name">Name</span><span class="val" id="iiName">—</span>
       <span class="lbl" data-i18n="infoGrid.format">Format</span><span class="val" id="iiFormat">—</span>
       <span class="lbl" data-i18n="infoGrid.dims">Dimensions</span><span class="val" id="iiDims">—</span>
@@ -439,15 +343,15 @@
       <span class="lbl" data-i18n="infoGrid.compression">Compression</span><span class="val" id="iiComp">—</span>
       <span class="lbl" data-i18n="infoGrid.colorSpace">Color Space</span><span class="val" id="iiColor">sRGB</span>
     </div>
-    <button class="btn btn-outline" onclick="closeModal('imgInfoModal')" data-i18n="btn.close">Close</button>
+    <button class="btn btn-outline btn-sm" onclick="closeModal('imgInfoModal')" data-i18n="btn.close">Close</button>
   </div>
 </div>
 
 <div class="modal-overlay" id="histModal">
   <div class="modal">
-    <h3 data-i18n="modal.histTitle">📜 Processing History</h3>
-    <div id="histList" style="max-height:260px;overflow-y:auto"><p style="color:var(--txt-3)" data-i18n="modal.noHist">No history yet</p></div>
-    <button class="btn btn-danger btn-sm" id="clearHistBtn" data-i18n="btn.clearHist">Clear History</button>
+    <h3 data-i18n="modal.histTitle">📜 History</h3>
+    <div id="histList" style="max-height:220px;overflow-y:auto"><p style="color:var(--txt3);font-size:11px" data-i18n="modal.noHist">No history yet</p></div>
+    <button class="btn btn-danger btn-sm" id="clearHistBtn" data-i18n="btn.clearHist">Clear</button>
     <button class="btn btn-outline btn-sm" onclick="closeModal('histModal')" data-i18n="btn.close">Close</button>
   </div>
 </div>
@@ -462,6 +366,7 @@
 </div>
 
 <script>
+// ===== i18n =====
 const $ = id => document.getElementById(id);
 const RTL_LANGS = ['fa', 'ar'];
 let currentLang = 'en';
@@ -475,7 +380,6 @@ function translatePage() {
   const isRTL = RTL_LANGS.includes(currentLang);
   document.documentElement.lang = currentLang;
   document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
-
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.dataset.i18n;
     const html = t(key);
@@ -485,25 +389,20 @@ function translatePage() {
     const title = t(el.dataset.i18nTitle);
     if (el.title !== title) el.title = title;
   });
-
   document.querySelectorAll('#filterSel option').forEach(opt => {
     const key = 'filter.' + opt.value;
     if (LOCALE.en[key]) opt.textContent = t(key);
   });
   document.querySelectorAll('#wmPos option').forEach(opt => {
-    const key = 'wm.' + opt.value;
-    if (LOCALE.en[key]) opt.textContent = t(key);
+    if (LOCALE.en['wm.'+opt.value]) opt.textContent = t('wm.'+opt.value);
   });
-  const sizeMap = {'16':'small','24':'medium','36':'large'};
+  const sz = {'16':'small','24':'medium','36':'large'};
   document.querySelectorAll('#wmSize option').forEach(opt => {
-    const key = 'wm.' + sizeMap[opt.value];
-    if (LOCALE.en[key]) opt.textContent = t(key);
+    if (LOCALE.en['wm.'+sz[opt.value]]) opt.textContent = t('wm.'+sz[opt.value]);
   });
-
   const vi = $('viewInfo');
   if (vi && (!getActive || !getActive())) vi.textContent = t('view.noImage');
-  const sh = $('shortcutHint');
-  if (sh) sh.textContent = t('shortcuts');
+  $('shortcutHint') && ($('shortcutHint').textContent = t('shortcuts'));
 }
 
 function setLang(lang, force) {
@@ -513,550 +412,176 @@ function setLang(lang, force) {
   localStorage.setItem('maddypix_lang', lang);
 }
 
-// ===== i18n data =====
 const LOCALE = {
-  en: {
-    brand: 'Maddy<span>Pix</span>',
-    'btn.info': 'Image info',
-    'upload.text': 'Drop images or click to browse',
-    'upload.hint': 'PNG, JPG, WebP, BMP, GIF — multiple allowed',
-    'panel.compression': 'Compression',
-    'ctrl.quality': 'Quality',
-    'ctrl.lossless': 'Lossless mode (PNG/WebP)',
-    'ctrl.stripMeta': 'Strip metadata (EXIF)',
-    'panel.resize': 'Resize',
-    'ctrl.enableResize': 'Enable resize',
-    'ctrl.w': 'W',
-    'ctrl.h': 'H',
-    'ctrl.aspectRatio': 'Aspect ratio',
-    'panel.crop': 'Crop',
-    'ctrl.enableCrop': 'Enable crop',
-    'crop.free': 'Free',
-    'panel.rotate': 'Rotate / Flip',
-    'btn.reset': 'Reset',
-    'panel.format': 'Output Format',
-    'ctrl.progressive': 'Progressive / interlace',
-    'panel.filters': 'Filters',
-    'filter.none': 'None',
-    'filter.grayscale': 'Grayscale',
-    'filter.sepia': 'Sepia',
-    'filter.invert': 'Invert',
-    'filter.brightness': 'Brightness',
-    'filter.contrast': 'Contrast',
-    'filter.blur': 'Blur',
-    'filter.saturate': 'Saturate',
-    'ctrl.amount': 'Amount',
-    'panel.watermark': 'Watermark',
-    'ctrl.addWM': 'Add watermark text',
-    'wm.br': 'Bottom-Right',
-    'wm.bl': 'Bottom-Left',
-    'wm.tr': 'Top-Right',
-    'wm.tl': 'Top-Left',
-    'wm.center': 'Center',
-    'wm.small': 'Small',
-    'wm.medium': 'Medium',
-    'wm.large': 'Large',
-    'panel.targetSize': 'Target File Size',
-    'ctrl.autoAdjust': 'Auto-adjust to max size',
-    'btn.process': '⚡ Process',
-    'btn.download': '💾 Download',
-    'btn.copy': 'Copy to clipboard',
-    'btn.base64': 'Get Base64',
-    'btn.history': '📜 History',
-    'btn.downloadAll': '📦 Download All',
-    'shortcuts': 'Space: Process | S: Download | R: Reset | L: Language',
-    'view.split': 'Split',
-    'view.slider': 'Slider',
-    'view.single': 'Single',
-    'view.noImage': 'No image loaded',
-    'placeholder.title': 'Drop an image to begin',
-    'placeholder.sub': 'Compress · Resize · Convert · Filter',
-    'badge.original': 'Original',
-    'badge.processed': 'Processed',
-    'info.file': 'File:',
-    'info.original': 'Original:',
-    'info.output': 'Output:',
-    'info.saved': 'Saved:',
-    'info.dims': 'Dimensions:',
-    'modal.infoTitle': '📷 Image Info',
-    'infoGrid.name': 'Name',
-    'infoGrid.format': 'Format',
-    'infoGrid.dims': 'Dimensions',
-    'infoGrid.fileSize': 'File Size',
-    'infoGrid.outSize': 'Output Size',
-    'infoGrid.compression': 'Compression',
-    'infoGrid.colorSpace': 'Color Space',
-    'modal.histTitle': '📜 Processing History',
-    'modal.noHist': 'No history yet',
-    'btn.clearHist': 'Clear History',
-    'btn.close': 'Close',
-    'modal.b64Title': '🔤 Base64 Data URL',
-    'btn.copyB64': '📋 Copy',
-    'toast.noImage': 'No image loaded',
-    'toast.downloaded': 'Downloaded ✅',
-    'toast.copied': 'Copied to clipboard ✅',
-    'toast.copiedB64': 'Base64 copied ✅',
-    'toast.historyCleared': 'History cleared',
-    'toast.error': 'Error: ',
-    'toast.batchStarted': 'Batch download started 📦',
-    'toast.copyNotSupported': 'Copy not supported',
-    'btnProcessing': '⏳ Processing...',
-  },
-  fa: {
-    brand: 'Maddy<span>Pix</span>',
-    'btn.info': 'اطلاعات تصویر',
-    'upload.text': 'تصاویر را بکشید یا کلیک کنید',
-    'upload.hint': 'PNG, JPG, WebP, BMP, GIF — چند تایی مجاز',
-    'panel.compression': 'فشرده‌سازی',
-    'ctrl.quality': 'کیفیت',
-    'ctrl.lossless': 'حالت بدون افت (PNG/WebP)',
-    'ctrl.stripMeta': 'حذف metadata (EXIF)',
-    'panel.resize': 'تغییر ابعاد',
-    'ctrl.enableResize': 'فعال کردن تغییر ابعاد',
-    'ctrl.w': 'ع',
-    'ctrl.h': 'ا',
-    'ctrl.aspectRatio': 'نسبت ابعاد',
-    'panel.crop': 'برش',
-    'ctrl.enableCrop': 'فعال کردن برش',
-    'crop.free': 'آزاد',
-    'panel.rotate': 'چرخش / قرینه',
-    'btn.reset': 'بازنشانی',
-    'panel.format': 'فرمت خروجی',
-    'ctrl.progressive': 'پیش‌رونده / درهم',
-    'panel.filters': 'فیلترها',
-    'filter.none': 'بدون فیلتر',
-    'filter.grayscale': 'تک‌رنگ',
-    'filter.sepia': 'سپیا',
-    'filter.invert': 'معکوس',
-    'filter.brightness': 'روشنایی',
-    'filter.contrast': 'کنتراست',
-    'filter.blur': 'محو',
-    'filter.saturate': 'اشباع',
-    'ctrl.amount': 'میزان',
-    'panel.watermark': 'واترمارک',
-    'ctrl.addWM': 'افزودن متن واترمارک',
-    'wm.br': 'پایین-راست',
-    'wm.bl': 'پایین-چپ',
-    'wm.tr': 'بالا-راست',
-    'wm.tl': 'بالا-چپ',
-    'wm.center': 'مرکز',
-    'wm.small': 'کوچک',
-    'wm.medium': 'متوسط',
-    'wm.large': 'بزرگ',
-    'panel.targetSize': 'حجم هدف',
-    'ctrl.autoAdjust': 'تنظیم خودکار به حجم حداکثر',
-    'btn.process': '⚡ پردازش',
-    'btn.download': '💾 دانلود',
-    'btn.copy': 'کپی به کلیپ‌بورد',
-    'btn.base64': 'دریافت Base64',
-    'btn.history': '📜 تاریخچه',
-    'btn.downloadAll': '📦 دانلود همه',
-    'shortcuts': 'Space: پردازش | S: دانلود | R: بازنشانی | L: زبان',
-    'view.split': 'کنارهم',
-    'view.slider': 'لغزنده',
-    'view.single': 'تکی',
-    'view.noImage': 'تصویری بارگذاری نشده',
-    'placeholder.title': 'یک تصویر رها کنید',
-    'placeholder.sub': 'فشرده‌سازی · تغییر اندازه · تبدیل · فیلتر',
-    'badge.original': 'اصلی',
-    'badge.processed': 'پردازش‌شده',
-    'info.file': 'فایل:',
-    'info.original': 'اصلی:',
-    'info.output': 'خروجی:',
-    'info.saved': 'صرفه‌جویی:',
-    'info.dims': 'ابعاد:',
-    'modal.infoTitle': '📷 اطلاعات تصویر',
-    'infoGrid.name': 'نام',
-    'infoGrid.format': 'فرمت',
-    'infoGrid.dims': 'ابعاد',
-    'infoGrid.fileSize': 'حجم فایل',
-    'infoGrid.outSize': 'حجم خروجی',
-    'infoGrid.compression': 'فشرده‌سازی',
-    'infoGrid.colorSpace': 'فضای رنگی',
-    'modal.histTitle': '📜 تاریخچه پردازش',
-    'modal.noHist': 'تاریخچه‌ای وجود ندارد',
-    'btn.clearHist': 'پاک کردن تاریخچه',
-    'btn.close': 'بستن',
-    'modal.b64Title': '🔤 داده Base64',
-    'btn.copyB64': '📋 کپی',
-    'toast.noImage': 'تصویری بارگذاری نشده',
-    'toast.downloaded': 'دانلود شد ✅',
-    'toast.copied': 'در کلیپ‌بورد کپی شد ✅',
-    'toast.copiedB64': 'Base64 کپی شد ✅',
-    'toast.historyCleared': 'تاریخچه پاک شد',
-    'toast.error': 'خطا: ',
-    'toast.batchStarted': 'دانلود گروهی شروع شد 📦',
-    'toast.copyNotSupported': 'کپی پشتیبانی نمی‌شود',
-    'btnProcessing': '⏳ در حال پردازش...',
-  },
-  ar: {
-    brand: 'Maddy<span>Pix</span>',
-    'btn.info': 'معلومات الصورة',
-    'upload.text': 'أسقط الصور أو انقر للتصفح',
-    'upload.hint': 'PNG, JPG, WebP, BMP, GIF — متعددة مسموح بها',
-    'panel.compression': 'الضغط',
-    'ctrl.quality': 'الجودة',
-    'ctrl.lossless': 'وضع بدون فقدان (PNG/WebP)',
-    'ctrl.stripMeta': 'إزالة البيانات الوصفية (EXIF)',
-    'panel.resize': 'تغيير الحجم',
-    'ctrl.enableResize': 'تفعيل تغيير الحجم',
-    'ctrl.w': 'ع',
-    'ctrl.h': 'ا',
-    'ctrl.aspectRatio': 'نسبة الأبعاد',
-    'panel.crop': 'قص',
-    'ctrl.enableCrop': 'تفعيل القص',
-    'crop.free': 'حر',
-    'panel.rotate': 'تدوير / قلب',
-    'btn.reset': 'إعادة تعيين',
-    'panel.format': 'تنسيق الإخراج',
-    'ctrl.progressive': 'تدريجي / تشابك',
-    'panel.filters': 'المرشحات',
-    'filter.none': 'بدون',
-    'filter.grayscale': 'تدرج رمادي',
-    'filter.sepia': 'سيبيا',
-    'filter.invert': 'عكس',
-    'filter.brightness': 'سطوع',
-    'filter.contrast': 'تباين',
-    'filter.blur': 'ضبابية',
-    'filter.saturate': 'تشبع',
-    'ctrl.amount': 'المقدار',
-    'panel.watermark': 'علامة مائية',
-    'ctrl.addWM': 'إضافة نص علامة مائية',
-    'wm.br': 'أسفل-يمين',
-    'wm.bl': 'أسفل-يسار',
-    'wm.tr': 'أعلى-يمين',
-    'wm.tl': 'أعلى-يسار',
-    'wm.center': 'وسط',
-    'wm.small': 'صغير',
-    'wm.medium': 'متوسط',
-    'wm.large': 'كبير',
-    'panel.targetSize': 'حجم الملف المستهدف',
-    'ctrl.autoAdjust': 'ضبط تلقائي للحجم الأقصى',
-    'btn.process': '⚡ معالجة',
-    'btn.download': '💾 تحميل',
-    'btn.copy': 'نسخ إلى الحافظة',
-    'btn.base64': 'الحصول على Base64',
-    'btn.history': '📜 السجل',
-    'btn.downloadAll': '📦 تحميل الكل',
-    'shortcuts': 'Space: معالجة | S: تحميل | R: إعادة تعيين | L: لغة',
-    'view.split': 'مقسم',
-    'view.slider': 'منزلق',
-    'view.single': 'مفرد',
-    'view.noImage': 'لم يتم تحميل صورة',
-    'placeholder.title': 'أسقط صورة للبدء',
-    'placeholder.sub': 'ضغط · تغيير حجم · تحويل · مرشح',
-    'badge.original': 'أصلي',
-    'badge.processed': 'تمت المعالجة',
-    'info.file': 'الملف:',
-    'info.original': 'الأصلي:',
-    'info.output': 'الإخراج:',
-    'info.saved': 'المحفوظ:',
-    'info.dims': 'الأبعاد:',
-    'modal.infoTitle': '📷 معلومات الصورة',
-    'infoGrid.name': 'الاسم',
-    'infoGrid.format': 'التنسيق',
-    'infoGrid.dims': 'الأبعاد',
-    'infoGrid.fileSize': 'حجم الملف',
-    'infoGrid.outSize': 'حجم الإخراج',
-    'infoGrid.compression': 'الضغط',
-    'infoGrid.colorSpace': 'الفضاء اللوني',
-    'modal.histTitle': '📜 سجل المعالجة',
-    'modal.noHist': 'لا يوجد سجل بعد',
-    'btn.clearHist': 'مسح السجل',
-    'btn.close': 'إغلاق',
-    'modal.b64Title': '🔤 بيانات Base64',
-    'btn.copyB64': '📋 نسخ',
-    'toast.noImage': 'لم يتم تحميل صورة',
-    'toast.downloaded': 'تم التحميل ✅',
-    'toast.copied': 'تم النسخ إلى الحافظة ✅',
-    'toast.copiedB64': 'تم نسخ Base64 ✅',
-    'toast.historyCleared': 'تم مسح السجل',
-    'toast.error': 'خطأ: ',
-    'toast.batchStarted': 'بدأ التحميل الجماعي 📦',
-    'toast.copyNotSupported': 'النسخ غير مدعوم',
-    'btnProcessing': '⏳ جاري المعالجة...',
-  },
-  fr: {
-    brand: 'Maddy<span>Pix</span>',
-    'btn.info': 'Infos image',
-    'upload.text': 'Déposez des images ou cliquez pour parcourir',
-    'upload.hint': 'PNG, JPG, WebP, BMP, GIF — plusieurs autorisés',
-    'panel.compression': 'Compression',
-    'ctrl.quality': 'Qualité',
-    'ctrl.lossless': 'Mode sans perte (PNG/WebP)',
-    'ctrl.stripMeta': 'Supprimer les métadonnées (EXIF)',
-    'panel.resize': 'Redimensionner',
-    'ctrl.enableResize': 'Activer le redimensionnement',
-    'ctrl.w': 'L',
-    'ctrl.h': 'H',
-    'ctrl.aspectRatio': 'Rapport d\'aspect',
-    'panel.crop': 'Recadrer',
-    'ctrl.enableCrop': 'Activer le recadrage',
-    'crop.free': 'Libre',
-    'panel.rotate': 'Rotation / Retourner',
-    'btn.reset': 'Réinitialiser',
-    'panel.format': 'Format de sortie',
-    'ctrl.progressive': 'Progressif / entrelacé',
-    'panel.filters': 'Filtres',
-    'filter.none': 'Aucun',
-    'filter.grayscale': 'Niveaux de gris',
-    'filter.sepia': 'Sépia',
-    'filter.invert': 'Inverser',
-    'filter.brightness': 'Luminosité',
-    'filter.contrast': 'Contraste',
-    'filter.blur': 'Flou',
-    'filter.saturate': 'Saturation',
-    'ctrl.amount': 'Intensité',
-    'panel.watermark': 'Filigrane',
-    'ctrl.addWM': 'Ajouter un texte en filigrane',
-    'wm.br': 'Bas-Droite',
-    'wm.bl': 'Bas-Gauche',
-    'wm.tr': 'Haut-Droite',
-    'wm.tl': 'Haut-Gauche',
-    'wm.center': 'Centre',
-    'wm.small': 'Petit',
-    'wm.medium': 'Moyen',
-    'wm.large': 'Grand',
-    'panel.targetSize': 'Taille cible',
-    'ctrl.autoAdjust': 'Ajustement automatique à la taille max',
-    'btn.process': '⚡ Traiter',
-    'btn.download': '💾 Télécharger',
-    'btn.copy': 'Copier dans le presse-papier',
-    'btn.base64': 'Obtenir Base64',
-    'btn.history': '📜 Historique',
-    'btn.downloadAll': '📦 Tout télécharger',
-    'shortcuts': 'Space: Traiter | S: Télécharger | R: Réinitialiser | L: Langue',
-    'view.split': 'Côte à côte',
-    'view.slider': 'Curseur',
-    'view.single': 'Simple',
-    'view.noImage': 'Aucune image chargée',
-    'placeholder.title': 'Déposez une image pour commencer',
-    'placeholder.sub': 'Compresser · Redimensionner · Convertir · Filtrer',
-    'badge.original': 'Originale',
-    'badge.processed': 'Traitée',
-    'info.file': 'Fichier :',
-    'info.original': 'Originale :',
-    'info.output': 'Sortie :',
-    'info.saved': 'Gain :',
-    'info.dims': 'Dimensions :',
-    'modal.infoTitle': '📷 Informations image',
-    'infoGrid.name': 'Nom',
-    'infoGrid.format': 'Format',
-    'infoGrid.dims': 'Dimensions',
-    'infoGrid.fileSize': 'Taille',
-    'infoGrid.outSize': 'Taille sortie',
-    'infoGrid.compression': 'Compression',
-    'infoGrid.colorSpace': 'Espace colorimétrique',
-    'modal.histTitle': '📜 Historique de traitement',
-    'modal.noHist': 'Aucun historique',
-    'btn.clearHist': 'Effacer l\'historique',
-    'btn.close': 'Fermer',
-    'modal.b64Title': '🔤 URL Base64',
-    'btn.copyB64': '📋 Copier',
-    'toast.noImage': 'Aucune image chargée',
-    'toast.downloaded': 'Téléchargé ✅',
-    'toast.copied': 'Copié dans le presse-papier ✅',
-    'toast.copiedB64': 'Base64 copié ✅',
-    'toast.historyCleared': 'Historique effacé',
-    'toast.error': 'Erreur : ',
-    'toast.batchStarted': 'Téléchargement groupé démarré 📦',
-    'toast.copyNotSupported': 'Copie non prise en charge',
-    'btnProcessing': '⏳ Traitement en cours...',
-  },
-  de: {
-    brand: 'Maddy<span>Pix</span>',
-    'btn.info': 'Bildinfo',
-    'upload.text': 'Bilder ablegen oder klicken zum Durchsuchen',
-    'upload.hint': 'PNG, JPG, WebP, BMP, GIF — mehrere möglich',
-    'panel.compression': 'Komprimierung',
-    'ctrl.quality': 'Qualität',
-    'ctrl.lossless': 'Verlustfreier Modus (PNG/WebP)',
-    'ctrl.stripMeta': 'Metadaten entfernen (EXIF)',
-    'panel.resize': 'Größe ändern',
-    'ctrl.enableResize': 'Größenänderung aktivieren',
-    'ctrl.w': 'B',
-    'ctrl.h': 'H',
-    'ctrl.aspectRatio': 'Seitenverhältnis',
-    'panel.crop': 'Zuschneiden',
-    'ctrl.enableCrop': 'Zuschneiden aktivieren',
-    'crop.free': 'Frei',
-    'panel.rotate': 'Drehen / Spiegeln',
-    'btn.reset': 'Zurücksetzen',
-    'panel.format': 'Ausgabeformat',
-    'ctrl.progressive': 'Progressiv / Interlaced',
-    'panel.filters': 'Filter',
-    'filter.none': 'Keine',
-    'filter.grayscale': 'Graustufen',
-    'filter.sepia': 'Sepia',
-    'filter.invert': 'Invertieren',
-    'filter.brightness': 'Helligkeit',
-    'filter.contrast': 'Kontrast',
-    'filter.blur': 'Weichzeichner',
-    'filter.saturate': 'Sättigung',
-    'ctrl.amount': 'Stärke',
-    'panel.watermark': 'Wasserzeichen',
-    'ctrl.addWM': 'Wasserzeichentext hinzufügen',
-    'wm.br': 'Unten-Rechts',
-    'wm.bl': 'Unten-Links',
-    'wm.tr': 'Oben-Rechts',
-    'wm.tl': 'Oben-Links',
-    'wm.center': 'Mitte',
-    'wm.small': 'Klein',
-    'wm.medium': 'Mittel',
-    'wm.large': 'Groß',
-    'panel.targetSize': 'Zielgröße',
-    'ctrl.autoAdjust': 'Automatisch an Maximalgröße anpassen',
-    'btn.process': '⚡ Verarbeiten',
-    'btn.download': '💾 Herunterladen',
-    'btn.copy': 'In Zwischenablage kopieren',
-    'btn.base64': 'Base64 abrufen',
-    'btn.history': '📜 Verlauf',
-    'btn.downloadAll': '📦 Alle herunterladen',
-    'shortcuts': 'Space: Verarbeiten | S: Download | R: Zurücksetzen | L: Sprache',
-    'view.split': 'Geteilt',
-    'view.slider': 'Schieber',
-    'view.single': 'Einzeln',
-    'view.noImage': 'Kein Bild geladen',
-    'placeholder.title': 'Bild ablegen um zu beginnen',
-    'placeholder.sub': 'Komprimieren · Größe ändern · Konvertieren · Filtern',
-    'badge.original': 'Original',
-    'badge.processed': 'Verarbeitet',
-    'info.file': 'Datei:',
-    'info.original': 'Original:',
-    'info.output': 'Ausgabe:',
-    'info.saved': 'Ersparnis:',
-    'info.dims': 'Maße:',
-    'modal.infoTitle': '📷 Bildinformationen',
-    'infoGrid.name': 'Name',
-    'infoGrid.format': 'Format',
-    'infoGrid.dims': 'Abmessungen',
-    'infoGrid.fileSize': 'Dateigröße',
-    'infoGrid.outSize': 'Ausgabegröße',
-    'infoGrid.compression': 'Komprimierung',
-    'infoGrid.colorSpace': 'Farbraum',
-    'modal.histTitle': '📜 Verarbeitungsverlauf',
-    'modal.noHist': 'Noch kein Verlauf',
-    'btn.clearHist': 'Verlauf löschen',
-    'btn.close': 'Schließen',
-    'modal.b64Title': '🔤 Base64-Daten-URL',
-    'btn.copyB64': '📋 Kopieren',
-    'toast.noImage': 'Kein Bild geladen',
-    'toast.downloaded': 'Heruntergeladen ✅',
-    'toast.copied': 'In Zwischenablage kopiert ✅',
-    'toast.copiedB64': 'Base64 kopiert ✅',
-    'toast.historyCleared': 'Verlauf gelöscht',
-    'toast.error': 'Fehler: ',
-    'toast.batchStarted': 'Batch-Download gestartet 📦',
-    'toast.copyNotSupported': 'Kopieren nicht unterstützt',
-    'btnProcessing': '⏳ Verarbeitung läuft...',
-  },
-  ru: {
-    brand: 'Maddy<span>Pix</span>',
-    'btn.info': 'Информация об изображении',
-    'upload.text': 'Перетащите изображения или нажмите для выбора',
-    'upload.hint': 'PNG, JPG, WebP, BMP, GIF — несколько файлов',
-    'panel.compression': 'Сжатие',
-    'ctrl.quality': 'Качество',
-    'ctrl.lossless': 'Режим без потерь (PNG/WebP)',
-    'ctrl.stripMeta': 'Удалить метаданные (EXIF)',
-    'panel.resize': 'Изменить размер',
-    'ctrl.enableResize': 'Включить изменение размера',
-    'ctrl.w': 'Ш',
-    'ctrl.h': 'В',
-    'ctrl.aspectRatio': 'Соотношение сторон',
-    'panel.crop': 'Кадрировать',
-    'ctrl.enableCrop': 'Включить кадрирование',
-    'crop.free': 'Свободно',
-    'panel.rotate': 'Поворот / Отражение',
-    'btn.reset': 'Сброс',
-    'panel.format': 'Формат вывода',
-    'ctrl.progressive': 'Прогрессивный / чересстрочный',
-    'panel.filters': 'Фильтры',
-    'filter.none': 'Нет',
-    'filter.grayscale': 'Оттенки серого',
-    'filter.sepia': 'Сепия',
-    'filter.invert': 'Инверсия',
-    'filter.brightness': 'Яркость',
-    'filter.contrast': 'Контраст',
-    'filter.blur': 'Размытие',
-    'filter.saturate': 'Насыщенность',
-    'ctrl.amount': 'Степень',
-    'panel.watermark': 'Водяной знак',
-    'ctrl.addWM': 'Добавить текст водяного знака',
-    'wm.br': 'Снизу-справа',
-    'wm.bl': 'Снизу-слева',
-    'wm.tr': 'Сверху-справа',
-    'wm.tl': 'Сверху-слева',
-    'wm.center': 'Центр',
-    'wm.small': 'Маленький',
-    'wm.medium': 'Средний',
-    'wm.large': 'Большой',
-    'panel.targetSize': 'Целевой размер файла',
-    'ctrl.autoAdjust': 'Автоподстройка под макс. размер',
-    'btn.process': '⚡ Обработать',
-    'btn.download': '💾 Скачать',
-    'btn.copy': 'Копировать в буфер',
-    'btn.base64': 'Получить Base64',
-    'btn.history': '📜 История',
-    'btn.downloadAll': '📦 Скачать всё',
-    'shortcuts': 'Space: Обработка | S: Скачать | R: Сброс | L: Язык',
-    'view.split': 'Рядом',
-    'view.slider': 'Слайдер',
-    'view.single': 'Одно',
-    'view.noImage': 'Изображение не загружено',
-    'placeholder.title': 'Перетащите изображение для начала',
-    'placeholder.sub': 'Сжатие · Изменение размера · Конвертация · Фильтры',
-    'badge.original': 'Оригинал',
-    'badge.processed': 'Обработано',
-    'info.file': 'Файл:',
-    'info.original': 'Оригинал:',
-    'info.output': 'Вывод:',
-    'info.saved': 'Сэкономлено:',
-    'info.dims': 'Размеры:',
-    'modal.infoTitle': '📷 Информация об изображении',
-    'infoGrid.name': 'Имя',
-    'infoGrid.format': 'Формат',
-    'infoGrid.dims': 'Размеры',
-    'infoGrid.fileSize': 'Размер файла',
-    'infoGrid.outSize': 'Размер вывода',
-    'infoGrid.compression': 'Сжатие',
-    'infoGrid.colorSpace': 'Цветовое пространство',
-    'modal.histTitle': '📜 История обработки',
-    'modal.noHist': 'Истории пока нет',
-    'btn.clearHist': 'Очистить историю',
-    'btn.close': 'Закрыть',
-    'modal.b64Title': '🔤 Base64 Data URL',
-    'btn.copyB64': '📋 Копировать',
-    'toast.noImage': 'Изображение не загружено',
-    'toast.downloaded': 'Скачано ✅',
-    'toast.copied': 'Скопировано в буфер ✅',
-    'toast.copiedB64': 'Base64 скопирован ✅',
-    'toast.historyCleared': 'История очищена',
-    'toast.error': 'Ошибка: ',
-    'toast.batchStarted': 'Пакетная загрузка начата 📦',
-    'toast.copyNotSupported': 'Копирование не поддерживается',
-    'btnProcessing': '⏳ Обработка...',
-  }
+en:{
+brand:'Maddy<span>Pix</span>','btn.info':'Image info','stab.edit':'Edit','stab.export':'Export',
+'upload.text':'Drop images or click','upload.hint':'PNG, JPG, WebP, BMP, GIF',
+'panel.compression':'Compression','ctrl.quality':'Quality','ctrl.lossless':'Lossless','ctrl.stripMeta':'Strip metadata',
+'panel.resize':'Resize','ctrl.enableResize':'Enable','ctrl.w':'W','ctrl.h':'H','ctrl.aspectRatio':'Lock ratio',
+'panel.crop':'Crop','ctrl.enableCrop':'Enable','crop.free':'Free',
+'panel.rotate':'Rotate / Flip','btn.reset':'Reset',
+'panel.filters':'Filters','filter.none':'None','filter.grayscale':'Grayscale','filter.sepia':'Sepia','filter.invert':'Invert',
+'filter.brightness':'Brightness','filter.contrast':'Contrast','filter.blur':'Blur','filter.saturate':'Saturate','ctrl.amount':'Amount',
+'panel.watermark':'Watermark','ctrl.addWM':'Add text','wm.br':'BR','wm.bl':'BL','wm.tr':'TR','wm.tl':'TL','wm.center':'Center',
+'wm.small':'S','wm.medium':'M','wm.large':'L',
+'panel.format':'Output Format','ctrl.progressive':'Progressive',
+'panel.targetSize':'Target File Size','ctrl.autoAdjust':'Auto-fit to max',
+'panel.output':'Output','btn.process':'⚡ Process','btn.download':'💾 Download','btn.copy':'Copy','btn.base64':'Base64',
+'btn.history':'📜 History','btn.downloadAll':'📦 Batch ZIP',
+'shortcuts':'Space:Process | S:Download | R:Reset | L:Lang',
+'view.split':'Split','view.slider':'Slider','view.single':'Single','view.noImage':'No image',
+'placeholder.title':'Drop image to begin','placeholder.sub':'Compress · Resize · Convert · Filter',
+'badge.original':'Original','badge.processed':'Processed',
+'info.file':'File:','info.original':'Orig:','info.output':'Out:','info.saved':'Saved:','info.dims':'Dims:',
+'modal.infoTitle':'📷 Image Info','infoGrid.name':'Name','infoGrid.format':'Format','infoGrid.dims':'Dimensions',
+'infoGrid.fileSize':'File Size','infoGrid.outSize':'Output Size','infoGrid.compression':'Compression','infoGrid.colorSpace':'Color Space',
+'modal.histTitle':'📜 History','modal.noHist':'No history yet','btn.clearHist':'Clear','btn.close':'Close',
+'modal.b64Title':'🔤 Base64 Data URL','btn.copyB64':'📋 Copy',
+'toast.noImage':'No image loaded','toast.downloaded':'Downloaded ✅','toast.copied':'Copied ✅','toast.copiedB64':'Base64 copied ✅',
+'toast.historyCleared':'History cleared','toast.error':'Error: ','toast.batchStarted':'Batch ZIP ready 📦','toast.copyNotSupported':'Copy not supported',
+'btnProcessing':'⏳ Processing...'},
+fa:{
+brand:'Maddy<span>Pix</span>','btn.info':'اطلاعات','stab.edit':'ویرایش','stab.export':'خروجی',
+'upload.text':'کلیک یا رها کردن','upload.hint':'PNG, JPG, WebP, BMP, GIF',
+'panel.compression':'فشرده‌سازی','ctrl.quality':'کیفیت','ctrl.lossless':'بدون افت','ctrl.stripMeta':'حذف متادیتا',
+'panel.resize':'ابعاد','ctrl.enableResize':'فعال','ctrl.w':'ع','ctrl.h':'ا','ctrl.aspectRatio':'قفل نسبت',
+'panel.crop':'برش','ctrl.enableCrop':'فعال','crop.free':'آزاد',
+'panel.rotate':'چرخش','btn.reset':'بازنشانی',
+'panel.filters':'فیلتر','filter.none':'بدون','filter.grayscale':'تک‌رنگ','filter.sepia':'سپیا','filter.invert':'معکوس',
+'filter.brightness':'روشنایی','filter.contrast':'کنتراست','filter.blur':'محو','filter.saturate':'اشباع','ctrl.amount':'میزان',
+'panel.watermark':'واترمارک','ctrl.addWM':'افزودن متن','wm.br':'پایین-راست','wm.bl':'پایین-چپ','wm.tr':'بالا-راست','wm.tl':'بالا-چپ','wm.center':'مرکز',
+'wm.small':'کوچک','wm.medium':'متوسط','wm.large':'بزرگ',
+'panel.format':'فرمت','ctrl.progressive':'پیش‌رونده',
+'panel.targetSize':'حجم هدف','ctrl.autoAdjust':'تنظیم خودکار',
+'panel.output':'خروجی','btn.process':'⚡ پردازش','btn.download':'💾 دانلود','btn.copy':'کپی','btn.base64':'Base64',
+'btn.history':'📜 تاریخچه','btn.downloadAll':'📦 زیپ گروهی',
+'shortcuts':'Space:پردازش | S:دانلود | R:بازنشانی | L:زبان',
+'view.split':'کنارهم','view.slider':'لغزنده','view.single':'تکی','view.noImage':'تصویری نیست',
+'placeholder.title':'تصویر را رها کنید','placeholder.sub':'فشرده‌سازی · تغییر اندازه · تبدیل · فیلتر',
+'badge.original':'اصلی','badge.processed':'پردازش‌شده',
+'info.file':'فایل:','info.original':'اصلی:','info.output':'خروجی:','info.saved':'صرفه:','info.dims':'ابعاد:',
+'modal.infoTitle':'📷 اطلاعات','infoGrid.name':'نام','infoGrid.format':'فرمت','infoGrid.dims':'ابعاد',
+'infoGrid.fileSize':'حجم','infoGrid.outSize':'حجم خروجی','infoGrid.compression':'فشرده‌سازی','infoGrid.colorSpace':'فضای رنگی',
+'modal.histTitle':'📜 تاریخچه','modal.noHist':'تاریخچه‌ای نیست','btn.clearHist':'پاک‌کردن','btn.close':'بستن',
+'modal.b64Title':'🔤 داده Base64','btn.copyB64':'📋 کپی',
+'toast.noImage':'تصویری نیست','toast.downloaded':'دانلود ✅','toast.copied':'کپی ✅','toast.copiedB64':'Base64 کپی ✅',
+'toast.historyCleared':'تاریخچه پاک شد','toast.error':'خطا: ','toast.batchStarted':'زیپ آماده 📦','toast.copyNotSupported':'پشتیبانی نمی‌شود',
+'btnProcessing':'⏳ در حال پردازش...'},
+ar:{
+brand:'Maddy<span>Pix</span>','btn.info':'معلومات','stab.edit':'تحرير','stab.export':'تصدير',
+'upload.text':'أسقط أو انقر','upload.hint':'PNG, JPG, WebP, BMP, GIF',
+'panel.compression':'ضغط','ctrl.quality':'الجودة','ctrl.lossless':'بدون فقدان','ctrl.stripMeta':'حذف البيانات',
+'panel.resize':'تغيير الحجم','ctrl.enableResize':'تفعيل','ctrl.w':'ع','ctrl.h':'ا','ctrl.aspectRatio':'قفل النسبة',
+'panel.crop':'قص','ctrl.enableCrop':'تفعيل','crop.free':'حر',
+'panel.rotate':'تدوير','btn.reset':'إعادة تعيين',
+'panel.filters':'مرشحات','filter.none':'لا شيء','filter.grayscale':'رمادي','filter.sepia':'سيبيا','filter.invert':'عكس',
+'filter.brightness':'سطوع','filter.contrast':'تباين','filter.blur':'ضبابية','filter.saturate':'تشبع','ctrl.amount':'المقدار',
+'panel.watermark':'علامة مائية','ctrl.addWM':'أضف نصًا','wm.br':'أسفل-يمين','wm.bl':'أسفل-يسار','wm.tr':'أعلى-يمين','wm.tl':'أعلى-يسار','wm.center':'وسط',
+'wm.small':'صغير','wm.medium':'وسط','wm.large':'كبير',
+'panel.format':'تنسيق','ctrl.progressive':'تدريجي',
+'panel.targetSize':'الحجم المستهدف','ctrl.autoAdjust':'ضبط تلقائي',
+'panel.output':'المخرجات','btn.process':'⚡ معالجة','btn.download':'💾 تحميل','btn.copy':'نسخ','btn.base64':'Base64',
+'btn.history':'📜 السجل','btn.downloadAll':'📦 ZIP دفعة',
+'shortcuts':'Space:معالجة | S:تحميل | R:إعادة | L:لغة',
+'view.split':'مقسم','view.slider':'منزلق','view.single':'مفرد','view.noImage':'لا توجد صورة',
+'placeholder.title':'أسقط صورة','placeholder.sub':'ضغط · تغيير حجم · تحويل · مرشح',
+'badge.original':'أصلي','badge.processed':'تمت المعالجة',
+'info.file':'ملف:','info.original':'أصلي:','info.output':'خرج:','info.saved':'وفر:','info.dims':'أبعاد:',
+'modal.infoTitle':'📷 معلومات','infoGrid.name':'الاسم','infoGrid.format':'التنسيق','infoGrid.dims':'الأبعاد',
+'infoGrid.fileSize':'الحجم','infoGrid.outSize':'حجم الخرج','infoGrid.compression':'الضغط','infoGrid.colorSpace':'الفضاء اللوني',
+'modal.histTitle':'📜 السجل','modal.noHist':'لا يوجد سجل','btn.clearHist':'مسح','btn.close':'إغلاق',
+'modal.b64Title':'🔤 Base64','btn.copyB64':'📋 نسخ',
+'toast.noImage':'لا توجد صورة','toast.downloaded':'تم التحميل ✅','toast.copied':'تم النسخ ✅','toast.copiedB64':'تم نسخ Base64 ✅',
+'toast.historyCleared':'تم المسح','toast.error':'خطأ: ','toast.batchStarted':'ZIP جاهز 📦','toast.copyNotSupported':'النسخ غير مدعوم',
+'btnProcessing':'⏳ جاري المعالجة...'},
+fr:{
+brand:'Maddy<span>Pix</span>','btn.info':'Infos','stab.edit':'Éditer','stab.export':'Exporter',
+'upload.text':'Déposez ou cliquez','upload.hint':'PNG, JPG, WebP, BMP, GIF',
+'panel.compression':'Compression','ctrl.quality':'Qualité','ctrl.lossless':'Sans perte','ctrl.stripMeta':'Supprimer métadonnées',
+'panel.resize':'Redim.','ctrl.enableResize':'Activer','ctrl.w':'L','ctrl.h':'H','ctrl.aspectRatio':'Verrouiller',
+'panel.crop':'Recadrer','ctrl.enableCrop':'Activer','crop.free':'Libre',
+'panel.rotate':'Pivoter','btn.reset':'Réinit.',
+'panel.filters':'Filtres','filter.none':'Aucun','filter.grayscale':'Gris','filter.sepia':'Sépia','filter.invert':'Inverser',
+'filter.brightness':'Luminosité','filter.contrast':'Contraste','filter.blur':'Flou','filter.saturate':'Saturation','ctrl.amount':'Intensité',
+'panel.watermark':'Filigrane','ctrl.addWM':'Ajouter texte','wm.br':'BD','wm.bl':'BG','wm.tr':'HD','wm.tl':'HG','wm.center':'Centre',
+'wm.small':'P','wm.medium':'M','wm.large':'G',
+'panel.format':'Format','ctrl.progressive':'Progressif',
+'panel.targetSize':'Taille cible','ctrl.autoAdjust':'Ajustement auto',
+'panel.output':'Sortie','btn.process':'⚡ Traiter','btn.download':'💾 Téléch.','btn.copy':'Copier','btn.base64':'Base64',
+'btn.history':'📜 Historique','btn.downloadAll':'📦 ZIP lot',
+'shortcuts':'Space:Traiter | S:Téléch. | R:Réinit. | L:Langue',
+'view.split':'Côte à côte','view.slider':'Curseur','view.single':'Simple','view.noImage':'Aucune image',
+'placeholder.title':'Déposez une image','placeholder.sub':'Compresser · Redim. · Convertir · Filtrer',
+'badge.original':'Originale','badge.processed':'Traitée',
+'info.file':'Fichier:','info.original':'Orig.:','info.output':'Sortie:','info.saved':'Gain:','info.dims':'Dim.:',
+'modal.infoTitle':'📷 Infos','infoGrid.name':'Nom','infoGrid.format':'Format','infoGrid.dims':'Dimensions',
+'infoGrid.fileSize':'Taille','infoGrid.outSize':'Taille sortie','infoGrid.compression':'Compression','infoGrid.colorSpace':'Espace couleur',
+'modal.histTitle':'📜 Historique','modal.noHist':'Aucun historique','btn.clearHist':'Effacer','btn.close':'Fermer',
+'modal.b64Title':'🔤 URL Base64','btn.copyB64':'📋 Copier',
+'toast.noImage':'Aucune image','toast.downloaded':'Téléchargé ✅','toast.copied':'Copié ✅','toast.copiedB64':'Base64 copié ✅',
+'toast.historyCleared':'Historique effacé','toast.error':'Erreur: ','toast.batchStarted':'ZIP prêt 📦','toast.copyNotSupported':'Copie non supportée',
+'btnProcessing':'⏳ Traitement...'},
+de:{
+brand:'Maddy<span>Pix</span>','btn.info':'Info','stab.edit':'Bearbeiten','stab.export':'Exportieren',
+'upload.text':'Ablegen oder klicken','upload.hint':'PNG, JPG, WebP, BMP, GIF',
+'panel.compression':'Komprimierung','ctrl.quality':'Qualität','ctrl.lossless':'Verlustfrei','ctrl.stripMeta':'Metadaten entfernen',
+'panel.resize':'Größe','ctrl.enableResize':'Aktivieren','ctrl.w':'B','ctrl.h':'H','ctrl.aspectRatio':'Sperren',
+'panel.crop':'Zuschneiden','ctrl.enableCrop':'Aktivieren','crop.free':'Frei',
+'panel.rotate':'Drehen','btn.reset':'Zurücksetzen',
+'panel.filters':'Filter','filter.none':'Keine','filter.grayscale':'Graustufen','filter.sepia':'Sepia','filter.invert':'Invertieren',
+'filter.brightness':'Helligkeit','filter.contrast':'Kontrast','filter.blur':'Weichzeichner','filter.saturate':'Sättigung','ctrl.amount':'Stärke',
+'panel.watermark':'Wasserzeichen','ctrl.addWM':'Text hinzufügen','wm.br':'UR','wm.bl':'UL','wm.tr':'OR','wm.tl':'OL','wm.center':'Mitte',
+'wm.small':'K','wm.medium':'M','wm.large':'G',
+'panel.format':'Format','ctrl.progressive':'Progressiv',
+'panel.targetSize':'Zielgröße','ctrl.autoAdjust':'Auto-Anpassung',
+'panel.output':'Ausgabe','btn.process':'⚡ Verarbeiten','btn.download':'💾 DL','btn.copy':'Kopieren','btn.base64':'Base64',
+'btn.history':'📜 Verlauf','btn.downloadAll':'📦 ZIP-Batch',
+'shortcuts':'Space:Verarb. | S:DL | R:Zurück | L:Sprache',
+'view.split':'Geteilt','view.slider':'Schieber','view.single':'Einzeln','view.noImage':'Kein Bild',
+'placeholder.title':'Bild ablegen','placeholder.sub':'Komprimieren · Größe · Konvertieren · Filtern',
+'badge.original':'Original','badge.processed':'Verarbeitet',
+'info.file':'Datei:','info.original':'Orig.:','info.output':'Ausg.:','info.saved':'Spare:','info.dims':'Maße:',
+'modal.infoTitle':'📷 Info','infoGrid.name':'Name','infoGrid.format':'Format','infoGrid.dims':'Maße',
+'infoGrid.fileSize':'Dateigröße','infoGrid.outSize':'Ausgabegröße','infoGrid.compression':'Komprimierung','infoGrid.colorSpace':'Farbraum',
+'modal.histTitle':'📜 Verlauf','modal.noHist':'Kein Verlauf','btn.clearHist':'Löschen','btn.close':'Schließen',
+'modal.b64Title':'🔤 Base64-URL','btn.copyB64':'📋 Kopieren',
+'toast.noImage':'Kein Bild','toast.downloaded':'DL ✅','toast.copied':'Kopiert ✅','toast.copiedB64':'Base64 kopiert ✅',
+'toast.historyCleared':'Verlauf gelöscht','toast.error':'Fehler: ','toast.batchStarted':'ZIP bereit 📦','toast.copyNotSupported':'Kopieren nicht unterstützt',
+'btnProcessing':'⏳ Verarbeitung...'},
+ru:{
+brand:'Maddy<span>Pix</span>','btn.info':'Инфо','stab.edit':'Правка','stab.export':'Экспорт',
+'upload.text':'Перетащите или нажмите','upload.hint':'PNG, JPG, WebP, BMP, GIF',
+'panel.compression':'Сжатие','ctrl.quality':'Качество','ctrl.lossless':'Без потерь','ctrl.stripMeta':'Удалить метаданные',
+'panel.resize':'Размер','ctrl.enableResize':'Вкл.','ctrl.w':'Ш','ctrl.h':'В','ctrl.aspectRatio':'Блокировка',
+'panel.crop':'Кадрировать','ctrl.enableCrop':'Вкл.','crop.free':'Свободно',
+'panel.rotate':'Поворот','btn.reset':'Сброс',
+'panel.filters':'Фильтры','filter.none':'Нет','filter.grayscale':'Серый','filter.sepia':'Сепия','filter.invert':'Инверсия',
+'filter.brightness':'Яркость','filter.contrast':'Контраст','filter.blur':'Размытие','filter.saturate':'Насыщенность','ctrl.amount':'Степень',
+'panel.watermark':'Вод. знак','ctrl.addWM':'Добавить текст','wm.br':'Снизу-спр.','wm.bl':'Снизу-сл.','wm.tr':'Сверху-спр.','wm.tl':'Сверху-сл.','wm.center':'Центр',
+'wm.small':'М','wm.medium':'С','wm.large':'Б',
+'panel.format':'Формат','ctrl.progressive':'Прогрессивный',
+'panel.targetSize':'Целевой размер','ctrl.autoAdjust':'Автонастройка',
+'panel.output':'Вывод','btn.process':'⚡ Обработать','btn.download':'💾 Скачать','btn.copy':'Копия','btn.base64':'Base64',
+'btn.history':'📜 История','btn.downloadAll':'📦 ZIP-пакет',
+'shortcuts':'Space:Обраб. | S:Скачать | R:Сброс | L:Язык',
+'view.split':'Рядом','view.slider':'Слайдер','view.single':'Одно','view.noImage':'Нет изображения',
+'placeholder.title':'Перетащите','placeholder.sub':'Сжатие · Размер · Конвертация · Фильтр',
+'badge.original':'Оригинал','badge.processed':'Обработано',
+'info.file':'Файл:','info.original':'Ориг.:','info.output':'Вывод:','info.saved':'Экон.:','info.dims':'Разм.:',
+'modal.infoTitle':'📷 Инфо','infoGrid.name':'Имя','infoGrid.format':'Формат','infoGrid.dims':'Размеры',
+'infoGrid.fileSize':'Размер','infoGrid.outSize':'Размер вывода','infoGrid.compression':'Сжатие','infoGrid.colorSpace':'Цвет. пространство',
+'modal.histTitle':'📜 История','modal.noHist':'Истории нет','btn.clearHist':'Очистить','btn.close':'Закрыть',
+'modal.b64Title':'🔤 Base64 URL','btn.copyB64':'📋 Копировать',
+'toast.noImage':'Нет изображения','toast.downloaded':'Скачано ✅','toast.copied':'Скопировано ✅','toast.copiedB64':'Base64 скопирован ✅',
+'toast.historyCleared':'История очищена','toast.error':'Ошибка: ','toast.batchStarted':'ZIP готов 📦','toast.copyNotSupported':'Копирование не поддерживается',
+'btnProcessing':'⏳ Обработка...'}
 };
 
-// ===== i18n init =====
 const langSelect = $('langSelect');
 langSelect.addEventListener('change', () => setLang(langSelect.value));
 
 // ===== State =====
-const state = {
-  images: [],
-  activeIdx: 0,
-  processedBlob: null,
-  processedURL: null,
-  viewMode: 'split',
-  filterRotation: 0,
-  filterFlipH: false,
-  filterFlipV: false,
-  cropAR: null,
-  theme: 'dark',
-  history: [],
-};
+const state = { images: [], activeIdx: 0, processedBlob: null, processedURL: null, viewMode: 'split', cropAR: null, theme: 'dark', history: [] };
 
 const fileInput = $('fileInput'), uploadZone = $('uploadZone');
 const qSlider = $('qSlider'), qVal = $('qVal');
@@ -1081,19 +606,24 @@ const themeBtn = $('themeBtn'), infoBtn = $('infoBtn');
 
 let tTimeout;
 function toastMsg(m) {
-  // If m is a translation key, translate it
   const txt = LOCALE[currentLang] && LOCALE[currentLang][m] ? t(m) : m;
-  toast.textContent = txt;
-  toast.classList.add('show');
-  clearTimeout(tTimeout);
-  tTimeout = setTimeout(() => toast.classList.remove('show'), 2500);
+  toast.textContent = txt; toast.classList.add('show');
+  clearTimeout(tTimeout); tTimeout = setTimeout(() => toast.classList.remove('show'), 2500);
 }
-
 function fmtSize(b) { if (!b || b === 0) return '0 B'; const k = 1024, s = ['B', 'KB', 'MB']; const i = Math.floor(Math.log(b) / Math.log(k)); return parseFloat((b / Math.pow(k, i)).toFixed(1)) + ' ' + s[i]; }
-
 function loadImg(src) { return new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; }); }
-
 function getActive() { return state.images[state.activeIdx] || null; }
+function getAspectRatio() { const a = getActive(); return a ? a.origW / a.origH : 1; }
+
+// ===== Sidebar Tabs =====
+document.querySelectorAll('.stab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.stab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+    $('tab' + btn.dataset.stab.charAt(0).toUpperCase() + btn.dataset.stab.slice(1)).classList.add('active');
+  });
+});
 
 // ===== Theme =====
 themeBtn.addEventListener('click', () => {
@@ -1116,12 +646,7 @@ async function handleFiles(files) {
     const img = await loadImg(dataUrl);
     state.images.push({ file, img, dataUrl, rot: 0, flipH: false, flipV: false, origW: img.width, origH: img.height });
   }
-  if (state.images.length) {
-    state.activeIdx = 0;
-    renderBatchStrip();
-    loadActiveImage();
-    processBtn.disabled = false;
-  }
+  if (state.images.length) { state.activeIdx = 0; renderBatchStrip(); loadActiveImage(); processBtn.disabled = false; }
 }
 
 function renderBatchStrip() {
@@ -1155,30 +680,23 @@ function resetUI() {
   fName.textContent = '—'; origSize.textContent = '—'; outSize.textContent = '—'; dimsDisplay.textContent = '—';
   savingBadge.textContent = '—'; savingBadge.className = 'saving';
   $('viewInfo').textContent = t('view.noImage');
-  state.processedBlob = null; state.filterRotation = 0; state.filterFlipH = false; state.filterFlipV = false;
+  state.processedBlob = null;
 }
 
-// ===== Load active =====
 function loadActiveImage() {
   const a = getActive(); if (!a) return;
   placeholder.style.display = 'none';
-  const view = state.viewMode;
-  splitView.style.display = view === 'split' ? 'flex' : 'none';
-  sliderView.style.display = view === 'slider' ? 'block' : 'none';
-  singleView.style.display = view === 'single' ? 'flex' : 'none';
-
-  origImg.src = a.dataUrl;
-  cmpOrig.src = a.dataUrl;
+  const v = state.viewMode;
+  splitView.style.display = v === 'split' ? 'flex' : 'none';
+  sliderView.style.display = v === 'slider' ? 'block' : 'none';
+  singleView.style.display = v === 'single' ? 'flex' : 'none';
+  origImg.src = a.dataUrl; cmpOrig.src = a.dataUrl;
   if (!state.processedURL) cmpProc.src = a.dataUrl;
   singleImg.src = a.dataUrl;
-
-  fName.textContent = a.file.name;
-  origSize.textContent = fmtSize(a.file.size);
+  fName.textContent = a.file.name; origSize.textContent = fmtSize(a.file.size);
   dimsDisplay.textContent = `${a.origW} × ${a.origH}`;
   $('viewInfo').textContent = `${a.file.name} — ${fmtSize(a.file.size)}`;
-
   if (!wInp.value || resizeOn.checked) { wInp.value = a.origW; hInp.value = a.origH; }
-
   if (state.processedBlob) { downloadBtn.disabled = false; copyBtn.disabled = false; base64Btn.disabled = false; }
   processImage();
 }
@@ -1201,31 +719,13 @@ document.querySelectorAll('.view-btn').forEach(btn => {
 
 // ===== Comparison slider =====
 let dragging = false;
-cmpHandle.addEventListener('mousedown', (e) => { e.preventDefault(); dragging = true; });
-document.addEventListener('mousemove', (e) => {
-  if (!dragging) return;
-  const rect = cmpWrap.getBoundingClientRect();
-  let x = ((e.clientX - rect.left) / rect.width) * 100;
-  x = Math.max(5, Math.min(95, x));
-  cmpClip.style.width = x + '%';
-  cmpHandle.style.left = x + '%';
-});
+cmpHandle.addEventListener('mousedown', e => { e.preventDefault(); dragging = true; });
+document.addEventListener('mousemove', e => { if (!dragging) return; const r = cmpWrap.getBoundingClientRect(); let x = ((e.clientX - r.left) / r.width) * 100; x = Math.max(5, Math.min(95, x)); cmpClip.style.width = x + '%'; cmpHandle.style.left = x + '%'; });
 document.addEventListener('mouseup', () => { dragging = false; });
-cmpHandle.addEventListener('touchstart', (e) => { e.preventDefault(); dragging = true; });
-document.addEventListener('touchmove', (e) => {
-  if (!dragging) return;
-  const touch = e.touches[0];
-  const rect = cmpWrap.getBoundingClientRect();
-  let x = ((touch.clientX - rect.left) / rect.width) * 100;
-  x = Math.max(5, Math.min(95, x));
-  cmpClip.style.width = x + '%';
-  cmpHandle.style.left = x + '%';
-});
+cmpHandle.addEventListener('touchstart', e => { e.preventDefault(); dragging = true; });
+document.addEventListener('touchmove', e => { if (!dragging) return; const t = e.touches[0]; const r = cmpWrap.getBoundingClientRect(); let x = ((t.clientX - r.left) / r.width) * 100; x = Math.max(5, Math.min(95, x)); cmpClip.style.width = x + '%'; cmpHandle.style.left = x + '%'; });
 document.addEventListener('touchend', () => { dragging = false; });
-
-function updateComparisonSlider() {
-  if (state.processedURL) cmpProc.src = state.processedURL;
-}
+function updateComparisonSlider() { if (state.processedURL) cmpProc.src = state.processedURL; }
 
 // ===== Crop presets =====
 document.querySelectorAll('#cropPresets .btn').forEach(btn => {
@@ -1239,25 +739,12 @@ document.querySelectorAll('#cropPresets .btn').forEach(btn => {
 
 // ===== Rotate / Flip =====
 document.querySelectorAll('[data-rot]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const a = getActive(); if (!a) return;
-    a.rot = (a.rot + parseInt(btn.dataset.rot)) % 360;
-    processImage();
-  });
+  btn.addEventListener('click', () => { const a = getActive(); if (!a) return; a.rot = (a.rot + parseInt(btn.dataset.rot)) % 360; processImage(); });
 });
 document.querySelectorAll('[data-flip]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const a = getActive(); if (!a) return;
-    if (btn.dataset.flip === 'h') a.flipH = !a.flipH;
-    else a.flipV = !a.flipV;
-    processImage();
-  });
+  btn.addEventListener('click', () => { const a = getActive(); if (!a) return; if (btn.dataset.flip === 'h') a.flipH = !a.flipH; else a.flipV = !a.flipV; processImage(); });
 });
-$('resetRotFlip').addEventListener('click', () => {
-  const a = getActive(); if (!a) return;
-  a.rot = 0; a.flipH = false; a.flipV = false;
-  processImage();
-});
+$('resetRotFlip').addEventListener('click', () => { const a = getActive(); if (!a) return; a.rot = 0; a.flipH = false; a.flipV = false; processImage(); });
 
 // ===== Controls =====
 qSlider.addEventListener('input', () => { qVal.textContent = qSlider.value + '%'; if (getActive()) debounceProcess(); });
@@ -1279,8 +766,6 @@ wmSize.addEventListener('change', () => { if (getActive()) debounceProcess(); })
 targetSizeOn.addEventListener('change', () => { targetSizeInp.disabled = !targetSizeOn.checked; if (getActive()) debounceProcess(); });
 targetSizeInp.addEventListener('input', () => { if (getActive()) debounceProcess(); });
 
-function getAspectRatio() { const a = getActive(); return a ? a.origW / a.origH : 1; }
-
 // ===== Processing =====
 let pTimeout;
 function debounceProcess() { clearTimeout(pTimeout); pTimeout = setTimeout(processImage, 250); }
@@ -1288,118 +773,79 @@ function debounceProcess() { clearTimeout(pTimeout); pTimeout = setTimeout(proce
 async function processImage() {
   const a = getActive(); if (!a) return;
   processBtn.textContent = t('btnProcessing');
-
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
   const quality = parseInt(qSlider.value) / 100;
   const format = fmtSelect.value;
   const filter = filterSel.value;
   const fAmt = parseInt(filterAmt.value) / 100;
-
   let sw = a.origW, sh = a.origH;
   const needsSwap = a.rot % 180 !== 0;
-
   let rw = sw, rh = sh;
   if (resizeOn.checked) {
-    rw = parseInt(wInp.value) || sw;
-    rh = parseInt(hInp.value) || sh;
+    rw = parseInt(wInp.value) || sw; rh = parseInt(hInp.value) || sh;
     if (!rw && rh) rw = Math.round(rh * getAspectRatio());
     if (rw && !rh) rh = Math.round(rw / getAspectRatio());
   }
-
   let cropX = 0, cropY = 0, cropW = rw, cropH = rh;
   if (cropOn.checked && state.cropAR) {
     const ar = eval(state.cropAR);
     if (rw / rh > ar) { cropW = Math.round(rh * ar); cropX = Math.round((rw - cropW) / 2); }
     else { cropH = Math.round(rw / ar); cropY = Math.round((rh - cropH) / 2); }
   }
-
   const cw = needsSwap ? cropH : cropW;
   const ch = needsSwap ? cropW : cropH;
-  canvas.width = cw;
-  canvas.height = ch;
-
+  canvas.width = cw; canvas.height = ch;
   ctx.save();
   ctx.translate(cw / 2, ch / 2);
   ctx.rotate(a.rot * Math.PI / 180);
-  let sx = a.flipH ? -1 : 1, sy = a.flipV ? -1 : 1;
-  ctx.scale(sx, sy);
+  ctx.scale(a.flipH ? -1 : 1, a.flipV ? -1 : 1);
   ctx.drawImage(a.img, cropX, cropY, cropW, cropH, -cropW / 2, -cropH / 2, cropW, cropH);
   ctx.restore();
-
   if (['grayscale', 'sepia', 'invert'].includes(filter)) {
-    const id = ctx.getImageData(0, 0, cw, ch);
-    const d = id.data;
+    const id = ctx.getImageData(0, 0, cw, ch); const d = id.data;
     for (let i = 0; i < d.length; i += 4) {
-      const r = d[i], g = d[i + 1], b = d[i + 2];
-      if (filter === 'grayscale') { const gr = 0.299 * r + 0.587 * g + 0.114 * b; d[i] = d[i + 1] = d[i + 2] = gr; }
-      else if (filter === 'sepia') { d[i] = Math.min(255, r * .393 + g * .769 + b * .189); d[i + 1] = Math.min(255, r * .349 + g * .686 + b * .168); d[i + 2] = Math.min(255, r * .272 + g * .534 + b * .131); }
-      else if (filter === 'invert') { d[i] = 255 - r; d[i + 1] = 255 - g; d[i + 2] = 255 - b; }
+      const r = d[i], g = d[i+1], b = d[i+2];
+      if (filter === 'grayscale') { const gr = 0.299*r + 0.587*g + 0.114*b; d[i]=d[i+1]=d[i+2]=gr; }
+      else if (filter === 'sepia') { d[i]=Math.min(255,r*.393+g*.769+b*.189); d[i+1]=Math.min(255,r*.349+g*.686+b*.168); d[i+2]=Math.min(255,r*.272+g*.534+b*.131); }
+      else { d[i]=255-r; d[i+1]=255-g; d[i+2]=255-b; }
     }
     ctx.putImageData(id, 0, 0);
   }
-
   if (['brightness', 'contrast', 'blur', 'saturate'].includes(filter)) {
-    const fmap = { brightness: `brightness(${fAmt})`, contrast: `contrast(${fAmt})`, blur: `blur(${fAmt * 4}px)`, saturate: `saturate(${fAmt})` };
-    ctx.filter = fmap[filter];
-    ctx.clearRect(0, 0, cw, ch);
-    ctx.save(); ctx.translate(cw / 2, ch / 2); ctx.rotate(a.rot * Math.PI / 180); ctx.scale(sx, sy);
-    ctx.drawImage(a.img, cropX, cropY, cropW, cropH, -cropW / 2, -cropH / 2, cropW, cropH);
-    ctx.restore();
-    ctx.filter = 'none';
+    const fmap = { brightness: `brightness(${fAmt})`, contrast: `contrast(${fAmt})`, blur: `blur(${fAmt*4}px)`, saturate: `saturate(${fAmt})` };
+    ctx.filter = fmap[filter]; ctx.clearRect(0, 0, cw, ch);
+    ctx.save(); ctx.translate(cw/2, ch/2); ctx.rotate(a.rot*Math.PI/180); ctx.scale(a.flipH?-1:1, a.flipV?-1:1);
+    ctx.drawImage(a.img, cropX, cropY, cropW, cropH, -cropW/2, -cropH/2, cropW, cropH);
+    ctx.restore(); ctx.filter = 'none';
   }
-
   if (wmOn.checked && wmText.value.trim()) {
-    const fontSize = parseInt(wmSize.value);
-    ctx.font = `bold ${fontSize}px Inter, sans-serif`;
-    ctx.fillStyle = 'rgba(255,255,255,0.6)';
-    ctx.strokeStyle = 'rgba(0,0,0,0.3)';
-    ctx.lineWidth = 2;
-    const txt = wmText.value;
-    const tw = ctx.measureText(txt).width;
-    const pad = 16;
-    let wx, wy;
-    const pos = wmPos.value;
-    if (pos === 'se') { wx = cw - tw - pad; wy = ch - pad; }
-    else if (pos === 'sw') { wx = pad; wy = ch - pad; }
-    else if (pos === 'ne') { wx = cw - tw - pad; wy = fontSize + pad; }
-    else if (pos === 'nw') { wx = pad; wy = fontSize + pad; }
-    else { wx = (cw - tw) / 2; wy = ch / 2 + fontSize / 3; }
-    ctx.strokeText(txt, wx, wy);
-    ctx.fillText(txt, wx, wy);
+    const fs = parseInt(wmSize.value); ctx.font = `bold ${fs}px Inter, sans-serif`;
+    ctx.fillStyle = 'rgba(255,255,255,0.6)'; ctx.strokeStyle = 'rgba(0,0,0,0.3)'; ctx.lineWidth = 2;
+    const txt = wmText.value; const tw = ctx.measureText(txt).width; const pad = 14;
+    const p = wmPos.value; const m = { se: [cw-tw-pad, ch-pad], sw: [pad, ch-pad], ne: [cw-tw-pad, fs+pad], nw: [pad, fs+pad], center: [(cw-tw)/2, ch/2+fs/3] };
+    ctx.strokeText(txt, m[p][0], m[p][1]); ctx.fillText(txt, m[p][0], m[p][1]);
   }
-
   let mimeType = format;
   let oq = losslessToggle.checked ? 1 : quality;
   if (mimeType === 'image/png' && !losslessToggle.checked) oq = 0.92;
   if (mimeType === 'image/bmp' || mimeType === 'image/gif') oq = 1;
-
   if (targetSizeOn.checked) {
     const targetBytes = parseInt(targetSizeInp.value) * 1024;
     if (targetBytes > 0) {
-      let lo = 1, hi = 100, best = null, bestBlob = null;
+      let lo = 1, hi = 100, bestBlob = null;
       for (let iter = 0; iter < 12; iter++) {
         const mid = Math.round((lo + hi) / 2);
-        const blob = await new Promise(r => canvas.toBlob(r, mimeType, mid / 100));
-        if (blob.size <= targetBytes) { best = mid; bestBlob = blob; lo = mid + 1; }
-        else { hi = mid - 1; }
+        const blob = await new Promise(r => canvas.toBlob(r, mimeType, mid/100));
+        if (blob.size <= targetBytes) { bestBlob = blob; lo = mid + 1; } else { hi = mid - 1; }
       }
-      if (bestBlob) {
-        state.processedBlob = bestBlob;
-        updateProcessed(bestBlob);
-        processBtn.textContent = t('btn.process');
-        return;
-      }
+      if (bestBlob) { state.processedBlob = bestBlob; updateProcessed(bestBlob); processBtn.textContent = t('btn.process'); return; }
     }
   }
-
   try {
     const blob = await new Promise(resolve => canvas.toBlob(resolve, mimeType, oq));
-    state.processedBlob = blob;
-    updateProcessed(blob);
-  } catch (err) {
-    toastMsg(t('toast.error') + err.message);
-  }
+    state.processedBlob = blob; updateProcessed(blob);
+  } catch (err) { toastMsg(t('toast.error') + err.message); }
   processBtn.textContent = t('btn.process');
 }
 
@@ -1407,34 +853,16 @@ async function updateProcessed(blob) {
   if (state.processedURL) URL.revokeObjectURL(state.processedURL);
   state.processedURL = URL.createObjectURL(blob);
   const img = await loadImg(state.processedURL);
-
-  procImg.src = state.processedURL;
-  cmpProc.src = state.processedURL;
-  singleImg.src = state.processedURL;
+  procImg.src = state.processedURL; cmpProc.src = state.processedURL; singleImg.src = state.processedURL;
   updateComparisonSlider();
-
   outSize.textContent = fmtSize(blob.size);
   const saving = getActive().file.size - blob.size;
   const pct = Math.abs((saving / getActive().file.size) * 100).toFixed(1);
   if (saving >= 0) { savingBadge.textContent = `-${pct}%`; savingBadge.className = 'saving pos'; }
   else { savingBadge.textContent = `+${pct}%`; savingBadge.className = 'saving neg'; }
-
   dimsDisplay.textContent = `${img.width} × ${img.height}`;
-
-  downloadBtn.disabled = false;
-  copyBtn.disabled = false;
-  base64Btn.disabled = false;
-
-  state.history.push({
-    name: getActive().file.name,
-    origSize: getActive().file.size,
-    outSize: blob.size,
-    saved: saving,
-    pct,
-    dims: `${img.width}×${img.height}`,
-    format: fmtSelect.value.split('/')[1],
-    time: new Date().toLocaleTimeString(),
-  });
+  downloadBtn.disabled = false; copyBtn.disabled = false; base64Btn.disabled = false;
+  state.history.push({ name: getActive().file.name, origSize: getActive().file.size, outSize: blob.size, saved: saving, pct, dims: `${img.width}×${img.height}`, format: fmtSelect.value.split('/')[1], time: new Date().toLocaleTimeString() });
 }
 
 // ===== Download =====
@@ -1444,8 +872,7 @@ downloadBtn.addEventListener('click', () => {
   const ext = fmtSelect.value.split('/')[1];
   const base = a.file.name.replace(/\.[^.]+$/, '');
   const link = document.createElement('a');
-  link.href = URL.createObjectURL(state.processedBlob);
-  link.download = `${base}_optimized.${ext}`;
+  link.href = URL.createObjectURL(state.processedBlob); link.download = `${base}_optimized.${ext}`;
   document.body.appendChild(link); link.click(); document.body.removeChild(link);
   toastMsg('toast.downloaded');
 });
@@ -1453,10 +880,8 @@ downloadBtn.addEventListener('click', () => {
 // ===== Copy =====
 copyBtn.addEventListener('click', async () => {
   if (!state.processedBlob) return;
-  try {
-    await navigator.clipboard.write([new ClipboardItem({ [state.processedBlob.type]: state.processedBlob })]);
-    toastMsg('toast.copied');
-  } catch { toastMsg('toast.copyNotSupported'); }
+  try { await navigator.clipboard.write([new ClipboardItem({ [state.processedBlob.type]: state.processedBlob })]); toastMsg('toast.copied'); }
+  catch { toastMsg('toast.copyNotSupported'); }
 });
 
 // ===== Base64 =====
@@ -1466,25 +891,16 @@ base64Btn.addEventListener('click', async () => {
   reader.onload = () => { $('b64Output').value = reader.result; openModal('b64Modal'); };
   reader.readAsDataURL(state.processedBlob);
 });
-
 function copyBase64() { $('b64Output').select(); navigator.clipboard.writeText($('b64Output').value); toastMsg('toast.copiedB64'); }
 
 // ===== Download All =====
 downloadAllBtn.addEventListener('click', async () => {
   if (state.images.length < 2) return;
-  if (!window.JSZip) {
-    const s = document.createElement('script');
-    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
-    await new Promise(r => { s.onload = r; document.head.appendChild(s); });
-  }
+  if (!window.JSZip) { const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js'; await new Promise(r => { s.onload = r; document.head.appendChild(s); }); }
   const zip = new JSZip();
-  for (const [i, imgData] of state.images.entries()) {
-    zip.file(`image_${i + 1}.${imgData.file.name.split('.').pop()}`, imgData.file);
-  }
+  state.images.forEach((imgData, i) => zip.file(`image_${i+1}.${imgData.file.name.split('.').pop()}`, imgData.file));
   const blob = await zip.generateAsync({ type: 'blob' });
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = 'MaddyPix_batch.zip';
+  const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = 'MaddyPix_batch.zip';
   document.body.appendChild(link); link.click(); document.body.removeChild(link);
   toastMsg('toast.batchStarted');
 });
@@ -1492,27 +908,21 @@ downloadAllBtn.addEventListener('click', async () => {
 // ===== History =====
 historyBtn.addEventListener('click', () => {
   const list = $('histList');
-  if (!state.history.length) { list.innerHTML = `<p style="color:var(--txt-3)">${t('modal.noHist')}</p>`; }
-  else {
-    list.innerHTML = state.history.map((h, i) =>
-      `<div class="hist-item"><span>#${i + 1} ${h.name}</span><span>${h.origSize} → ${h.outSize} <span style="color:${h.saved >= 0 ? 'var(--green)' : 'var(--red)'}">${h.saved >= 0 ? '-' : '+'}${h.pct}%</span> • ${h.time}</span></div>`
-    ).join('');
-  }
+  if (!state.history.length) list.innerHTML = `<p style="color:var(--txt3);font-size:11px">${t('modal.noHist')}</p>`;
+  else list.innerHTML = state.history.map((h, i) => `<div class="hist-item"><span>#${i+1} ${h.name}</span><span>${h.origSize} → ${h.outSize} <span style="color:${h.saved>=0?'var(--green)':'var(--red)'}">${h.saved>=0?'-':'+'}${h.pct}%</span> • ${h.time}</span></div>`).join('');
   openModal('histModal');
 });
-$('clearHistBtn').addEventListener('click', () => { state.history = []; $('histList').innerHTML = `<p style="color:var(--txt-3)">${t('modal.noHist')}</p>`; toastMsg('toast.historyCleared'); });
+$('clearHistBtn').addEventListener('click', () => { state.history = []; $('histList').innerHTML = `<p style="color:var(--txt3);font-size:11px">${t('modal.noHist')}</p>`; toastMsg('toast.historyCleared'); });
 
 // ===== Info =====
 infoBtn.addEventListener('click', () => {
   const a = getActive();
   if (!a) return toastMsg('toast.noImage');
-  $('iiName').textContent = a.file.name;
-  $('iiFormat').textContent = a.file.type;
-  $('iiDims').textContent = `${a.origW} × ${a.origH}`;
-  $('iiSize').textContent = fmtSize(a.file.size);
+  $('iiName').textContent = a.file.name; $('iiFormat').textContent = a.file.type;
+  $('iiDims').textContent = `${a.origW} × ${a.origH}`; $('iiSize').textContent = fmtSize(a.file.size);
   $('iiOutSize').textContent = state.processedBlob ? fmtSize(state.processedBlob.size) : '—';
   const s = a.file.size - (state.processedBlob ? state.processedBlob.size : 0);
-  $('iiComp').textContent = state.processedBlob ? (s >= 0 ? `-${Math.abs((s / a.file.size) * 100).toFixed(1)}%` : `+${Math.abs((s / a.file.size) * 100).toFixed(1)}%`) : '—';
+  $('iiComp').textContent = state.processedBlob ? (s >= 0 ? `-${Math.abs((s/a.file.size)*100).toFixed(1)}%` : `+${Math.abs((s/a.file.size)*100).toFixed(1)}%`) : '—';
   openModal('imgInfoModal');
 });
 
@@ -1525,8 +935,8 @@ document.querySelectorAll('.modal-overlay').forEach(el => { el.addEventListener(
 processBtn.addEventListener('click', processImage);
 
 // ===== Keyboard =====
-document.addEventListener('keydown', (e) => {
-  if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA') return;
+document.addEventListener('keydown', e => {
+  if (['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName)) return;
   if (e.code === 'Space') { e.preventDefault(); processBtn.click(); }
   if (e.code === 'KeyS' && !e.ctrlKey && !e.metaKey) { e.preventDefault(); downloadBtn.click(); }
   if (e.code === 'KeyR' && !e.ctrlKey && !e.metaKey) { e.preventDefault(); $('resetRotFlip').click(); }
@@ -1535,10 +945,9 @@ document.addEventListener('keydown', (e) => {
   if (e.code === 'KeyT' && !e.ctrlKey && !e.metaKey) { e.preventDefault(); themeBtn.click(); }
   if (e.code === 'KeyL' && !e.ctrlKey && !e.metaKey) {
     e.preventDefault();
-    const langs = ['en', 'fa', 'ar', 'fr', 'de', 'ru'];
+    const langs = ['en','fa','ar','fr','de','ru'];
     const idx = (langs.indexOf(currentLang) + 1) % langs.length;
-    langSelect.value = langs[idx];
-    setLang(langs[idx]);
+    langSelect.value = langs[idx]; setLang(langs[idx]);
   }
 });
 
@@ -1547,7 +956,6 @@ const savedLang = localStorage.getItem('maddypix_lang') || 'en';
 langSelect.value = savedLang;
 setLang(savedLang, true);
 resetUI();
-console.log('MaddyPix loaded — 6 languages');
 </script>
 </body>
 </html>
